@@ -1,4 +1,6 @@
-.bottom-nav {
+import styled from "styled-components";
+
+export const Bar = styled.div`
   position: fixed;
   bottom: 0;
   left: 0;
@@ -10,9 +12,9 @@
   align-items: center;
   border-top: 0.1vh solid #522959;
   box-sizing: border-box;
-}
+`;
 
-.nav-item {
+export const NavItem = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -22,14 +24,14 @@
   color: #e6c0c7;
   cursor: pointer;
   flex: 1;
-}
 
-.nav-item svg {
-  font-size: clamp(20px, 3.5vh, 30px);
-  margin-bottom: 1vh;
-}
+  svg {
+    font-size: clamp(20px, 3.5vh, 30px);
+    margin-bottom: 1vh;
+  }
+`;
 
-.profile-item {
+export const ProfileItem = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -39,10 +41,10 @@
   color: #e6c0c7;
   cursor: pointer;
   flex: 1;
-}
+`;
 
-.profile-image-wrapper {
+export const ProfileImageWrapper = styled.div`
   width: clamp(25px, 4.5vh, 40px);
   height: clamp(25px, 4.5vh, 40px);
   margin-bottom: 1vh;
-}
+`;

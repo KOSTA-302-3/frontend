@@ -1,11 +1,10 @@
-import { Button } from "antd";
-import "./AppButton.css";
+import { StyledButton } from "./AppButton.styles";
 
 const AppButton = ({ children, ...rest }) => {
   return (
-    <Button className="app-button" {...rest}>
+    <StyledButton {...rest}>
       {children}
-    </Button>
+    </StyledButton>
   );
 };
 

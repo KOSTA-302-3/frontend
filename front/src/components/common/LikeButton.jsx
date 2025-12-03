@@ -1,6 +1,6 @@
 import { HeartOutlined, HeartFilled } from "@ant-design/icons";
 import { useState } from "react";
-import "./ActionButton.css";
+import { Button } from "./ActionButton.styles";
 
 const LikeButton = ({ isLiked: initialLiked = false, onClick }) => {
   const [isLiked, setIsLiked] = useState(initialLiked);
@@ -11,9 +11,9 @@ const LikeButton = ({ isLiked: initialLiked = false, onClick }) => {
   };
 
   return (
-    <div className="action-button" onClick={handleClick}>
+    <Button onClick={handleClick}>
       {isLiked ? <HeartFilled /> : <HeartOutlined />}
-    </div>
+    </Button>
   );
 };
 

@@ -1,23 +1,23 @@
-import { LeftOutlined, BellOutlined, MailOutlined } from "@ant-design/icons";
-import "./TopNav.css";
+import { BellOutlined, MailOutlined } from "@ant-design/icons";
+import { Wrapper, BackIcon, Title, IconGroup, HeaderIcon } from "./TopNav.styles";
 
 export default function TopNav({ title, onBack, onNotification, onMessage }) {
   return (
-    <div className="top-nav">
-      {onBack && <LeftOutlined className="back-icon" onClick={onBack} />}
-      <h1 className="title">{title}</h1>
-      <div className="icon-group">
+    <Wrapper>
+      {onBack && <BackIcon onClick={onBack} />}
+      <Title>{title}</Title>
+      <IconGroup>
         {onNotification && (
-          <div className="header-icon" onClick={onNotification}>
+          <HeaderIcon onClick={onNotification}>
             <BellOutlined />
-          </div>
+          </HeaderIcon>
         )}
         {onMessage && (
-          <div className="header-icon" onClick={onMessage}>
+          <HeaderIcon onClick={onMessage}>
             <MailOutlined />
-          </div>
+          </HeaderIcon>
         )}
-      </div>
-    </div>
+      </IconGroup>
+    </Wrapper>
   );
 }

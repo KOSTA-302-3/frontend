@@ -1,10 +1,10 @@
 import TopNav from "./TopNav";
 import BottomNav from "./BottomNav";
-import "./MainLayout.css";
+import { Wrapper } from "./MainLayout.styles";
 
 export default function MainLayout({ children }) {
   return (
-    <div className="main-layout">
+    <Wrapper>
       <TopNav 
         title="SANTA" 
         onNotification={() => console.log('알림')}
@@ -18,6 +18,6 @@ export default function MainLayout({ children }) {
         onProfile={() => console.log('프로필')}
         onSetting={() => console.log('설정')}
       />
-    </div>
+    </Wrapper>
   );
 }
