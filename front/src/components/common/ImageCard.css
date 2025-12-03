@@ -1,0 +1,13 @@
+.image-card {
+  aspect-ratio: 1;
+  width: 100%;
+  height: 100%;
+  cursor: pointer;
+  transition: opacity 0.2s;
+  background-size: cover;
+  background-position: center;
+}
+
+.image-card:hover {
+  opacity: 0.8;
+}

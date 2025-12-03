@@ -1,18 +1,10 @@
-import styled from "styled-components";
 import TopNav from "./TopNav";
 import BottomNav from "./BottomNav";
-
-const Wrapper = styled.div`
-  padding-top: 12%;
-  padding-bottom: 10%;  
-  min-height: 100vh;
-  background: #130016;   
-  color: #fff;
-`;
+import "./MainLayout.css";
 
 export default function MainLayout({ children }) {
   return (
-    <Wrapper>
+    <div className="main-layout">
       <TopNav 
         title="SANTA" 
         onNotification={() => console.log('알림')}
@@ -26,6 +18,6 @@ export default function MainLayout({ children }) {
         onProfile={() => console.log('프로필')}
         onSetting={() => console.log('설정')}
       />
-    </Wrapper>
+    </div>
   );
 }
