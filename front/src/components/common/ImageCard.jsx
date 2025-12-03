@@ -1,15 +1,10 @@
-import "./ImageCard.css";
+import { Card } from "./ImageCard.styles";
 
 const ImageCard = ({ image, bgColor, onClick, ...props }) => {
-  const style = {
-    backgroundColor: bgColor || '#2d1a33',
-    backgroundImage: image ? `url(${image})` : 'none'
-  };
-
   return (
-    <div 
-      className="image-card"
-      style={style}
+    <Card 
+      $image={image} 
+      $bgColor={bgColor}
       onClick={onClick}
       {...props}
     />

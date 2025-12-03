@@ -1,42 +1,41 @@
 import {
   HomeOutlined,
-  UserOutlined,
   SettingOutlined,
   PlusCircleOutlined,
   SearchOutlined,
 } from "@ant-design/icons";
 import ProfileImage from "./ProfileImage";
-import "./BottomNav.css";
+import { Bar, NavItem, ProfileItem, ProfileImageWrapper } from "./BottomNav.styles";
 
 export default function BottomNav({ onHome, onSearch, onAdd, onProfile, onSetting }) {
   return (
-    <div className="bottom-nav">
-      <div className="nav-item" onClick={onHome}>
+    <Bar>
+      <NavItem onClick={onHome}>
         <HomeOutlined />
         홈
-      </div>
+      </NavItem>
 
-      <div className="nav-item" onClick={onSearch}>
+      <NavItem onClick={onSearch}>
         <SearchOutlined />
         검색
-      </div>
+      </NavItem>
 
-      <div className="nav-item" onClick={onAdd}>
+      <NavItem onClick={onAdd}>
         <PlusCircleOutlined />
         추가
-      </div>
+      </NavItem>
 
-      <div className="profile-item" onClick={onProfile}>
-        <div className="profile-image-wrapper">
+      <ProfileItem onClick={onProfile}>
+        <ProfileImageWrapper>
           <ProfileImage src="https://via.placeholder.com/150" />
-        </div>
+        </ProfileImageWrapper>
         프로필
-      </div>
+      </ProfileItem>
 
-      <div className="nav-item" onClick={onSetting}>
+      <NavItem onClick={onSetting}>
         <SettingOutlined />
         설정
-      </div>
-    </div>
+      </NavItem>
+    </Bar>
   );
 }

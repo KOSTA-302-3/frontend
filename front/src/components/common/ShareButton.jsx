@@ -1,11 +1,11 @@
 import { ShareAltOutlined } from "@ant-design/icons";
-import "./ActionButton.css";
+import { Button } from "./ActionButton.styles";
 
 const ShareButton = ({ onClick }) => {
   return (
-    <div className="action-button" onClick={onClick}>
+    <Button onClick={onClick}>
       <ShareAltOutlined />
-    </div>
+    </Button>
   );
 };
 
