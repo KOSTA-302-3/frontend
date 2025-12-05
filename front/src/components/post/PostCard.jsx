@@ -1,5 +1,6 @@
 import ImageCard from "../common/ImageCard";
 import ProfileImage from "../common/ProfileImage";
+import Badge from "../common/Badge";
 import LikeButton from "../common/LikeButton";
 import CommentButton from "../common/CommentButton";
 import ShareButton from "../common/ShareButton";
@@ -22,6 +23,7 @@ const PostCard = ({
   caption, 
   likes = 0,
   isLiked = false,
+  badgeImageUrl,
   onLike,
   onComment,
   onShare
@@ -32,7 +34,10 @@ const PostCard = ({
         <ProfileImageWrapper>
           <ProfileImage src={profileImage} />
         </ProfileImageWrapper>
-        <Username>{username}</Username>
+        <Username>
+          {username}
+          <Badge imageUrl={badgeImageUrl} />
+        </Username>
       </Header>
 
       <ImageWrapper>

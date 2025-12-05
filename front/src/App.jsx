@@ -2,11 +2,6 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 
 import MainLayout from "./components/common/MainLayout";
 import BottomNav from "./components/common/BottomNav";
-import TestPage from "./pages/TestPage";
-import TestPage2 from "./pages/TestPage2";
-import SearchPage from "./pages/common/SearchPage";
-import ProfilePage from "./pages/user/ProfilePage"; 
-
 function App() {
   return (
     <BrowserRouter>
@@ -53,6 +48,26 @@ function App() {
           }
         />
         
+        {/* BadgeTestPage - 뱃지 테스트 */}
+        <Route
+          path="/badge-test"
+          element={
+            <MainLayout current="home">
+              <BadgeTestPage />
+            </MainLayout>
+          }
+        />
+
+        {/* LoadingTestPage - 로딩 테스트 */}
+        <Route
+          path="/loading-test"
+          element={
+            <MainLayout current="home">
+              <LoadingTestPage />
+            </MainLayout>
+          }
+        />
+
         {/* TestPage2 - 버튼 테스트 */}
         <Route
           path="/test2"
