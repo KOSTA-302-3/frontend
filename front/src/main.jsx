@@ -10,8 +10,6 @@ import AdminLayout from './components/admin/AdminLayout'
 import TestPage from './pages/TestPage'
 import TestPage2 from './pages/TestPage2'
 import SearchPage from './pages/common/SearchPage'
-import ProfilePage from './pages/user/ProfilePage'
-import BadgeTestPage from './pages/common/BadgeTestPage'
 import LoadingTestPage from './pages/common/LoadingTestPage'
 import AdminDashboard from './pages/admin/AdminDashboard'
 import UserManagement from './pages/admin/UserManagement'
@@ -29,9 +27,6 @@ const router = createBrowserRouter([
         children: [
           { index: true, element: <TestPage /> },
           { path: "search", element: <SearchPage /> },
-          { path: "test2", element: <TestPage2 /> },
-          { path: "badge-test", element: <BadgeTestPage /> },
-          { path: "loading-test", element: <LoadingTestPage /> }
         ]
       },
 
