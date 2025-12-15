@@ -22,6 +22,16 @@
     "eslint-plugin-react-hooks": "^7.0.1",
     "eslint-plugin-react-refresh": "^0.4.24",
     "globals": "^16.5.0",
+<<<<<<< Updated upstream
     "vite": "^7.2.4"
+=======
+    "vite": "^7.2.4",
+    "vite-plugin-pwa": "^1.2.0"
+  },
+  "proxy": {
+    "name": "my-react-app",
+    "version": "0.1.0",
+    "proxy": "http://localhost:9000"
+>>>>>>> Stashed changes
   }
 }
