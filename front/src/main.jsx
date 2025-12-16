@@ -2,15 +2,12 @@ import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
 import { Provider } from 'react-redux'
 import { createBrowserRouter, RouterProvider } from 'react-router-dom'
-import store from './store/store'
+// import store from './store/store'
 import './index.css'
 import App from './App.jsx'
 import MainLayout from './components/common/MainLayout'
 import AdminLayout from './components/admin/AdminLayout'
-import TestPage from './pages/TestPage'
-import TestPage2 from './pages/TestPage2'
 import SearchPage from './pages/common/SearchPage'
-import LoadingTestPage from './pages/common/LoadingTestPage'
 import AdminDashboard from './pages/admin/AdminDashboard'
 import UserManagement from './pages/admin/UserManagement'
 import PostManagement from './pages/admin/PostManagement'
@@ -25,7 +22,7 @@ const router = createBrowserRouter([
         path: "/",
         element: <MainLayout />,
         children: [
-          { index: true, element: <TestPage /> },
+          { index: true, element: <SearchPage /> },
           { path: "search", element: <SearchPage /> },
         ]
       },
@@ -46,8 +43,8 @@ const router = createBrowserRouter([
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>
-    <Provider store={store}>
+    {/* <Provider store={store}> */}
       <RouterProvider router={router} />
-    </Provider>
+    {/* </Provider> */}
   </StrictMode>,
 )
