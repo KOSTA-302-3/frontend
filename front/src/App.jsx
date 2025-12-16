@@ -4,8 +4,9 @@ import MainLayout from "./components/common/MainLayout";
 import BottomNav from "./components/common/BottomNav";
 import TestPage from "./pages/TestPage";
 import SearchPage from "./pages/common/SearchPage";
-import PostView from "./pages/post/PostView";
-import Login from "./pages/common/login";
+import PostView from "./pages/post/posts/PostView";
+import FilterView from "./pages/post/posts/FilterView";
+import Login from "./pages/common/Login";
 
 function App() {
   return (
@@ -46,13 +47,15 @@ function App() {
         />
 
         <Route
-          path="/login"
+          path="/cc"
           element={
             <MainLayout current="home">
-              <Login />
+              <FilterView />
             </MainLayout>
           }
         />
+
+        <Route path="/login" element={<Login />} />
       </Routes>
     </BrowserRouter>
   );
