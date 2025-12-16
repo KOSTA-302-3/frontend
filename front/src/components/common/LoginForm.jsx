@@ -23,15 +23,14 @@ const LoginForm = () => {
   const [password, setPassword] = useState("");
 
   const clickEvent = () => {
+    const formData = new FormData(); //폼전송으로 보내기위한 작업
+    formData.append("username", username);
+    formData.append("password", password);
+    console.log(formData.get("username"));
+    console.log(username);
+    console.log(password);
     axios
-      .post("http://localhost:9000/login", null, {
-        params: {
-          username: username,
-          password: password,
-        },
-        headers: {
-          "Content-Type": "application/x-www-form-urlencoded",
-        },
+      .post("http://localhost:9000/login", formData, {
         withCredentials: true,
       })
       .then((response) => {
