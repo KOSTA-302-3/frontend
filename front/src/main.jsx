@@ -7,10 +7,7 @@ import './index.css'
 import App from './App.jsx'
 import MainLayout from './components/common/MainLayout'
 import AdminLayout from './components/admin/AdminLayout'
-import TestPage from './pages/TestPage'
-import TestPage2 from './pages/TestPage2'
 import SearchPage from './pages/common/SearchPage'
-import LoadingTestPage from './pages/common/LoadingTestPage'
 import AdminDashboard from './pages/admin/AdminDashboard'
 import UserManagement from './pages/admin/UserManagement'
 import PostManagement from './pages/admin/PostManagement'
@@ -25,7 +22,6 @@ const router = createBrowserRouter([
         path: "/",
         element: <MainLayout />,
         children: [
-          { index: true, element: <TestPage /> },
           { path: "search", element: <SearchPage /> },
         ]
       },
