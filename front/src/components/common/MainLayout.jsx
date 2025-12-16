@@ -1,8 +1,9 @@
+import { Outlet } from "react-router-dom";
 import TopNav from "./TopNav";
 import BottomNav from "./BottomNav";
 import { Wrapper } from "./MainLayout.styles";
 
-export default function MainLayout({ children }) {
+export default function MainLayout() {
   return (
     <Wrapper>
       <TopNav 
@@ -10,7 +11,7 @@ export default function MainLayout({ children }) {
         onNotification={() => console.log('알림')}
         onMessage={() => console.log('메시지')}
       />
-      {children}
+      <Outlet />
       <BottomNav 
         onHome={() => console.log('홈')}
         onSearch={() => console.log('검색')}
