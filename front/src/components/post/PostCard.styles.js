@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import TopNav from "../common/TopNav";
 
 export const Card = styled.div`
   width: 100%;
@@ -6,6 +7,7 @@ export const Card = styled.div`
   border-radius: 2vh;
   overflow: hidden;
   margin-bottom: 3vh;
+  margin-top: 1.5vh;
 `;
 
 export const Header = styled.div`
@@ -52,7 +54,7 @@ export const LikesCount = styled.div`
 export const Caption = styled.div`
   font-size: 1.8vh;
   line-height: 1.5;
-  
+
   .username {
     font-weight: bold;
     margin-right: 1vw;
