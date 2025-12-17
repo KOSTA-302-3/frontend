@@ -1,20 +1,38 @@
-import { Modal } from "antd";
+import React from "react";
 import InputReplies from "./InputReplies";
+import { ModalWrapper } from "./PostDetail.style";
+import { Button } from "antd";
+import RepliesCard from "./RepliesCard";
 
 const PostDetail = ({ open, onClose }) => {
   return (
-    <Modal
-      title="상세 보기"
-      closable={{ "aria-label": "Custom Close Button" }}
+    <ModalWrapper
       open={open}
       onOk={onClose}
       onCancel={onClose}
+      footer={null}
+      // width="100%"
+      // style={{
+      //   top: "auto",
+      //   bottom: 0,
+      //   position: "absolute",
+      //   margin: 0,
+      //   padding: 0,
+      //   maxWidth: "100%",
+      //   maxHeight: "50vh",
+      //   overflowY: "auto",
+      // }}
     >
-      <p>제목</p>
-      <p>사진</p>
-      <p>내용</p>
       <InputReplies />
-    </Modal>
+      <Button>전송</Button>
+      <RepliesCard profileImage={"aa"} username={11} caption={"ss"} likes={3} />
+      <RepliesCard profileImage={"aa"} username={11} caption={"ss"} likes={3} />
+      <RepliesCard profileImage={"aa"} username={11} caption={"ss"} likes={3} />
+
+      <RepliesCard profileImage={"aa"} username={11} caption={"ss"} likes={3} />
+      <RepliesCard profileImage={"aa"} username={11} caption={"ss"} likes={3} />
+      <RepliesCard profileImage={"aa"} username={11} caption={"ss"} likes={3} />
+    </ModalWrapper>
   );
 };
 

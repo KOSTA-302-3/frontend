@@ -44,7 +44,7 @@ const PostView = () => {
     // 윈도우에 이벤트 붙이기
     window.addEventListener("scroll", handleScroll);
 
-    // 청소하기 (필수)
+    // 청소하기
     return () => window.removeEventListener("scroll", handleScroll);
   }, [isLoading]);
 

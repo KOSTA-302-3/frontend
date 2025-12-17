@@ -1,4 +1,4 @@
-import React from "react";
 import { Input } from "antd";
-const InputReplies = () => <Input placeholder="Basic usage" />;
+import { Replies } from "./InputReplies.style";
+const InputReplies = () => <Replies placeholder="댓글" />;
 export default InputReplies;

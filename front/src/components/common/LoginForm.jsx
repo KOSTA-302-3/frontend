@@ -1,41 +1,38 @@
 import React, { useState } from "react";
 import { LockOutlined, UserOutlined } from "@ant-design/icons";
-import {
-  Button,
-  Checkbox,
-  Flex,
-  Form,
-  Input,
-  ConfigProvider,
-  Typography,
-} from "antd";
+import { Checkbox, Flex, Form } from "antd"; // ConfigProvider 제거됨
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-import styled from "styled-components";
 
-export const LoginLabel = styled.div``;
+// 스타일 파일 import
+import {
+  LoginContainer,
+  StyledForm,
+  StyledTitle,
+  StyledButton,
+  StyledInput,
+} from "./LoginForm.style";
 
 const LoginForm = () => {
-  const { Title } = Typography;
   const navigate = useNavigate();
 
   const [username, setUserName] = useState("");
   const [password, setPassword] = useState("");
 
   const clickEvent = () => {
-    const formData = new FormData(); //폼전송으로 보내기위한 작업
+    const formData = new FormData();
     formData.append("username", username);
     formData.append("password", password);
-    console.log(formData.get("username"));
-    console.log(username);
-    console.log(password);
+
+    console.log("전송 데이터:", username, password);
+
     axios
       .post("http://localhost:9000/login", formData, {
         withCredentials: true,
       })
       .then((response) => {
         console.log("로그인 성공:", response);
-        navigate("/dd");
+        navigate("/main");
       })
       .catch(() => {
         alert("오류입니다!");
@@ -43,57 +40,35 @@ const LoginForm = () => {
   };
 
   return (
-    <ConfigProvider
-      theme={{
-        token: {
-          colorPrimary: "#e6c0c7",
-          colorText: "#e6c0c7",
-          colorLink: "#e6c0c7",
-        },
-        components: {
-          Button: {
-            colorPrimary: "#e6c0c7",
-            algorithm: true,
-          },
-          Input: {
-            colorBgContainer: "#f0f0f0",
-          },
-
-          Form: {
-            labelColor: "rgba(255, 255, 255, 0.85)",
-          },
-        },
-      }}
-    >
-      <Form
-        name="login"
-        initialValues={{ remember: true }}
-        style={{ maxWidth: 360 }}
-      >
-        <Title level={2} style={{ textAlign: "center", marginBottom: 30 }}>
-          LOGIN
-        </Title>
+    <LoginContainer>
+      <StyledForm name="login" initialValues={{ remember: true }}>
+        <StyledTitle level={1}>LOGIN</StyledTitle>
 
         <Form.Item
           name="username"
-          rules={[{ required: true, message: "Please input your Username!" }]}
-          value={username}
-          onChange={(e) => setUserName(e.target.value)}
+          rules={[{ required: true, message: "아이디를 입력하세요" }]}
         >
-          <Input prefix={<UserOutlined />} placeholder="Username" />
+          <StyledInput
+            prefix={<UserOutlined />}
+            placeholder="Username"
+            value={username}
+            onChange={(e) => setUserName(e.target.value)}
+          />
         </Form.Item>
+
         <Form.Item
           name="password"
-          rules={[{ required: true, message: "Please input your Password!" }]}
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
+          rules={[{ required: true, message: "패스워드를 입력하세요" }]}
         >
-          <Input
+          <StyledInput
             prefix={<LockOutlined />}
             type="password"
             placeholder="Password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
           />
         </Form.Item>
+
         <Form.Item>
           <Flex justify="space-between" align="center">
             <Form.Item name="remember" valuePropName="checked" noStyle>
@@ -104,14 +79,18 @@ const LoginForm = () => {
             </a>
           </Flex>
         </Form.Item>
+
         <Form.Item>
-          <Button block type="primary" onClick={clickEvent}>
+          <StyledButton block type="primary" onClick={clickEvent}>
             Log in
-          </Button>
-          <a>화원가입</a>
+          </StyledButton>
+          <div className="signup-link">
+            <a>회원가입</a>
+          </div>
         </Form.Item>
-      </Form>
-    </ConfigProvider>
+      </StyledForm>
+    </LoginContainer>
   );
 };
+
 export default LoginForm;

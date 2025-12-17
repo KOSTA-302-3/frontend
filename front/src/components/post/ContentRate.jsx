@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { Button, Col, InputNumber, Row, Slider, Space } from "antd";
+import { Rate } from "./ContentRate.style";
 const IntegerStep = () => {
   const [inputValue, setInputValue] = useState(1);
   const onChange = (newValue) => {
@@ -17,16 +18,7 @@ const IntegerStep = () => {
         />
       </Col>
       <Col span={12}>
-        <p
-          style={{
-            fontSize: "20px",
-            marginLeft: "150px",
-            marginTop: "3px",
-            fontFamily: "-apple-system",
-          }}
-        >
-          {inputValue}
-        </p>
+        <Rate>{inputValue}</Rate>
       </Col>
     </Row>
   );
