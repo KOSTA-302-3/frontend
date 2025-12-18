@@ -72,7 +72,7 @@ export const Overlay = styled.div`
   z-index: 35;
 
   ${(p) =>
-    p.visible &&
+    p.$visible &&
     css`
       opacity: 1;
       pointer-events: auto;

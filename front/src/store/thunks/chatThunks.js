@@ -1,5 +1,5 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
-import { setUsers } from "../slices/usersSlice";
+import { setChatMembers } from "../slices/chatMembersSlice";
 import { setMessages, prependMessages } from "../slices/messagesSlice";
 
 /*
@@ -9,7 +9,7 @@ export const fetchChatInit = createAsyncThunk("chat/fetchInit", async (_, thunkA
   const { dispatch } = thunkAPI;
 
   // TODO: 나중에 여기서 fetch("/api/chat/init")로 교체됨
-  const users = [
+  const chatMembers = [
     { id: "me", username: "나", avatarUrl: "https://i.pravatar.cc/40?u=1", online: true },
     { id: "u2", username: "민수", avatarUrl: "https://i.pravatar.cc/40?u=2", online: true },
     { id: "u3", username: "영희", avatarUrl: "https://i.pravatar.cc/40?u=3", online: false },
@@ -48,7 +48,7 @@ export const fetchChatInit = createAsyncThunk("chat/fetchInit", async (_, thunkA
   ];
 
   // Redux state 갱신은 reducer에게 맡김
-  dispatch(setUsers(users));
+  dispatch(setChatMembers(chatMembers));
   dispatch(setMessages(messages));
 
   return true; // fulfilled 용도 (지금은 의미 없음)

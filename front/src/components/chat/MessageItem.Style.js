@@ -6,12 +6,12 @@ export const Row = styled.div`
   margin: 8px 0;
   align-items: flex-end;
   ${(p) =>
-    p.center &&
+    p.$center &&
     css`
       justify-content: center;
     `}
   ${(p) =>
-    p.right &&
+    p.$right &&
     css`
       justify-content: flex-end;
     `}
@@ -20,7 +20,7 @@ export const Row = styled.div`
 export const Container = styled.div`
   display: flex;
   flex-direction: column;
-  align-items: ${(p) => (p.right ? "flex-end" : "flex-start")};
+  align-items: ${(p) => (p.$right ? "flex-end" : "flex-start")};
   max-width: 72%;
 `;
 
@@ -32,7 +32,7 @@ export const Bubble = styled.div`
   line-height: 1.4;
   box-shadow: 0 1px 0 rgba(0, 0, 0, 0.03);
   ${(p) =>
-    p.me &&
+    p.$me &&
     css`
       background: #ffffff;
       color: #111827;
@@ -40,14 +40,14 @@ export const Bubble = styled.div`
       border-top-right-radius: 6px;
     `}
   ${(p) =>
-    p.other &&
+    p.$other &&
     css`
       background: #f2f2f5;
       color: #111827;
       border-top-left-radius: 6px;
     `}
   ${(p) =>
-    p.notice &&
+    p.$notice &&
     css`
       background: transparent;
       color: #9aa0a6;
