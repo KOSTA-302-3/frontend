@@ -2,10 +2,13 @@ import { addMessage } from "../store/slices/messagesSlice";
 
 let socket = null;
 
-export function connectChatSocket({ roomId, token, dispatch }) {
+export function connectChatSocket({ roomId, dispatch }) {
   if (socket) return;
 
-  socket = new WebSocket(`wss://example.com/chat/${roomId}?token=${token}`);
+  //ws, wss 구별하기
+  const protocol = window.location.protocol === "https:" ? "wss" : "ws";
+
+  socket = new WebSocket(`${protocol}://example.com/chat/${roomId}`);
 
   socket.onopen = () => {
     console.log("WS connected");
