@@ -5,11 +5,11 @@ const initialState = {
   allIds: [],
 };
 
-const usersSlice = createSlice({
-  name: "users",
+const chatMembersSlice = createSlice({
+  name: "chatMembers",
   initialState,
   reducers: {
-    setUsers(state, action) {
+    setChatMembers(state, action) {
       const arr = action.payload;
       state.byId = {};
       state.allIds = [];
@@ -18,14 +18,14 @@ const usersSlice = createSlice({
         state.allIds.push(u.id);
       });
     },
-    addUser(state, action) {
+    addChatMember(state, action) {
       const u = action.payload;
       if (!state.byId[u.id]) {
         state.byId[u.id] = u;
         state.allIds.push(u.id);
       }
     },
-    removeUser(state, action) {
+    removeChatMember(state, action) {
       const id = action.payload;
       if (state.byId[id]) {
         delete state.byId[id];
@@ -39,5 +39,5 @@ const usersSlice = createSlice({
   },
 });
 
-export const { setUsers, addUser, removeUser, setOnline } = usersSlice.actions;
-export default usersSlice.reducer;
+export const { setChatMembers, addChatMember, removeChatMember, setOnline } = chatMembersSlice.actions;
+export default chatMembersSlice.reducer;

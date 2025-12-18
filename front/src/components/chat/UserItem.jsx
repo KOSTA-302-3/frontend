@@ -11,12 +11,12 @@ const { Row, Avatar, Info, Name, Status, Dot } = S;
 
 export default function UserItem({ user, compact = false }) {
   return (
-    <Row compact={compact} role="listitem" aria-label={`user ${user.username}`}>
+    <Row $compact={compact} role="listitem" aria-label={`user ${user.username}`}>
       <Avatar src={user.avatarUrl || `https://i.pravatar.cc/40?u=${user.id}`} alt={`${user.username} avatar`} />
       <Info>
         <Name>{user.username}</Name>
-        <Status online={user.online}>
-          <Dot online={user.online} />
+        <Status $online={user.online}>
+          <Dot $online={user.online} />
           {user.online ? "온라인" : "오프라인"}
         </Status>
       </Info>

@@ -73,7 +73,7 @@ export default function MessageList({ messages = [], onLoadMore }) {
       ))}
 
       <NewMsgButton
-        show={showNewBtn}
+        $show={showNewBtn}
         onClick={() => {
           const el = rootRef.current;
           if (!el) return;

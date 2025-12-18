@@ -19,8 +19,15 @@ export default function ChatRoom() {
   console.log("ChatRoom mounted with chatroomId:", chatroomId);
   const dispatch = useDispatch();
 
-  const messages = useSelector((state) => state.messages.allIds.map((id) => state.messages.byId[id]));
-  const users = useSelector((state) => state.users.allIds.map((id) => state.users.byId[id]));
+  const messages = useSelector(
+    (state) => state.messages.allIds.map((id) => state.messages.byId[id]),
+    (prev, next) => JSON.stringify(prev) === JSON.stringify(next) // 비교 함수
+  );
+
+  const users = useSelector(
+    (state) => state.chatMembers.allIds.map((id) => state.chatMembers.byId[id]),
+    (prev, next) => JSON.stringify(prev) === JSON.stringify(next) // 비교 함수
+  );
 
   const [isUserDrawerOpen, setUserDrawerOpen] = useState(false);
 
@@ -86,7 +93,7 @@ export default function ChatRoom() {
       </Drawer>
 
       {/* 오버레이: Drawer 열렸을 때만 보임, 클릭하면 닫힘 */}
-      <Overlay visible={isUserDrawerOpen} onClick={() => setUserDrawerOpen(false)} aria-hidden={!isUserDrawerOpen} />
+      <Overlay $visible={isUserDrawerOpen} onClick={() => setUserDrawerOpen(false)} aria-hidden={!isUserDrawerOpen} />
     </Wrapper>
   );
 }

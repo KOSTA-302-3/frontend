@@ -21,7 +21,7 @@ export const NewMsgButton = styled.button`
   border-radius: 999px;
   cursor: pointer;
   box-shadow: 0 4px 10px rgba(24, 144, 255, 0.16);
-  display: ${(p) => (p.show ? "inline-flex" : "none")};
+  display: ${(p) => (p.$show ? "inline-flex" : "none")};
 `;
 
 // 로딩 인디케이터(더보기)

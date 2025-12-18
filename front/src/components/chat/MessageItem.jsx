@@ -24,9 +24,9 @@ export default function MessageItem({ message }) {
 
   if (message.type === "notice") {
     return (
-      <Row center>
+      <Row $center>
         <Container>
-          <Bubble notice aria-live="polite">
+          <Bubble $notice aria-live="polite">
             {message.text}
           </Bubble>
         </Container>
@@ -36,10 +36,10 @@ export default function MessageItem({ message }) {
 
   const isMe = message.type === "me";
   return (
-    <Row right={isMe} aria-live="polite">
+    <Row $right={isMe} aria-live="polite">
       {/* 왼쪽 아바타 (다른사람) */}
       {!isMe && message.avatarUrl && <Avatar src={message.avatarUrl} alt={`${message.username} avatar`} />}
-      <Container right={isMe}>
+      <Container $right={isMe}>
         <MetaRow style={{ justifyContent: isMe ? "flex-end" : "flex-start" }}>
           {!isMe && <strong>{message.username}</strong>}
           {message.unreadCount > 0 && (
@@ -48,7 +48,7 @@ export default function MessageItem({ message }) {
           <Time>{formatTime(message.ts)}</Time>
         </MetaRow>
 
-        <Bubble me={isMe} other={!isMe}>
+        <Bubble $me={isMe} $other={!isMe}>
           {message.text}
         </Bubble>
       </Container>
