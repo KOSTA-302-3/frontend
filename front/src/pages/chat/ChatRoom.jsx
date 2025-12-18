@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import MessageList from "../../components/chat/MessageList";
 import ChatInput from "../../components/chat/ChatInput";
@@ -9,25 +9,35 @@ import { connectChatSocket } from "../../lib/chatSocket";
 import { useParams } from "react-router-dom";
 import * as S from "./ChatRoom.Style";
 
-const { Wrapper, LeftMessages, InputSlot, RightCol } = S;
+const { Wrapper, LeftMessages, InputSlot, Drawer, Overlay, HamburgerButton } = S;
 
-// 임시: 현재 사용자 ID
 const CURRENT_USER_ID = "me";
 
 export default function ChatRoom() {
   const { chatroomId } = useParams();
 
-  console.log("ChatRoom roomId:", chatroomId);
-
+  console.log("ChatRoom mounted with chatroomId:", chatroomId);
   const dispatch = useDispatch();
 
   const messages = useSelector((state) => state.messages.allIds.map((id) => state.messages.byId[id]));
-
   const users = useSelector((state) => state.users.allIds.map((id) => state.users.byId[id]));
+
+  const [isUserDrawerOpen, setUserDrawerOpen] = useState(false);
 
   useEffect(() => {
     dispatch(fetchChatInit());
   }, [dispatch]);
+
+  // ESC로 닫기
+  useEffect(() => {
+    function onKey(e) {
+      if (e.key === "Escape" && isUserDrawerOpen) {
+        setUserDrawerOpen(false);
+      }
+    }
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, [isUserDrawerOpen]);
 
   const handleSend = useCallback(
     (text, files) => {
@@ -53,6 +63,16 @@ export default function ChatRoom() {
   return (
     <Wrapper>
       <LeftMessages>
+        {/* 햄버거 버튼: 참여자 드로어 토글 */}
+        <HamburgerButton
+          aria-expanded={isUserDrawerOpen}
+          aria-controls="user-drawer"
+          onClick={() => setUserDrawerOpen((s) => !s)}
+          title={isUserDrawerOpen ? "참여자 목록 닫기" : "참여자 목록 열기"}
+        >
+          ☰
+        </HamburgerButton>
+
         <MessageList messages={messages} onLoadMore={handleLoadMore} />
       </LeftMessages>
 
@@ -60,9 +80,13 @@ export default function ChatRoom() {
         <ChatInput onSend={handleSend} />
       </InputSlot>
 
-      <RightCol>
+      {/* Drawer: Wrapper 내부에 absolute로 겹쳐 표시 (grid 컬럼을 변경할 필요 없음) */}
+      <Drawer id="user-drawer" open={isUserDrawerOpen} role="dialog" aria-hidden={!isUserDrawerOpen}>
         <UserList users={users} />
-      </RightCol>
+      </Drawer>
+
+      {/* 오버레이: Drawer 열렸을 때만 보임, 클릭하면 닫힘 */}
+      <Overlay visible={isUserDrawerOpen} onClick={() => setUserDrawerOpen(false)} aria-hidden={!isUserDrawerOpen} />
     </Wrapper>
   );
 }
