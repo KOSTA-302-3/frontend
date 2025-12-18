@@ -26,7 +26,7 @@ const router = createBrowserRouter([
         children: [
           { path: "search", element: <SearchPage /> },
 
-          { path: "main", element: <PostView /> },
+          { path: "main", element: <PostView selectMenu={0} /> },
         ],
       },
 
@@ -51,9 +51,7 @@ const router = createBrowserRouter([
 ]);
 
 createRoot(document.getElementById("root")).render(
-  <StrictMode>
-    <Provider store={store}>
-      <RouterProvider router={router} />
-    </Provider>
-  </StrictMode>
+  <Provider store={store}>
+    <RouterProvider router={router} />
+  </Provider>
 );

@@ -19,15 +19,17 @@ const Container = styled.div`
   box-sizing: border-box;
 `;
 
-const PostView = () => {
+const PostView = ({ selectMenu, page, level }) => {
   let [post, setPost] = useState([]);
   const [pageNo, setPageNo] = useState(1);
   const [isLoading, setIsLoading] = useState(false);
+  const [postLevel, setPostLevel] = useState(level);
+
+  console.log(postLevel);
+
+  const selectUrl = ["http://localhost:9000/posts/getAllOffFilter"];
 
   const handleScroll = () => {
-    // window.scrollY : 현재 스크롤 된 위치
-    // window.innerHeight : 현재 보이는 화면 높이
-    // document.documentElement.scrollHeight : 전체 페이지 높이
     const scrollTop = window.scrollY;
     const clientHeight = window.innerHeight;
     const scrollHeight = document.documentElement.scrollHeight;
@@ -53,13 +55,10 @@ const PostView = () => {
     setIsLoading(true);
 
     try {
-      const response = await axios.get(
-        "http://localhost:9000/posts/getAllOffFilter",
-        {
-          params: { pageNo: pageNo },
-          withCredentials: true,
-        }
-      );
+      const response = await axios.get(selectUrl[selectMenu], {
+        params: { pageNo: pageNo },
+        withCredentials: true,
+      });
 
       console.log("데이터 수신:", response.data);
 
@@ -71,9 +70,13 @@ const PostView = () => {
     }
   };
 
-  useEffect(() => {
-    fetchPosts(pageNo);
-  }, [pageNo]);
+  useEffect(
+    () => {
+      fetchPosts(pageNo);
+    },
+    [pageNo],
+    [postLevel]
+  );
   return (
     <Container>
       {post.map((item, key) => (
@@ -81,13 +84,14 @@ const PostView = () => {
           key={key}
           username={item.createUserName}
           profileImage="https://i.namu.wiki/i/TUPFV3G5bPhTqh4VvoRYnmkRxa3SoPGPUTzQZt-er6orxSIDgJi_CTbMAFBXyZWw6xJyTOLkbjmL6YpMhFkj-Q.webp"
-          postImage="https://i.namu.wiki/i/TUPFV3G5bPhTqh4VvoRYnmkRxa3SoPGPUTzQZt-er6orxSIDgJi_CTbMAFBXyZWw6xJyTOLkbjmL6YpMhFkj-Q.webp"
+          postImage="https://amzn-s3-santa-bucket.s3.ap-northeast-2.amazonaws.com/test/7a22f08b-54e8-47bc-b5de-3e2a0934055e-%EC%A0%9C%EB%AA%A9%20%EC%97%86%EB%8A%94%20%EB%94%94%EC%9E%90%EC%9D%B8.png"
           caption={item.content}
           likes={item.likeCount}
           isLiked={false}
           onLike={(liked) => console.log("좋아요:", liked)}
           onComment={() => console.log("댓글 클릭")}
           onShare={() => console.log("공유 클릭")}
+          postId={item.postId}
         />
       ))}
     </Container>

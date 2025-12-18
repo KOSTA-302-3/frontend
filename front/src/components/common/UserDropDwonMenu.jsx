@@ -2,15 +2,21 @@ import React, { useState } from "react";
 import { DownOutlined } from "@ant-design/icons";
 import { Dropdown, Space, Modal } from "antd";
 import ContentRate from "../post/ContentRate";
+import PostView from "../../pages/post/posts/PostView";
+import { useNavigate } from "react-router-dom";
 
 const UserDropDwonMenu = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const navigate = useNavigate();
 
   const handleMenuClick = (e) => {
     console.log("클릭된 키:", e.key);
 
     if (e.key === "3") {
       setIsModalOpen(true);
+    } else {
+      console.log(1111111);
+      navigate("/main", { state: { level: 10 } });
     }
   };
 
@@ -33,6 +39,10 @@ const UserDropDwonMenu = () => {
     {
       label: "컨텐츠 레벨 필터",
       key: "3",
+    },
+    {
+      label: "필터Off",
+      key: "4",
     },
   ];
 
