@@ -1,5 +1,17 @@
-import { BellOutlined, MailOutlined } from "@ant-design/icons";
-import { Wrapper, BackIcon, Title, IconGroup, HeaderIcon } from "./TopNav.styles";
+import {
+  BellOutlined,
+  MailOutlined,
+  DownCircleOutlined,
+} from "@ant-design/icons";
+import {
+  Wrapper,
+  BackIcon,
+  Title,
+  IconGroup,
+  HeaderIcon,
+} from "./TopNav.styles";
+
+import UserDropDown from "../../components/common/UserDropDwonMenu";
 
 export default function TopNav({ title, onBack, onNotification, onMessage }) {
   return (
@@ -7,6 +19,9 @@ export default function TopNav({ title, onBack, onNotification, onMessage }) {
       {onBack && <BackIcon onClick={onBack} />}
       <Title>{title}</Title>
       <IconGroup>
+        <HeaderIcon>
+          <UserDropDown />
+        </HeaderIcon>
         {onNotification && (
           <HeaderIcon onClick={onNotification}>
             <BellOutlined />

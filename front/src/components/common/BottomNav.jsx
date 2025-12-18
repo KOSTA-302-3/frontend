@@ -5,14 +5,24 @@ import {
   SearchOutlined,
 } from "@ant-design/icons";
 import ProfileImage from "./ProfileImage";
-import { Bar, NavItem, ProfileItem, ProfileImageWrapper } from "./BottomNav.styles";
+import {
+  Bar,
+  NavItem,
+  ProfileItem,
+  ProfileImageWrapper,
+} from "./BottomNav.styles";
 
-export default function BottomNav({ onHome, onSearch, onAdd, onProfile, onSetting }) {
+export default function BottomNav({
+  onHome,
+  onSearch,
+  onAdd,
+  onProfile,
+  onSetting,
+}) {
   return (
     <Bar>
       <NavItem onClick={onHome}>
-        <HomeOutlined />
-        홈
+        <HomeOutlined />홈
       </NavItem>
 
       <NavItem onClick={onSearch}>
@@ -27,7 +37,7 @@ export default function BottomNav({ onHome, onSearch, onAdd, onProfile, onSettin
 
       <ProfileItem onClick={onProfile}>
         <ProfileImageWrapper>
-          <ProfileImage src="https://via.placeholder.com/150" />
+          <ProfileImage src="https://i.namu.wiki/i/TUPFV3G5bPhTqh4VvoRYnmkRxa3SoPGPUTzQZt-er6orxSIDgJi_CTbMAFBXyZWw6xJyTOLkbjmL6YpMhFkj-Q.webp" />
         </ProfileImageWrapper>
         프로필
       </ProfileItem>
