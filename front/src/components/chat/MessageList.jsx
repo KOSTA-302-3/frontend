@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState, useCallback } from "react";
 import MessageItem from "./MessageItem";
-import * as S from "./MessageListStyle.js";
+import * as S from "./MessageList.Style.js";
 const { ListWrap, NewMsgButton, TopLoader } = S;
 
 /**

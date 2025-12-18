@@ -1,6 +1,6 @@
 import React from "react";
 import UserItem from "./UserItem";
-import * as S from "./UserListStyle.js";
+import * as S from "./UserList.Style.js";
 const { Wrap, Header, Title, List } = S;
 
 /**

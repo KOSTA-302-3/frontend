@@ -1,5 +1,5 @@
 import React from "react";
-import * as S from "./UserItemStyle.js";
+import * as S from "./UserItem.Style.js";
 const { Row, Avatar, Info, Name, Status, Dot } = S;
 
 /**

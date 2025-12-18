@@ -1,5 +1,5 @@
 import React, { useState, useRef } from "react";
-import * as S from "./ChatInputStyle.js";
+import * as S from "./ChatInput.Style.js";
 const { Wrap, Textarea, SendBtn, FileLabel, FilesPreview, FileChip } = S;
 
 /**

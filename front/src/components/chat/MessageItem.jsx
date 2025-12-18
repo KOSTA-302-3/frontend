@@ -1,5 +1,5 @@
 import React from "react";
-import * as S from "./MessageItemStyle.js";
+import * as S from "./MessageItem.Style.js";
 const { Row, Container, Avatar, MetaRow, Time, Bubble, UnreadBadge } = S;
 
 /**

@@ -8,8 +8,10 @@ export function connectChatSocket({ roomId, dispatch }) {
   //ws, wss 구별하기
   const protocol = window.location.protocol === "https:" ? "wss" : "ws";
 
+  // WebSocket 연결 생성
   socket = new WebSocket(`${protocol}://example.com/chat/${roomId}`);
 
+  // WebSocket 이벤트 핸들러 설정
   socket.onopen = () => {
     console.log("WS connected");
   };
