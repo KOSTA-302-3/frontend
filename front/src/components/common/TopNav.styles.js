@@ -2,7 +2,8 @@ import styled from "styled-components";
 import { LeftOutlined } from "@ant-design/icons";
 
 export const Wrapper = styled.div`
-  position: fixed;
+  /* position: fixed; */
+  position: sticky;
   top: 0;
   left: 0;
   width: 100%;

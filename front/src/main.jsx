@@ -16,6 +16,7 @@ import ChatPage from "./pages/chat/ChatPage";
 import ChatRoom from "./pages/chat/ChatRoom.jsx";
 import LoginForm from "./components/common/LoginForm";
 import PostView from "./pages/post/posts/PostView";
+import UserPage from "./pages/user/UserPage.jsx";
 
 const router = createBrowserRouter([
   {
@@ -26,6 +27,7 @@ const router = createBrowserRouter([
         path: "/",
         element: <MainLayout />,
         children: [
+          { path: "user/:id", element: <UserPage /> },
           { path: "search", element: <SearchPage /> },
           { path: "chat", element: <ChatPage /> },
           { path: "chat/:chatroomId", element: <ChatRoom /> },
