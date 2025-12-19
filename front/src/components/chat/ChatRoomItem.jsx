@@ -1,64 +1,7 @@
 import React from "react";
-import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
-
-const ItemWrap = styled.button`
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  width: 100%;
-  padding: 12px 16px;
-  border: none;
-  background: transparent;
-  color: #e5e7eb; /* light gray */
-  text-align: left;
-  cursor: pointer;
-
-  &:hover {
-    background: rgba(255, 255, 255, 0.03);
-  }
-`;
-
-const Avatar = styled.div`
-  width: 44px;
-  height: 44px;
-  border-radius: 8px;
-  background: ${(p) => p.color || "#374151"};
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: #111827;
-  font-weight: 700;
-  flex-shrink: 0;
-`;
-
-const Info = styled.div`
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
-`;
-
-const Title = styled.div`
-  font-size: 15px;
-  color: #fff;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-`;
-
-const Sub = styled.div`
-  font-size: 12px;
-  color: #9ca3af;
-`;
-
-const UnreadDot = styled.div`
-  width: 10px;
-  height: 10px;
-  border-radius: 999px;
-  background: #ef4444; /* red for unread */
-  flex-shrink: 0;
-`;
+import * as S from "./ChatRoomItem.Style";
+const { ItemWrap, Avatar, Info, Title, Sub, UnreadDot } = S;
 
 export default function ChatRoomItem({ room }) {
   const navigate = useNavigate();

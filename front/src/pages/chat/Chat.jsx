@@ -1,34 +1,15 @@
-import React from "react";
-import styled from "styled-components";
+import React, { useState } from "react";
 import ChatHeader from "../../components/chat/ChatHeader";
 import ChatRoomList from "../../components/chat/ChatRoomList";
 import CreateChatModal from "../../components/chat/CreateChatModal";
 import { initialChatRooms } from "./dummyChatRooms";
-
-const PageWrap = styled.div`
-  height: calc(100vh - 22vh); /* top 12vh + bottom 10vh removed (they exist outside) */
-  background: #000; /* solid black */
-  color: #e5e7eb;
-  display: flex;
-  flex-direction: column;
-  width: 100%;
-`;
-
-/* header area has fixed height 64px inside this container */
-const HeaderArea = styled.div`
-  flex: 0 0 64px;
-`;
-
-/* list area fills the rest */
-const ContentArea = styled.div`
-  flex: 1 1 auto;
-  overflow: hidden;
-`;
+import * as S from "./Chat.Style.js";
+const { PageWrap, HeaderArea, ContentArea } = S;
 
 export default function Chat() {
-  const [view, setView] = React.useState("mine"); // 'mine' | 'all'
-  const [rooms, setRooms] = React.useState(initialChatRooms);
-  const [showCreate, setShowCreate] = React.useState(false);
+  const [view, setView] = useState("mine"); // 'mine' | 'all'
+  const [rooms, setRooms] = useState(initialChatRooms);
+  const [showCreate, setShowCreate] = useState(false);
 
   function handleCreateModalOpen() {
     setShowCreate(true);
