@@ -1,63 +1,51 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import { setChatMembers } from "../slices/chatMembersSlice";
 import { setMessages, prependMessages } from "../slices/messagesSlice";
+import axiosInstance from "../../api/axiosInstance";
 
 /*
   채팅방 최초 진입 시 초기 데이터 로딩 thunk
 */
-export const fetchChatInit = createAsyncThunk("chat/fetchInit", async (_, thunkAPI) => {
+export const fetchChatInit = createAsyncThunk("chat/fetchInit", async (chatroomId, thunkAPI) => {
   const { dispatch } = thunkAPI;
 
   // TODO: 나중에 여기서 fetch("/api/chat/init")로 교체됨
-  const chatMembers = [
-    { id: "me", username: "나", avatarUrl: "https://i.pravatar.cc/40?u=1", online: true },
-    { id: "u2", username: "민수", avatarUrl: "https://i.pravatar.cc/40?u=2", online: true },
-    { id: "u3", username: "영희", avatarUrl: "https://i.pravatar.cc/40?u=3", online: false },
-  ];
+  // 실제 서버 요청
+  try {
+    // 두 요청을 병렬로 실행
+    const [messageRes, memberRes] = await Promise.all([
+      axiosInstance.get(`/api/message/${chatroomId}`, {
+        withCredentials: true,
+      }),
+      axiosInstance.get(`/api/chatmember/${chatroomId}`, {
+        withCredentials: true,
+      }),
+    ]);
 
-  const messages = [
-    { id: "n1", type: "notice", text: "민수님이 입장했습니다", ts: Date.now() - 1000 * 60 * 10 },
-    {
-      id: "m1",
-      type: "other",
-      userId: "u2",
-      username: "민수",
-      avatarUrl: "https://i.pravatar.cc/40?u=2",
-      text: "안녕하세요!",
-      ts: Date.now() - 1000 * 60 * 9,
-      unreadCount: 1,
-    },
-    {
-      id: "m2",
-      type: "me",
-      userId: "me",
-      username: "나",
-      avatarUrl: "https://i.pravatar.cc/40?u=1",
-      text: "반가워요, 민수님",
-      ts: Date.now() - 1000 * 60 * 8,
-    },
-    {
-      id: "m3",
-      type: "other",
-      userId: "u2",
-      username: "민수",
-      avatarUrl: "https://i.pravatar.cc/40?u=2",
-      text: "오늘 회의는 몇 시에 할까요?",
-      ts: Date.now() - 1000 * 60 * 7,
-    },
-  ];
+    // 서버 메시지 역순 정렬 (최신 → 오래된 순서 보정)
+    const newMessages = [...messageRes.data.content].reverse();
+    dispatch(setMessages(newMessages));
 
-  // Redux state 갱신은 reducer에게 맡김
-  dispatch(setChatMembers(chatMembers));
-  dispatch(setMessages(messages));
+    // 채팅방 멤버 세팅
+    dispatch(setChatMembers(memberRes.data));
 
-  return true; // fulfilled 용도 (지금은 의미 없음)
+    // fulfilled payload (의미 있는 값 반환 가능)
+    return {
+      messageCount: newMessages.length,
+      memberCount: memberRes.data.length,
+    };
+  } catch (err) {
+    console.error("Error fetching chat init data:", err);
+
+    // rejected 상태로 넘김
+    return thunkAPI.rejectWithValue(err.response?.data);
+  } // fulfilled 용도 (지금은 의미 없음)
 });
 
 /*
   과거 메시지 로딩 thunk
 */
-export const loadOlderMessages = createAsyncThunk("chat/loadOlderMessages", async (_, thunkAPI) => {
+export const loadOlderMessages = createAsyncThunk("chat/loadOlderMessages", async (chatroomId, thunkAPI) => {
   const { dispatch } = thunkAPI;
 
   // 서버 요청 흉내
@@ -76,5 +64,19 @@ export const loadOlderMessages = createAsyncThunk("chat/loadOlderMessages", asyn
   ];
 
   dispatch(prependMessages(olderMessages));
+  return true;
+});
+
+export const loadInitChatRooms = createAsyncThunk("chat/loadChatRooms", async (type, word, thunkAPI) => {
+  const { dispatch } = thunkAPI;
+
+  axiosInstance
+    .get(`/api/chatroom?type=${type}&word=${word}`, {
+      withCredentials: true,
+    })
+    .then((response) => {
+      console.log("loadInitChatRooms response:", response);
+    })
+    .catch();
   return true;
 });

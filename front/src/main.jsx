@@ -12,10 +12,10 @@ import AdminDashboard from "./pages/admin/AdminDashboard";
 import UserManagement from "./pages/admin/UserManagement";
 import PostManagement from "./pages/admin/PostManagement";
 import ReportManagement from "./pages/admin/ReportManagement";
-import ChatPage from "./pages/chat/ChatPage";
 import ChatRoom from "./pages/chat/ChatRoom.jsx";
 import LoginForm from "./components/common/LoginForm";
 import PostView from "./pages/post/posts/PostView";
+import Chat from "./pages/chat/Chat.jsx";
 
 const router = createBrowserRouter([
   {
@@ -27,7 +27,7 @@ const router = createBrowserRouter([
         element: <MainLayout />,
         children: [
           { path: "search", element: <SearchPage /> },
-          { path: "chat", element: <ChatPage /> },
+          { path: "chat", element: <Chat /> },
           { path: "chat/:chatroomId", element: <ChatRoom /> },
           { path: "main", element: <PostView /> },
         ],
