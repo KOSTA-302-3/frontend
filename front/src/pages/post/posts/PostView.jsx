@@ -1,93 +1,112 @@
-import axios from "axios";
-import styled from "styled-components";
+import React, { useEffect, useState, useCallback } from "react";
+import { useSelector } from "react-redux";
+import axiosInstance from "../../../api/axiosInstance";
+import { Container } from "./PostView.style";
 import PostCard from "../../../components/post/PostCard";
-import "../../../index.css";
-import { useEffect, useState } from "react";
-
-// PostView.js 내부
-
-const Container = styled.div`
-  width: 100%;
-  height: auto;
-
-  -webkit-overflow-scrolling: touch;
-
-  display: flex;
-  flex-direction: column;
-  gap: 3vh;
-  padding: 3vh 3vw;
-  box-sizing: border-box;
-`;
 
 const PostView = () => {
-  let [post, setPost] = useState([]);
+  const level = useSelector((state) => state.post.level);
+  const curLayer = useSelector((state) => state.post.layer);
+
+  const [posts, setPosts] = useState([]);
   const [pageNo, setPageNo] = useState(1);
   const [isLoading, setIsLoading] = useState(false);
+  const [hasMore, setHasMore] = useState(true);
+
+  const selectUrl = ["/posts/getAllOnFilter", "/posts/getFollowOnFilter"];
+
+  const fetchPosts = useCallback(
+    async (isReset = false) => {
+      if (isLoading) return;
+
+      setIsLoading(true);
+
+      const currentPage = isReset ? 1 : pageNo;
+
+      try {
+        const url = selectUrl[curLayer] || selectUrl[0];
+
+        const response = await axiosInstance.get(url, {
+          params: {
+            pageNo: currentPage,
+            postLevel: level,
+          },
+          withCredentials: true,
+        });
+
+        console.log(
+          `페이지: ${currentPage}, 레벨: ${level}, 데이터수신:`,
+          response.data
+        );
+
+        const newContent = response.data.content;
+
+        if (newContent.length === 0) {
+          setHasMore(false);
+        }
+
+        if (isReset) {
+          setPosts(newContent);
+        } else {
+          setPosts((prev) => [...prev, ...newContent]);
+        }
+      } catch (e) {
+        console.error("에러 발생:", e);
+      } finally {
+        setIsLoading(false);
+      }
+    },
+    [curLayer, level, pageNo]
+  );
+
+  useEffect(() => {
+    setPageNo(1);
+    setHasMore(true);
+    fetchPosts(true);
+  }, [curLayer, level]);
+
+  useEffect(() => {
+    if (pageNo > 1) {
+      fetchPosts(false);
+    }
+  }, [pageNo]);
 
   const handleScroll = () => {
-    // window.scrollY : 현재 스크롤 된 위치
-    // window.innerHeight : 현재 보이는 화면 높이
-    // document.documentElement.scrollHeight : 전체 페이지 높이
     const scrollTop = window.scrollY;
     const clientHeight = window.innerHeight;
     const scrollHeight = document.documentElement.scrollHeight;
 
-    // 바닥 감지 로직
-    if (scrollTop + clientHeight >= scrollHeight - 50) {
-      if (!isLoading) {
-        setPageNo((prev) => prev + 1);
-      }
+    if (
+      scrollTop + clientHeight >= scrollHeight - 100 &&
+      !isLoading &&
+      hasMore
+    ) {
+      setPageNo((prev) => prev + 1);
     }
   };
 
   useEffect(() => {
-    // 윈도우에 이벤트 붙이기
     window.addEventListener("scroll", handleScroll);
-
-    // 청소하기
     return () => window.removeEventListener("scroll", handleScroll);
-  }, [isLoading]);
+  }, [isLoading, hasMore]); // isLoading이나 hasMore가 바뀔 때 리스너 갱신
 
-  const fetchPosts = async (pageNo) => {
-    if (isLoading) return;
-    setIsLoading(true);
-
-    try {
-      const response = await axios.get(
-        "http://localhost:9000/posts/getAllOffFilter",
-        {
-          params: { pageNo: pageNo },
-          withCredentials: true,
-        }
-      );
-
-      console.log("데이터 수신:", response.data);
-
-      setPost((prev) => [...prev, ...response.data.content]);
-    } catch (e) {
-      console.error("에러 발생:", e);
-    } finally {
-      setIsLoading(false);
-    }
-  };
-
-  useEffect(() => {
-    fetchPosts(pageNo);
-  }, [pageNo]);
   return (
     <Container>
-      {post.map((item, key) => (
+      {posts.map((item) => (
         <PostCard
-          key={key}
+          key={item.postId}
           username={item.createUserName}
-          profileImage="https://i.namu.wiki/i/TUPFV3G5bPhTqh4VvoRYnmkRxa3SoPGPUTzQZt-er6orxSIDgJi_CTbMAFBXyZWw6xJyTOLkbjmL6YpMhFkj-Q.webp"
-          postImage="https://i.namu.wiki/i/TUPFV3G5bPhTqh4VvoRYnmkRxa3SoPGPUTzQZt-er6orxSIDgJi_CTbMAFBXyZWw6xJyTOLkbjmL6YpMhFkj-Q.webp"
+          profileImage={
+            item.userProfileImage || "https://placeholder.com/user.png"
+          }
+          postImage={item.imageUrl || "https://placeholder.com/post.png"}
           caption={item.content}
           likes={item.likeCount}
           isLiked={false}
           onLike={(liked) => console.log("좋아요:", liked)}
           onComment={() => console.log("댓글 클릭")}
           onShare={() => console.log("공유 클릭")}
+          postId={item.postId}
         />
       ))}
     </Container>
