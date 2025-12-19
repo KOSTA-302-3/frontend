@@ -1,0 +1,24 @@
+.post-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 2px;
+}
+
+.post-item {
+  aspect-ratio: 2 / 3;
+  overflow: hidden;
+}
+
+.post-item img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.no-posts {
+    grid-column: 1 / -1;    /* grid 전체 폭 차지 */
+    text-align: center;
+    color: var(--color-text-gray);
+    padding: 2.8vw;
+    font-size: 4vw;
+}

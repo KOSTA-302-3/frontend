@@ -4,6 +4,7 @@ import AppButton from "../common/AppButton";
 import Badge from "../common/Badge";
 import UserStat from "./UserStat";
 import "./UserInfo.css";
+import ProfileButton from "./ProfileButton";
 
 function UserInfo({ user }) {
   return (
@@ -34,13 +35,13 @@ function UserInfo({ user }) {
       <div className={`actions ${user.isMe ? "me" : "other"}`}>
         {user.isMe ? 
           <>
-            <AppButton>프로필 편집</AppButton>
-            <AppButton>프로필 공유</AppButton>
+            <ProfileButton btnType="default">프로필 편집</ProfileButton>
+            <ProfileButton btnType="default">프로필 공유</ProfileButton>
           </>
           : 
           <>
-            <AppButton>팔로우</AppButton>
-            <AppButton>메시지 보내기</AppButton>
+            <ProfileButton btnType="point">팔로우</ProfileButton>
+            <ProfileButton btnType="default">메시지 보내기</ProfileButton>
           </>
         }
       </div>

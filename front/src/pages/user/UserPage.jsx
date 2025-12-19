@@ -26,12 +26,10 @@ function UserPage(props) {
     axiosInstance({
         url: `/api/user/${id}`,
         method: "get",
-        headers: {
-            Authorization: null,
-        },
     })
     .then((result) => {
         setUser(result.data);
+        console.log("user: ", user);
     })
     .catch((err) => {
         console.log(err);
