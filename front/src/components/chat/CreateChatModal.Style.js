@@ -67,7 +67,7 @@ export const Preview = styled.div`
   width: 56px;
   height: 56px;
   border-radius: 8px;
-  background: ${(p) => p.bg || "#374151"};
+  background: "#374151";
   display: flex;
   align-items: center;
   justify-content: center;
@@ -94,8 +94,8 @@ export const Button = styled.button`
   border-radius: 8px;
   border: none;
   cursor: pointer;
-  background: ${(p) => (p.primary ? "#111827" : "transparent")};
-  color: ${(p) => (p.primary ? "#fff" : "#cbd5e1")};
+  background: ${({ $primary }) => ($primary ? "#111827" : "transparent")};
+  color: ${({ $primary }) => ($primary ? "#fff" : "#cbd5e1")};
   border: 1px solid rgba(255, 255, 255, 0.04);
 `;
 

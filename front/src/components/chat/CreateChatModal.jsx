@@ -16,6 +16,9 @@ const {
   FileInputWrapper,
   FileInput,
   HelpText,
+  RadioGroup,
+  RadioLabel,
+  CheckboxLabel,
 } = S;
 
 export default function CreateChatModal({ onClose, onCreate }) {
@@ -85,9 +88,7 @@ export default function CreateChatModal({ onClose, onCreate }) {
           <Row>
             <Label>채팅방 표시 이미지 (선택)</Label>
             <FileInputRow>
-              <Preview bg="#374151">
-                {preview ? <img src={preview} alt="preview" /> : name ? name.charAt(0) : "이미지"}
-              </Preview>
+              <Preview>{preview ? <img src={preview} alt="preview" /> : name ? name.charAt(0) : "이미지"}</Preview>
               <FileInputWrapper>
                 <FileInput type="file" accept="image/*" onChange={handleFileChange} />
                 <HelpText>이미지를 선택하지 않으면 자동 색상/이니셜로 표시됩니다.</HelpText>
@@ -149,7 +150,7 @@ export default function CreateChatModal({ onClose, onCreate }) {
             <Button type="button" onClick={onClose}>
               취소
             </Button>
-            <Button primary type="submit">
+            <Button $primary type="submit">
               생성
             </Button>
           </Controls>
