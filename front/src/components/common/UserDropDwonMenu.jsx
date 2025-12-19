@@ -2,20 +2,46 @@ import React, { useState } from "react";
 import { DownOutlined } from "@ant-design/icons";
 import { Dropdown, Space, Modal } from "antd";
 import ContentRate from "../post/ContentRate";
+import { useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { setLevel, setLayer } from "../../store/slices/postSlice";
 
 const UserDropDwonMenu = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const [rate, setRate] = useState(1);
 
   const handleMenuClick = (e) => {
-    console.log("클릭된 키:", e.key);
+    let no = e.key;
 
-    if (e.key === "3") {
-      setIsModalOpen(true);
+    switch (Number(no)) {
+      case 0:
+        dispatch(setLayer(0));
+        navigate("/main");
+        break;
+
+      case 1:
+        dispatch(setLayer(1));
+        navigate("/main");
+        break;
+
+      case 2:
+        setIsModalOpen(true);
+        navigate("/main");
+        break;
+
+      case 3:
+        dispatch(setLevel(10));
+        navigate("/main");
+
+        break;
     }
   };
 
   const handleCancel = () => {
     setIsModalOpen(false);
+    dispatch(setLevel(rate));
   };
 
   const items = [
@@ -32,6 +58,10 @@ const UserDropDwonMenu = () => {
     },
     {
       label: "컨텐츠 레벨 필터",
+      key: "2",
+    },
+    {
+      label: "필터Off",
       key: "3",
     },
   ];
@@ -52,7 +82,7 @@ const UserDropDwonMenu = () => {
         footer={null}
         style={{ opacity: "95%" }}
       >
-        <ContentRate />
+        <ContentRate rateChange={setRate} />
       </Modal>
     </>
   );

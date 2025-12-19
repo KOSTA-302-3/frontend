@@ -43,7 +43,7 @@ export const HeaderIcon = styled.div`
   font-size: 3.5vh;
   color: #e6c0c7;
   cursor: pointer;
-  
+
   &:hover {
     color: #ffdaec;
   }

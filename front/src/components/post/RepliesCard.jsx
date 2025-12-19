@@ -5,7 +5,7 @@ import Badge from "../common/Badge";
 import LikeButton from "../common/LikeButton";
 import CommentButton from "../common/CommentButton";
 import ShareButton from "../common/ShareButton";
-import PostDetail from "../post/PostDetail";
+import PostDetail from "./RepliesView";
 import {
   ProfileImageWrapper,
   Card,
@@ -28,7 +28,7 @@ const RepliesCard = ({ profileImage, username, likes, caption }) => {
       <hr />
       <Content>
         <Caption>{caption}</Caption>
-        <LikesCount>좋아요 {likes}개</LikesCount>
+        <LikesCount> {likes}개</LikesCount>
       </Content>
     </Card>
   );

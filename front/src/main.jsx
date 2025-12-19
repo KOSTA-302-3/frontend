@@ -1,9 +1,9 @@
-import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
 import { Provider } from "react-redux";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import store from "./store/store";
 import "./index.css";
+import "./styles/theme.css";
 import App from "./App.jsx";
 import MainLayout from "./components/common/MainLayout";
 import AdminLayout from "./components/admin/AdminLayout";
@@ -12,12 +12,13 @@ import AdminDashboard from "./pages/admin/AdminDashboard";
 import UserManagement from "./pages/admin/UserManagement";
 import PostManagement from "./pages/admin/PostManagement";
 import ReportManagement from "./pages/admin/ReportManagement";
-import ChatPage from "./pages/chat/ChatPage";
 import ChatRoom from "./pages/chat/ChatRoom.jsx";
 import LoginForm from "./components/common/LoginForm";
 import PostView from "./pages/post/posts/PostView";
 import UserPage from "./pages/user/UserPage.jsx";
-import "./styles/theme.css";
+import { CookiesProvider } from "react-cookie";
+import CreatePost from "./components/post/CreatePost.jsx";
+import Chat from "./pages/chat/Chat.jsx";
 
 const router = createBrowserRouter([
   {
@@ -30,15 +31,21 @@ const router = createBrowserRouter([
         children: [
           { path: "user/:id", element: <UserPage /> },
           { path: "search", element: <SearchPage /> },
-          { path: "chat", element: <ChatPage /> },
+          { path: "chat", element: <Chat /> },
           { path: "chat/:chatroomId", element: <ChatRoom /> },
-          { path: "main", element: <PostView /> },
+          { path: "main", element: <PostView selectMenu={0} /> },
         ],
       },
 
       {
         path: "/login",
         element: <LoginForm />,
+        children: [],
+      },
+
+      {
+        path: "/test",
+        element: <CreatePost />,
         children: [],
       },
 
@@ -57,9 +64,8 @@ const router = createBrowserRouter([
 ]);
 
 createRoot(document.getElementById("root")).render(
-  <StrictMode>
-    <Provider store={store}>
-      <RouterProvider router={router} />
-    </Provider>
-  </StrictMode>
+  <Provider store={store}>
+    <CookiesProvider />
+    <RouterProvider router={router} />
+  </Provider>
 );

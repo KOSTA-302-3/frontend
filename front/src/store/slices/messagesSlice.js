@@ -18,14 +18,16 @@ const messagesSlice = createSlice({
       }
     },
     prependMessages(state, action) {
-      // older messages come as array oldest->newest
       const arr = action.payload;
-      arr.forEach((m) => {
+
+      // 뒤에서부터 넣어야 순서 유지됨
+      for (let i = arr.length - 1; i >= 0; i--) {
+        const m = arr[i];
         if (!state.byId[m.id]) {
           state.byId[m.id] = m;
           state.allIds.unshift(m.id);
         }
-      });
+      }
     },
     markRead(state, action) {
       const { messageId } = action.payload;
