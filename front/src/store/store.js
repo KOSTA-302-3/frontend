@@ -4,12 +4,14 @@ import messagesReducer from "./slices/messagesSlice";
 import chatMembersReducer from "./slices/chatMembersSlice";
 import chatroomReducer from "./slices/chatroomSlice";
 
+import postReducer from "./slices/postSlice";
 export const store = configureStore({
   reducer: {
     admin: adminReducer,
     messages: messagesReducer,
     chatMembers: chatMembersReducer,
     chatroom: chatroomReducer,
+    post: postReducer,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({

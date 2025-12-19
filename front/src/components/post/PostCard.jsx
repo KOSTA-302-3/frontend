@@ -5,7 +5,7 @@ import Badge from "../common/Badge";
 import LikeButton from "../common/LikeButton";
 import CommentButton from "../common/CommentButton";
 import ShareButton from "../common/ShareButton";
-import PostDetail from "../post/PostDetail";
+import RepliesView from "./RepliesView";
 
 import {
   Card,
@@ -29,6 +29,7 @@ const PostCard = ({
   badgeImageUrl,
   onLike,
   onShare,
+  postId,
 }) => {
   const [modalOpen, setModalOpen] = useState(false);
 
@@ -62,7 +63,11 @@ const PostCard = ({
       </Content>
 
       {modalOpen && (
-        <PostDetail open={modalOpen} onClose={() => setModalOpen(false)} />
+        <RepliesView
+          open={modalOpen}
+          onClose={() => setModalOpen(false)}
+          postId={postId}
+        />
       )}
     </Card>
   );

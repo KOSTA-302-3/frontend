@@ -1,4 +1,3 @@
-import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
 import { Provider } from "react-redux";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
@@ -15,6 +14,8 @@ import ReportManagement from "./pages/admin/ReportManagement";
 import ChatRoom from "./pages/chat/ChatRoom.jsx";
 import LoginForm from "./components/common/LoginForm";
 import PostView from "./pages/post/posts/PostView";
+import { CookiesProvider } from "react-cookie";
+import CreatePost from "./components/post/CreatePost.jsx";
 import Chat from "./pages/chat/Chat.jsx";
 
 const router = createBrowserRouter([
@@ -29,13 +30,19 @@ const router = createBrowserRouter([
           { path: "search", element: <SearchPage /> },
           { path: "chat", element: <Chat /> },
           { path: "chat/:chatroomId", element: <ChatRoom /> },
-          { path: "main", element: <PostView /> },
+          { path: "main", element: <PostView selectMenu={0} /> },
         ],
       },
 
       {
         path: "/login",
         element: <LoginForm />,
+        children: [],
+      },
+
+      {
+        path: "/test",
+        element: <CreatePost />,
         children: [],
       },
 
@@ -54,9 +61,8 @@ const router = createBrowserRouter([
 ]);
 
 createRoot(document.getElementById("root")).render(
-  <StrictMode>
-    <Provider store={store}>
-      <RouterProvider router={router} />
-    </Provider>
-  </StrictMode>
+  <Provider store={store}>
+    <CookiesProvider />
+    <RouterProvider router={router} />
+  </Provider>
 );
