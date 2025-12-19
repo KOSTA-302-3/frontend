@@ -1,77 +1,105 @@
-import PostCard from "../../../components/post/PostCard";
-import "../../../index.css";
-import { useEffect, useState } from "react";
+import React, { useEffect, useState, useCallback } from "react";
+import { useSelector } from "react-redux";
 import axiosInstance from "../../../api/axiosInstance";
 import { Container } from "./PostView.style";
-import { useSelector } from "react-redux";
+import PostCard from "../../../components/post/PostCard";
 
-const PostView = ({ selectMenu, page }) => {
-  let [post, setPost] = useState([]);
-  const [pageNo, setPageNo] = useState(1);
-  const [isLoading, setIsLoading] = useState(false);
-
-  const curLevel = useSelector((state) => state.post.level);
+const PostView = () => {
+  const level = useSelector((state) => state.post.level);
   const curLayer = useSelector((state) => state.post.layer);
 
-  console.log("level : " + curLevel);
-  console.log("cur : " + curLayer);
+  const [posts, setPosts] = useState([]);
+  const [pageNo, setPageNo] = useState(1);
+  const [isLoading, setIsLoading] = useState(false);
+  const [hasMore, setHasMore] = useState(true);
 
-  const selectUrl = ["/posts/getAllOffFilter", "getFollowPostsWithOffFilter"];
+  const selectUrl = ["/posts/getAllOnFilter", "/posts/getFollowOnFilter"];
 
-  console.log(selectUrl[curLayer]);
+  const fetchPosts = useCallback(
+    async (isReset = false) => {
+      if (isLoading) return;
+
+      setIsLoading(true);
+
+      const currentPage = isReset ? 1 : pageNo;
+
+      try {
+        const url = selectUrl[curLayer] || selectUrl[0];
+
+        const response = await axiosInstance.get(url, {
+          params: {
+            pageNo: currentPage,
+            postLevel: level,
+          },
+          withCredentials: true,
+        });
+
+        console.log(
+          `페이지: ${currentPage}, 레벨: ${level}, 데이터수신:`,
+          response.data
+        );
+
+        const newContent = response.data.content;
+
+        if (newContent.length === 0) {
+          setHasMore(false);
+        }
+
+        if (isReset) {
+          setPosts(newContent);
+        } else {
+          setPosts((prev) => [...prev, ...newContent]);
+        }
+      } catch (e) {
+        console.error("에러 발생:", e);
+      } finally {
+        setIsLoading(false);
+      }
+    },
+    [curLayer, level, pageNo]
+  );
+
+  useEffect(() => {
+    setPageNo(1);
+    setHasMore(true);
+    fetchPosts(true);
+  }, [curLayer, level]);
+
+  useEffect(() => {
+    if (pageNo > 1) {
+      fetchPosts(false);
+    }
+  }, [pageNo]);
 
   const handleScroll = () => {
     const scrollTop = window.scrollY;
     const clientHeight = window.innerHeight;
     const scrollHeight = document.documentElement.scrollHeight;
 
-    // 바닥 감지 로직
-    if (scrollTop + clientHeight >= scrollHeight - 50) {
-      if (!isLoading) {
-        setPageNo((prev) => prev + 1);
-      }
+    if (
+      scrollTop + clientHeight >= scrollHeight - 100 &&
+      !isLoading &&
+      hasMore
+    ) {
+      setPageNo((prev) => prev + 1);
     }
   };
 
   useEffect(() => {
-    // 윈도우에 이벤트 붙이기
     window.addEventListener("scroll", handleScroll);
-
-    // 청소하기
     return () => window.removeEventListener("scroll", handleScroll);
-  }, [isLoading]);
+  }, [isLoading, hasMore]); // isLoading이나 hasMore가 바뀔 때 리스너 갱신
 
-  const fetchPosts = async (pageNo) => {
-    if (isLoading) return;
-    setIsLoading(true);
-
-    try {
-      const response = await axiosInstance.get(selectUrl[selectMenu], {
-        params: { pageNo: pageNo },
-        withCredentials: true,
-      });
-
-      console.log("데이터 수신:", response.data);
-
-      setPost((prev) => [...prev, ...response.data.content]);
-    } catch (e) {
-      console.error("에러 발생:", e);
-    } finally {
-      setIsLoading(false);
-    }
-  };
-
-  useEffect(() => {
-    fetchPosts(pageNo);
-  }, [pageNo]);
   return (
     <Container>
-      {post.map((item, key) => (
+      {posts.map((item) => (
         <PostCard
-          key={key}
+          key={item.postId}
           username={item.createUserName}
-          profileImage="https://i.namu.wiki/i/TUPFV3G5bPhTqh4VvoRYnmkRxa3SoPGPUTzQZt-er6orxSIDgJi_CTbMAFBXyZWw6xJyTOLkbjmL6YpMhFkj-Q.webp"
-          postImage="https://amzn-s3-santa-bucket.s3.ap-northeast-2.amazonaws.com/test/7a22f08b-54e8-47bc-b5de-3e2a0934055e-%EC%A0%9C%EB%AA%A9%20%EC%97%86%EB%8A%94%20%EB%94%94%EC%9E%90%EC%9D%B8.png"
+          profileImage={
+            item.userProfileImage || "https://placeholder.com/user.png"
+          }
+          postImage={item.imageUrl || "https://placeholder.com/post.png"}
           caption={item.content}
           likes={item.likeCount}
           isLiked={false}

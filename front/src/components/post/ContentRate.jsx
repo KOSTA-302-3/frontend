@@ -1,15 +1,13 @@
 import React, { useState } from "react";
 import { Button, Col, InputNumber, Row, Slider, Space } from "antd";
 import { Rate } from "./ContentRate.style";
-import { setLevel } from "../../store/slices/postSlice";
-import { useDispatch } from "react-redux";
 
-const IntegerStep = () => {
+const IntegerStep = ({ rateChange }) => {
   const [inputValue, setInputValue] = useState(1);
-  const dispatch = useDispatch();
+
   const onChange = (newValue) => {
     setInputValue(newValue);
-    dispatch(setLevel(newValue));
+    rateChange(newValue);
   };
   return (
     <Row>
@@ -28,9 +26,9 @@ const IntegerStep = () => {
     </Row>
   );
 };
-const ContentRate = () => (
+const ContentRate = ({ rateChange }) => (
   <Space style={{ width: "100%" }} vertical>
-    <IntegerStep />
+    <IntegerStep rateChange={rateChange} />
   </Space>
 );
 export default ContentRate;

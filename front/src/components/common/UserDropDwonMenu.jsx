@@ -10,10 +10,10 @@ const UserDropDwonMenu = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  const [rate, setRate] = useState(1);
 
   const handleMenuClick = (e) => {
     let no = e.key;
-    console.log("클릭된 키:", no);
 
     switch (Number(no)) {
       case 0:
@@ -41,6 +41,7 @@ const UserDropDwonMenu = () => {
 
   const handleCancel = () => {
     setIsModalOpen(false);
+    dispatch(setLevel(rate));
   };
 
   const items = [
@@ -81,7 +82,7 @@ const UserDropDwonMenu = () => {
         footer={null}
         style={{ opacity: "95%" }}
       >
-        <ContentRate />
+        <ContentRate rateChange={setRate} />
       </Modal>
     </>
   );

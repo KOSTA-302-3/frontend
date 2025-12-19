@@ -15,6 +15,8 @@ import ChatPage from "./pages/chat/ChatPage";
 import ChatRoom from "./pages/chat/ChatRoom.jsx";
 import LoginForm from "./components/common/LoginForm";
 import PostView from "./pages/post/posts/PostView";
+import { CookiesProvider } from "react-cookie";
+import CreatePost from "./components/post/CreatePost.jsx";
 
 const router = createBrowserRouter([
   {
@@ -39,6 +41,12 @@ const router = createBrowserRouter([
       },
 
       {
+        path: "/test",
+        element: <CreatePost />,
+        children: [],
+      },
+
+      {
         path: "admin",
         element: <AdminLayout />,
         children: [
@@ -54,6 +62,7 @@ const router = createBrowserRouter([
 
 createRoot(document.getElementById("root")).render(
   <Provider store={store}>
+    <CookiesProvider />
     <RouterProvider router={router} />
   </Provider>
 );
