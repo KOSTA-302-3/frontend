@@ -95,8 +95,8 @@ export default function CreateChatModal({ onClose, onCreate }) {
             </FileInputRow>
           </Row>
 
-          <RowInline style={{ marginBottom: 12 }}>
-            <Row style={{ margin: 0 }}>
+          <RowInline>
+            <Row>
               <Label>공개 여부</Label>
               <RadioGroup>
                 <RadioLabel>
@@ -111,7 +111,7 @@ export default function CreateChatModal({ onClose, onCreate }) {
               </RadioGroup>
             </Row>
 
-            <Row style={{ margin: 0 }}>
+            <Row>
               <Label>비밀번호 설정</Label>
               <CheckboxLabel>
                 <input

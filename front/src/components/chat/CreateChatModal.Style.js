@@ -31,6 +31,7 @@ export const Row = styled.div`
   flex-direction: column;
   gap: 8px;
   margin-bottom: 12px;
+  margin: 0;
 `;
 
 export const Label = styled.label`
@@ -102,6 +103,7 @@ export const RowInline = styled.div`
   display: flex;
   gap: 12px;
   align-items: center;
+  margin-bottom: 12px;
 `;
 
 export const FileInputWrapper = styled.div`
