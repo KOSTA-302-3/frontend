@@ -103,3 +103,37 @@ export const RowInline = styled.div`
   gap: 12px;
   align-items: center;
 `;
+
+export const FileInputWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+`;
+
+export const FileInput = styled.input`
+  font-size: 14px;
+`;
+
+export const HelpText = styled.div`
+  font-size: 12px;
+  color: #9ca3af;
+  margin-top: 6px;
+`;
+
+export const RadioGroup = styled.div`
+  display: flex;
+  gap: 12px;
+`;
+
+export const RadioLabel = styled.label`
+  color: #cbd5e1;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+`;
+
+export const CheckboxLabel = styled.label`
+  color: #cbd5e1;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+`;

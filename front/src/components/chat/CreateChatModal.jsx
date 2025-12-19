@@ -1,7 +1,22 @@
 import React from "react";
 import * as S from "./CreateChatModal.Style.js";
-const { Overlay, Modal, Title, Row, FileInputRow, Preview, Controls, Button, Label, TextInput, TextArea, RowInline } =
-  S;
+const {
+  Overlay,
+  Modal,
+  Title,
+  Row,
+  FileInputRow,
+  Preview,
+  Controls,
+  Button,
+  Label,
+  TextInput,
+  TextArea,
+  RowInline,
+  FileInputWrapper,
+  FileInput,
+  HelpText,
+} = S;
 
 export default function CreateChatModal({ onClose, onCreate }) {
   const [name, setName] = React.useState("");
@@ -73,40 +88,39 @@ export default function CreateChatModal({ onClose, onCreate }) {
               <Preview bg="#374151">
                 {preview ? <img src={preview} alt="preview" /> : name ? name.charAt(0) : "이미지"}
               </Preview>
-              <div>
-                <input type="file" accept="image/*" onChange={handleFileChange} />
-                <div style={{ fontSize: 12, color: "#9ca3af", marginTop: 6 }}>
-                  이미지를 선택하지 않으면 자동 색상/이니셜로 표시됩니다.
-                </div>
-              </div>
+              <FileInputWrapper>
+                <FileInput type="file" accept="image/*" onChange={handleFileChange} />
+                <HelpText>이미지를 선택하지 않으면 자동 색상/이니셜로 표시됩니다.</HelpText>
+              </FileInputWrapper>
             </FileInputRow>
           </Row>
 
           <RowInline style={{ marginBottom: 12 }}>
             <Row style={{ margin: 0 }}>
               <Label>공개 여부</Label>
-              <div>
-                <label style={{ color: "#cbd5e1", marginRight: 12 }}>
-                  <input type="radio" name="pub" checked={isPublic} onChange={() => setIsPublic(true)} /> 공개
-                </label>
-                <label style={{ color: "#cbd5e1" }}>
-                  <input type="radio" name="pub" checked={!isPublic} onChange={() => setIsPublic(false)} /> 비공개
-                </label>
-              </div>
+              <RadioGroup>
+                <RadioLabel>
+                  <input type="radio" name="pub" checked={isPublic} onChange={() => setIsPublic(true)} />
+                  공개
+                </RadioLabel>
+
+                <RadioLabel>
+                  <input type="radio" name="pub" checked={!isPublic} onChange={() => setIsPublic(false)} />
+                  비공개
+                </RadioLabel>
+              </RadioGroup>
             </Row>
 
             <Row style={{ margin: 0 }}>
               <Label>비밀번호 설정</Label>
-              <div>
-                <label style={{ color: "#cbd5e1" }}>
-                  <input
-                    type="checkbox"
-                    checked={requirePassword}
-                    onChange={(e) => setRequirePassword(e.target.checked)}
-                  />{" "}
-                  비밀번호 사용
-                </label>
-              </div>
+              <CheckboxLabel>
+                <input
+                  type="checkbox"
+                  checked={requirePassword}
+                  onChange={(e) => setRequirePassword(e.target.checked)}
+                />
+                비밀번호 사용
+              </CheckboxLabel>
             </Row>
           </RowInline>
 
