@@ -32,8 +32,8 @@ export default function ChatRoom() {
   const [isUserDrawerOpen, setUserDrawerOpen] = useState(false);
 
   useEffect(() => {
-    dispatch(fetchChatInit());
-  }, [dispatch]);
+    dispatch(fetchChatInit(chatroomId));
+  }, [dispatch, chatroomId]);
 
   // ESC로 닫기
   useEffect(() => {
