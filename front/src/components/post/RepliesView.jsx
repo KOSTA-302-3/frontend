@@ -3,7 +3,7 @@ import InputReplies from "./InputReplies";
 import { ModalWrapper } from "./RepliesView.style";
 import { Button } from "antd";
 import RepliesCard from "./RepliesCard";
-import axios from "axios";
+import axiosInstance from "../../api/axiosInstance";
 
 const RepliesView = ({ open, onClose, postId }) => {
   let [replies, setReplies] = useState([]);
@@ -11,17 +11,13 @@ const RepliesView = ({ open, onClose, postId }) => {
 
   const fetchPosts = async (pageNo) => {
     try {
-      const response = await axios.get(
-        "http://localhost:9000/replies/getReplies",
-        {
-          params: {
-            pageNo: pageNo,
-            id: postId,
-          },
-
-          withCredentials: true,
-        }
-      );
+      const response = await axiosInstance.get("/replies/getReplies", {
+        params: {
+          pageNo: pageNo,
+          id: postId,
+        },
+        withCredentials: true,
+      });
 
       console.log("데이터 수신:", response.data);
       setReplies((prev) => [...prev, ...response.data.content]);

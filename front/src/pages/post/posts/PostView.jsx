@@ -1,33 +1,24 @@
-import axios from "axios";
-import styled from "styled-components";
 import PostCard from "../../../components/post/PostCard";
 import "../../../index.css";
 import { useEffect, useState } from "react";
+import axiosInstance from "../../../api/axiosInstance";
+import { Container } from "./PostView.style";
+import { useSelector } from "react-redux";
 
-// PostView.js 내부
-
-const Container = styled.div`
-  width: 100%;
-  height: auto;
-
-  -webkit-overflow-scrolling: touch;
-
-  display: flex;
-  flex-direction: column;
-  gap: 3vh;
-  padding: 3vh 3vw;
-  box-sizing: border-box;
-`;
-
-const PostView = ({ selectMenu, page, level }) => {
+const PostView = ({ selectMenu, page }) => {
   let [post, setPost] = useState([]);
   const [pageNo, setPageNo] = useState(1);
   const [isLoading, setIsLoading] = useState(false);
-  const [postLevel, setPostLevel] = useState(level);
 
-  console.log(postLevel);
+  const curLevel = useSelector((state) => state.post.level);
+  const curLayer = useSelector((state) => state.post.layer);
 
-  const selectUrl = ["http://localhost:9000/posts/getAllOffFilter"];
+  console.log("level : " + curLevel);
+  console.log("cur : " + curLayer);
+
+  const selectUrl = ["/posts/getAllOffFilter", "getFollowPostsWithOffFilter"];
+
+  console.log(selectUrl[curLayer]);
 
   const handleScroll = () => {
     const scrollTop = window.scrollY;
@@ -55,7 +46,7 @@ const PostView = ({ selectMenu, page, level }) => {
     setIsLoading(true);
 
     try {
-      const response = await axios.get(selectUrl[selectMenu], {
+      const response = await axiosInstance.get(selectUrl[selectMenu], {
         params: { pageNo: pageNo },
         withCredentials: true,
       });
@@ -70,13 +61,9 @@ const PostView = ({ selectMenu, page, level }) => {
     }
   };
 
-  useEffect(
-    () => {
-      fetchPosts(pageNo);
-    },
-    [pageNo],
-    [postLevel]
-  );
+  useEffect(() => {
+    fetchPosts(pageNo);
+  }, [pageNo]);
   return (
     <Container>
       {post.map((item, key) => (

@@ -2,21 +2,40 @@ import React, { useState } from "react";
 import { DownOutlined } from "@ant-design/icons";
 import { Dropdown, Space, Modal } from "antd";
 import ContentRate from "../post/ContentRate";
-import PostView from "../../pages/post/posts/PostView";
 import { useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { setLevel, setLayer } from "../../store/slices/postSlice";
 
 const UserDropDwonMenu = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   const handleMenuClick = (e) => {
-    console.log("클릭된 키:", e.key);
+    let no = e.key;
+    console.log("클릭된 키:", no);
 
-    if (e.key === "3") {
-      setIsModalOpen(true);
-    } else {
-      console.log(1111111);
-      navigate("/main", { state: { level: 10 } });
+    switch (Number(no)) {
+      case 0:
+        dispatch(setLayer(0));
+        navigate("/main");
+        break;
+
+      case 1:
+        dispatch(setLayer(1));
+        navigate("/main");
+        break;
+
+      case 2:
+        setIsModalOpen(true);
+        navigate("/main");
+        break;
+
+      case 3:
+        dispatch(setLevel(10));
+        navigate("/main");
+
+        break;
     }
   };
 
@@ -38,11 +57,11 @@ const UserDropDwonMenu = () => {
     },
     {
       label: "컨텐츠 레벨 필터",
-      key: "3",
+      key: "2",
     },
     {
       label: "필터Off",
-      key: "4",
+      key: "3",
     },
   ];
 

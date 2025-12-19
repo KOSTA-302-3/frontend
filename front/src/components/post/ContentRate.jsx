@@ -1,10 +1,15 @@
 import React, { useState } from "react";
 import { Button, Col, InputNumber, Row, Slider, Space } from "antd";
 import { Rate } from "./ContentRate.style";
+import { setLevel } from "../../store/slices/postSlice";
+import { useDispatch } from "react-redux";
+
 const IntegerStep = () => {
   const [inputValue, setInputValue] = useState(1);
+  const dispatch = useDispatch();
   const onChange = (newValue) => {
     setInputValue(newValue);
+    dispatch(setLevel(newValue));
   };
   return (
     <Row>
