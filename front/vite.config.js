@@ -9,7 +9,7 @@ export default defineConfig({
     proxy: {
       "/api": {
         // API 요청 경로 패턴
-        target: "http://localhost:9000",
+        target: "http://localhost:8080",
         changeOrigin: true,
       },
     },
