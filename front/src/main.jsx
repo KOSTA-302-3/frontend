@@ -17,6 +17,7 @@ import ChatRoom from "./pages/chat/ChatRoom.jsx";
 import LoginForm from "./components/common/LoginForm";
 import PostView from "./pages/post/posts/PostView";
 import UserPage from "./pages/user/UserPage.jsx";
+import "./styles/theme.css";
 
 const router = createBrowserRouter([
   {
