@@ -2,6 +2,7 @@ import { createAsyncThunk } from "@reduxjs/toolkit";
 import { setChatMembers } from "../slices/chatMembersSlice";
 import { setMessages, prependMessages } from "../slices/messagesSlice";
 import axiosInstance from "../../api/axiosInstance";
+import { setChatroom } from "../slices/chatroomSlice";
 
 /*
   채팅방 최초 진입 시 초기 데이터 로딩 thunk
@@ -67,16 +68,26 @@ export const loadOlderMessages = createAsyncThunk("chat/loadOlderMessages", asyn
   return true;
 });
 
-export const loadInitChatRooms = createAsyncThunk("chat/loadChatRooms", async (type, word, thunkAPI) => {
+export const loadChatRooms = createAsyncThunk("chat/loadChatRooms", async ({ page, type, word }, thunkAPI) => {
   const { dispatch } = thunkAPI;
 
-  axiosInstance
-    .get(`/api/chatroom?type=${type}&word=${word}`, {
+  try {
+    // 채팅방 목록 조회 API 호출
+    const response = await axiosInstance.get(`/api/chatroom?page=${page}&type=${type}&word=${word}`, {
       withCredentials: true,
-    })
-    .then((response) => {
-      console.log("loadInitChatRooms response:", response);
-    })
-    .catch();
-  return true;
+    });
+
+    // 실제 데이터 추출
+    const chatroomList = response.data.content;
+    console.log("Fetched chatroom list:", chatroomList);
+
+    // slice로 데이터 저장
+    dispatch(setChatroom(chatroomList));
+
+    // fulfilled payload (선택)
+    return chatroomList;
+  } catch (error) {
+    // rejected 상태로 에러 전달
+    return thunkAPI.rejectWithValue(error);
+  }
 });

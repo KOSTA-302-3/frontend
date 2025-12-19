@@ -9,7 +9,7 @@ export function connectChatSocket({ roomId, dispatch }) {
   const protocol = window.location.protocol === "https:" ? "wss" : "ws";
 
   // WebSocket 연결 생성
-  socket = new WebSocket(`${protocol}://example.com/chat/${roomId}`);
+  socket = new WebSocket(`${protocol}://192.168.0.19:8080/ws/chat/${roomId}`);
 
   // WebSocket 이벤트 핸들러 설정
   socket.onopen = () => {
@@ -18,7 +18,7 @@ export function connectChatSocket({ roomId, dispatch }) {
 
   socket.onmessage = (event) => {
     const msg = JSON.parse(event.data);
-
+    console.log("WS message received:", msg);
     // 서버에서 온 메시지를 Redux로 흘림
     dispatch(addMessage(msg));
   };
@@ -33,5 +33,17 @@ export function disconnectChatSocket() {
   if (socket) {
     socket.close();
     socket = null;
+  }
+}
+
+export function sendMessageViaSocket(message, type) {
+  if (socket && socket.readyState === WebSocket.OPEN) {
+    const payload = {
+      payload: message,
+      type: type,
+    };
+    socket.send(JSON.stringify(payload));
+  } else {
+    console.error("WebSocket is not connected.");
   }
 }
