@@ -5,7 +5,7 @@ import UserInfo from "../../components/user/UserInfo";
 import UserPostGrid from "../../components/user/UserPostGrid";
 import UserHeader from "../../components/user/UserHeader";
 
-function UserPage(props) {
+function UserPage() {
   const { id } = useParams(); // /user/:id
   const nav = useNavigate();
 
