@@ -3,6 +3,7 @@ import { Provider } from "react-redux";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import store from "./store/store";
 import "./index.css";
+import "./styles/theme.css";
 import App from "./App.jsx";
 import MainLayout from "./components/common/MainLayout";
 import AdminLayout from "./components/admin/AdminLayout";
@@ -14,6 +15,7 @@ import ReportManagement from "./pages/admin/ReportManagement";
 import ChatRoom from "./pages/chat/ChatRoom.jsx";
 import LoginForm from "./components/common/LoginForm";
 import PostView from "./pages/post/posts/PostView";
+import UserPage from "./pages/user/UserPage.jsx";
 import { CookiesProvider } from "react-cookie";
 import CreatePost from "./components/post/CreatePost.jsx";
 import Chat from "./pages/chat/Chat.jsx";
@@ -27,6 +29,7 @@ const router = createBrowserRouter([
         path: "/",
         element: <MainLayout />,
         children: [
+          { path: "user/:id", element: <UserPage /> },
           { path: "search", element: <SearchPage /> },
           { path: "chat", element: <Chat /> },
           { path: "chat/:chatroomId", element: <ChatRoom /> },

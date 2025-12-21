@@ -12,9 +12,9 @@ export default function MainLayout() {
       <Outlet />
       <BottomNav
         onHome={() => console.log("홈")}
-        onSearch={() => console.log("검색")}
+        onSearch={() => nav("/search")}
         onAdd={() => console.log("추가")}
-        onProfile={() => console.log("프로필")}
+        onProfile={() => nav("/user/1")}
         onSetting={() => console.log("설정")}
       />
     </Wrapper>
