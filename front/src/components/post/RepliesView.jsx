@@ -129,7 +129,7 @@ const RepliesView = ({ open, onClose, postId }) => {
           <RepliesCard
             key={`${item.replyId || key}`}
             profileImage={"aa"}
-            username={item.userId}
+            username={item.createUserName}
             caption={item.replyContent}
             likes={item.replyLike}
           />

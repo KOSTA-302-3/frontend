@@ -26,7 +26,7 @@ const PostCard = ({
   profileImage,
   postImage,
   caption,
-  likes = 0,
+  likes,
 
   badgeImageUrl,
 
@@ -36,6 +36,7 @@ const PostCard = ({
   const [modalOpen, setModalOpen] = useState(false);
   const [loading, setLoading] = useState(true);
   const [ckLike, setCkLike] = useState(false);
+  const [likeNo, setLikeNo] = useState(likes);
 
   const carouselStyle = {
     marginBottom: "20px",
@@ -68,7 +69,6 @@ const PostCard = ({
           }
         );
 
-        console.log(postId + " : " + response.data);
         setCkLike(response.data);
       } catch (e) {
         console.error(e);
@@ -81,7 +81,16 @@ const PostCard = ({
   }, []);
 
   const onLike = () => {
+    ckLike ? setLikeNo(likeNo - 1) : setLikeNo(likeNo + 1);
     setCkLike(!ckLike);
+
+    axiosInstance.post(
+      "posts/like",
+      { targetId: postId },
+      {
+        withCredentials: true,
+      }
+    );
   };
 
   return (
@@ -129,7 +138,7 @@ const PostCard = ({
       </Actions>
 
       <Content>
-        <LikesCount>좋아요 {likes}개</LikesCount>
+        <LikesCount>좋아요 {likeNo}개</LikesCount>
         <Caption>{caption}</Caption>
       </Content>
 
