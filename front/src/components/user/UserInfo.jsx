@@ -25,8 +25,8 @@ function UserInfo({ user }) {
           </h2>
           <div className="stats">
             <UserStat label="게시물" value={0} />
-            <UserStat label="팔로워" value={user.followerCount} />
-            <UserStat label="팔로잉" value={user.followingCount} />
+            <UserStat label="팔로워" value={user.followerCount} onClick={() => nav(`/user/${user.userId}/follow?tab=followers`)} />
+            <UserStat label="팔로잉" value={user.followingCount} onClick={() => nav(`/user/${user.userId}/follow?tab=followings`)} />
           </div>
         </div>
       </div>

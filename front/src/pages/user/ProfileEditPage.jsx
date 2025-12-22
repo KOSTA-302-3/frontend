@@ -23,7 +23,7 @@ function ProfileEditPage() {
 
       {/* 정보 목록 */}
       <div className="profile-edit-list">
-        <EditRow label="아이디" value="mmynzi" />
+        <EditRow label="아이디" value="아이디" />
         <EditRow label="소개" value="아직 소개가 없습니다" placeholder />
         <div className="edit-row level-row last-row">
           <span className="edit-label">레벨</span>
