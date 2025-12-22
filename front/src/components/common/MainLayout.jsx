@@ -8,7 +8,7 @@ export default function MainLayout() {
 
   return (
     <Wrapper>
-      <TopNav title="SANTA" onNotification={() => console.log("알림")} onMessage={() => nav("/chat")} />
+      <TopNav title="SANTA" onNotification={() => nav("/notifications")} onMessage={() => nav("/chat")} />
       <Outlet />
       <BottomNav
         onHome={() => console.log("홈")}
