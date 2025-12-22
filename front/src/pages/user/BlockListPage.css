@@ -1,13 +1,13 @@
 .user-row {
   display: flex;
   justify-content: space-between;
-  padding: 12px 0;
+  padding: 3.5vw 0;
   border-bottom: 1px solid #eee;
 }
 
 .unblock-btn {
   border: none;
   background: none;
-  color: #0095f6;
+  color: var(--color-point-deep);
   font-weight: 600;
 }
