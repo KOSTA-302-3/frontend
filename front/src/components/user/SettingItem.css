@@ -1,0 +1,28 @@
+.setting-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 14px 0;
+  /* border-bottom: 1px solid #eeeeee38; */
+  cursor: pointer;
+}
+
+.setting-item.toggle {
+  cursor: default;
+}
+
+.setting-title {
+  font-size: 15px;
+  font-weight: 500;
+}
+
+.setting-desc {
+  font-size: 12px;
+  color: #888;
+  margin-top: 4px;
+}
+
+.arrow {
+  font-size: 18px;
+  color: #bbb;
+}
