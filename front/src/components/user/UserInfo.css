@@ -1,0 +1,63 @@
+.profile {
+    padding: 2vh 2vw;   /* 페이지 좌우 여백 */
+    color: #ffffff; /* 텍스트 기본 색상 -> 나중에 변수화? */
+}
+
+.profile-row {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: 4vw;
+    align-items: center;
+}
+
+.profile-left {
+    width: 18vw;
+    height: 18vw;
+}
+
+.profile-right {
+    display: flex;
+    flex-direction: column; /* 세로 의도 + gap을 위함 */
+    gap: 1.2vh;
+}
+
+.profile-right h2 {
+    display: flex;
+    align-items: center;
+    gap: 0.6vw;
+    font-size: 5.0vw;
+    font-weight: 600;
+    margin: 0;
+}
+
+.stats {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    margin: 0vh 0;
+}
+
+.description {
+    margin: 1.5vh 0;
+    font-size: 3.5vw;
+    line-height: 1.4;
+    color: #e0e0e0;
+}
+
+.profile > button {
+    width: 100%;
+}
+
+/* 상호작용 버튼 */
+.actions {
+    display: grid;
+    gap: 1.2vh;
+    margin-top: 1.8vh;
+}
+
+.actions.me {
+    grid-template-columns: repeat(3, 1fr);
+}
+
+.actions.other {
+    grid-template-columns: repeat(2, 1fr);
+}

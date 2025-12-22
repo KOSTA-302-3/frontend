@@ -1,0 +1,15 @@
+:root {
+  /* Point Color */
+  --color-point: #e6c0c7;
+  --color-point-deep: #c89aa3;
+  --color-point-hover: #ffdaec;
+
+  /* Gray Button */
+  --color-btn-gray: #46404a;
+  --color-btn-gray-hover: #57505c;
+
+  /* Text */
+  --color-text-white: #ffffff;
+  --color-text-black: #000000;
+  --color-text-gray: #acacac;
+}
