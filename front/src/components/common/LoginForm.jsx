@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import { LockOutlined, UserOutlined } from "@ant-design/icons";
 import { Checkbox, Flex, Form } from "antd"; // ConfigProvider 제거됨
-import axios from "axios";
 import { useNavigate } from "react-router-dom";
 
 // 스타일 파일 import
@@ -12,6 +11,7 @@ import {
   StyledButton,
   StyledInput,
 } from "./LoginForm.style";
+import axiosInstance from "../../api/axiosInstance";
 
 const LoginForm = () => {
   const navigate = useNavigate();
@@ -26,8 +26,8 @@ const LoginForm = () => {
 
     console.log("전송 데이터:", username, password);
 
-    axios
-      .post("http://localhost:9000/login", formData, {
+    axiosInstance
+      .post("/login", formData, {
         withCredentials: true,
       })
       .then((response) => {

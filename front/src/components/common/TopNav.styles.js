@@ -3,6 +3,7 @@ import { LeftOutlined } from "@ant-design/icons";
 
 export const Wrapper = styled.div`
   position: fixed;
+  /* position: sticky; */
   top: 0;
   left: 0;
   width: 100%;
@@ -42,7 +43,7 @@ export const HeaderIcon = styled.div`
   font-size: 3.5vh;
   color: #e6c0c7;
   cursor: pointer;
-  
+
   &:hover {
     color: #ffdaec;
   }
