@@ -99,11 +99,12 @@ const PostView = () => {
           profileImage={
             item.userProfileImage || "https://placeholder.com/user.png"
           }
-          postImage={item.imageUrl || "https://placeholder.com/post.png"}
+          postImage={
+            item.imageSourcesList || "https://placeholder.com/post.png"
+          }
           caption={item.content}
           likes={item.likeCount}
           isLiked={false}
-          onLike={(liked) => console.log("좋아요:", liked)}
           onComment={() => console.log("댓글 클릭")}
           onShare={() => console.log("공유 클릭")}
           postId={item.postId}
