@@ -18,6 +18,9 @@ import PostView from "./pages/post/posts/PostView";
 import UserPage from "./pages/user/UserPage.jsx";
 import { CookiesProvider } from "react-cookie";
 import CreatePost from "./components/post/CreatePost.jsx";
+import ImageUpload from "./components/post/ImageUpload.jsx";
+import PostWrite from "./components/post/PostWrite.jsx";
+import DevTest from "./components/post/DevTest.jsx";
 import Chat from "./pages/chat/Chat.jsx";
 
 const router = createBrowserRouter([
@@ -45,7 +48,17 @@ const router = createBrowserRouter([
 
       {
         path: "/test",
-        element: <CreatePost />,
+        element: <DevTest />,
+        children: [],
+      },
+      {
+        path: "/write",
+        element: <PostWrite />,
+        children: [],
+      },
+      {
+        path: "/posts",
+        element: <ImageUpload />,
         children: [],
       },
 
