@@ -25,7 +25,9 @@ jobs:
           cache-dependency-path: front/package-lock.json
 
       - name: Install dependencies
-        run: npm install
+        run: |
+          npm ci
+          npm install @rollup/rollup-linux-x64-gnu
 
       - name: Create .env file
         run: |
