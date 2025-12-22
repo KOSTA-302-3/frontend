@@ -8,7 +8,7 @@ export default function ChatHeader({ view, setView, onCreate }) {
   return (
     <HeaderWrap>
       <LeftGroup>
-        <ToggleButton $active={view === "mine"} onClick={() => setView("mine")}>
+        <ToggleButton $active={view === "me"} onClick={() => setView("me")}>
           내 채팅방
         </ToggleButton>
         <ToggleButton $active={view === "all"} onClick={() => setView("all")}>
