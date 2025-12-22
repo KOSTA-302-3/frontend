@@ -22,6 +22,9 @@ import ImageUpload from "./components/post/ImageUpload.jsx";
 import PostWrite from "./components/post/PostWrite.jsx";
 import DevTest from "./components/post/DevTest.jsx";
 import Chat from "./pages/chat/Chat.jsx";
+import SettingsPage from "./pages/user/SettingsPage.jsx";
+import ProfileEditPage from "./pages/user/ProfileEditPage.jsx";
+import BlockListPage from "./pages/user/BlockListPage.jsx";
 
 const router = createBrowserRouter([
   {
@@ -32,11 +35,15 @@ const router = createBrowserRouter([
         path: "/",
         element: <MainLayout />,
         children: [
+          { path: "mypage", element: <UserPage /> },
           { path: "user/:id", element: <UserPage /> },
           { path: "search", element: <SearchPage /> },
           { path: "chat", element: <Chat /> },
           { path: "chat/:chatroomId", element: <ChatRoom /> },
           { path: "main", element: <PostView selectMenu={0} /> },
+          { path: "settings", element: <SettingsPage /> },
+          { path: "settings/profile", element: <ProfileEditPage /> },
+          { path: "settings/blocks", element: <BlockListPage /> },
         ],
       },
 

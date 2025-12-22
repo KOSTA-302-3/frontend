@@ -5,8 +5,11 @@ import Badge from "../common/Badge";
 import UserStat from "./UserStat";
 import "./UserInfo.css";
 import ProfileButton from "./ProfileButton";
+import { useNavigate } from "react-router-dom";
 
 function UserInfo({ user }) {
+  const nav = useNavigate();
+
   return (
     <div className="profile">
       <div className="profile-row">
@@ -35,7 +38,7 @@ function UserInfo({ user }) {
       <div className={`actions ${user.isMe ? "me" : "other"}`}>
         {user.isMe ? 
           <>
-            <ProfileButton btnType="default">프로필 편집</ProfileButton>
+            <ProfileButton btnType="default" onClick={() => nav("/settings/profile")}>프로필 편집</ProfileButton>
             <ProfileButton btnType="default">프로필 공유</ProfileButton>
           </>
           : 
