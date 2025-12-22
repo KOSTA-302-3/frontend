@@ -16,12 +16,12 @@ import ChatRoom from "./pages/chat/ChatRoom.jsx";
 import LoginForm from "./components/common/LoginForm";
 import PostView from "./pages/post/posts/PostView";
 import UserPage from "./pages/user/UserPage.jsx";
-import { CookiesProvider } from "react-cookie";
 import CreatePost from "./components/post/CreatePost.jsx";
 import ImageUpload from "./components/post/ImageUpload.jsx";
 import PostWrite from "./components/post/PostWrite.jsx";
 import DevTest from "./components/post/DevTest.jsx";
 import Chat from "./pages/chat/Chat.jsx";
+import Notification from "./pages/common/Notification.jsx";
 
 const router = createBrowserRouter([
   {
@@ -37,6 +37,7 @@ const router = createBrowserRouter([
           { path: "chat", element: <Chat /> },
           { path: "chat/:chatroomId", element: <ChatRoom /> },
           { path: "main", element: <PostView selectMenu={0} /> },
+          { path: "notifications", element: <Notification /> },
         ],
       },
 
@@ -78,7 +79,6 @@ const router = createBrowserRouter([
 
 createRoot(document.getElementById("root")).render(
   <Provider store={store}>
-    <CookiesProvider />
     <RouterProvider router={router} />
   </Provider>
 );
