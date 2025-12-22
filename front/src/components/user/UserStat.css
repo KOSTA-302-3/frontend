@@ -1,0 +1,17 @@
+.stat-item {
+    text-align: left;
+    padding: 1.2vh 0;
+}
+
+.stat-value {
+    font-weight: 600;
+    font-size: 4.0vw;
+    line-height: 1.2;
+    color: #ffffff;
+}
+
+.stat-label {
+    margin-top: 0.4vh;
+    font-size: 3.0vw;
+    color: #a8a8a8;
+}
