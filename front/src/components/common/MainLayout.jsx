@@ -8,18 +8,14 @@ export default function MainLayout() {
 
   return (
     <Wrapper>
-      <TopNav
-        title="SANTA"
-        onNotification={() => console.log("알림")}
-        onMessage={() => nav("/chat")}
-      />
+      <TopNav title="SANTA" onNotification={() => nav("/notifications")} onMessage={() => nav("/chat")} />
       <Outlet />
       <BottomNav
         onHome={() => console.log("홈")}
-        onSearch={() => console.log("검색")}
+        onSearch={() => nav("/search")}
         onAdd={() => nav("posts")}
-        onProfile={() => console.log("프로필")}
-        onSetting={() => console.log("설정")}
+        onProfile={() => nav("/mypage")}
+        onSetting={() => nav("/settings")}
       />
     </Wrapper>
   );
