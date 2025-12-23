@@ -44,7 +44,7 @@ const PostDropDownMenu = ({
       case 2:
         if (confirm("삭제 하시겟습니까?")) {
           try {
-            axiosInstance.delete("/posts/deletePosts", {
+            axiosInstance.delete("/api/posts/deletePosts", {
               data: {
                 postId: postId,
                 createUserName: "string",

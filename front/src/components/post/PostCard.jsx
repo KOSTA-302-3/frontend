@@ -61,7 +61,7 @@ const PostCard = ({
     const fetchData = async () => {
       try {
         const response = await axiosInstance.get(
-          "/posts/ckLike",
+          "/api/posts/ckLike",
 
           {
             params: {

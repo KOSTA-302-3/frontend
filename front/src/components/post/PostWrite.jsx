@@ -31,7 +31,7 @@ const PostWrite = () => {
     if (method == 1) {
       try {
         await axiosInstance.put(
-          "/posts/updatePosts",
+          "/api/posts/updatePosts",
           {
             createAt: new Date(),
             content: content,
@@ -54,7 +54,7 @@ const PostWrite = () => {
     } else {
       try {
         await axiosInstance.post(
-          "/posts/createPosts",
+          "/api/posts/createPosts",
           {
             createAt: new Date(),
             content: content,

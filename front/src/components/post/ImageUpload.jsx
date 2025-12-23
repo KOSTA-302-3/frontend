@@ -106,10 +106,14 @@ const ImageUpload = () => {
         formData.append("files", file);
       });
 
-      const response = await axiosInstance.post("posts/imageUpload", formData, {
-        headers: { "Content-Type": "multipart/form-data" },
-        withCredentials: true,
-      });
+      const response = await axiosInstance.post(
+        "/api/posts/imageUpload",
+        formData,
+        {
+          headers: { "Content-Type": "multipart/form-data" },
+          withCredentials: true,
+        }
+      );
 
       const uploadedImageUrls = response.data;
 
