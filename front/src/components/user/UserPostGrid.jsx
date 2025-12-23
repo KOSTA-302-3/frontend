@@ -19,7 +19,7 @@ function UserPostGrid({ userId }) {
         },
     })
     .then((result) => {
-        console.log("posts", result.data.content);
+        //console.log("posts", result.data.content);
         setPosts(result.data.content);
     })
     .catch((err) => {

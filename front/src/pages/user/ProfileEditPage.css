@@ -1,0 +1,73 @@
+.profile-edit-page {
+  min-height: 100vh;
+}
+
+.back-btn {
+  font-size: 6.4vw;
+  background: none;
+  border: none;
+  margin-right: 3.0vw;
+  cursor: pointer;
+}
+
+.edit-header h2 {
+  font-size: 4.8vw;
+  font-weight: 600;
+}
+
+/* 프로필 이미지 */
+.profile-image-section {
+  text-align: center;
+  padding: 6.4vw 0;
+}
+
+.profile-image {
+  width: 25.0vw;
+  height: 25.0vw;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.edit-photo-btn {
+  margin-top: 12px;
+  background: none;
+  border: none;
+  color: var(--color-point-deep);
+  font-weight: 600;
+  cursor: pointer;
+}
+
+/* 목록 */
+.profile-edit-list {
+  padding: 0 4.3vw;
+}
+
+.edit-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 3.7vw 0;
+  border-bottom: 1px solid #eeeeee20;
+}
+
+.last-row {
+    border-bottom: 0;
+}
+
+.edit-label {
+  font-size: 4vw;
+  color: var(--color-text-white);
+}
+
+.edit-value {
+  font-size: 4vw;
+  color: #333;
+}
+
+.edit-value.placeholder {
+  color: #aaa;
+}
+
+.edit-value.readonly {
+  color: #666;
+}

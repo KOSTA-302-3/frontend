@@ -1,0 +1,28 @@
+.setting-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 3.7vw 0;
+  /* border-bottom: 1px solid #eeeeee38; */
+  cursor: pointer;
+}
+
+.setting-item.toggle {
+  cursor: default;
+}
+
+.setting-title {
+  font-size: 4vw;
+  font-weight: 500;
+}
+
+.setting-desc {
+  font-size: 3.2vw;
+  color: #888;
+  margin-top: 4px;
+}
+
+.arrow {
+  font-size: 4.8vw;
+  color: #bbb;
+}
