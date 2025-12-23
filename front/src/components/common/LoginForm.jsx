@@ -28,7 +28,7 @@ const LoginForm = () => {
     console.log("전송 데이터(JSON):", requestData);
     
     axiosInstance
-      .post("api/login", requestData)
+      .post("/login", requestData)
       .then((response) => {
         console.log("로그인 성공:", response);
         navigate("/main");
