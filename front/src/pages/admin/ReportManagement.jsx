@@ -1,68 +1,156 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import AppButton from "../../components/common/AppButton";
+import { getAdminReports, approveReport, rejectReport } from "../../api/adminApi";
 import { 
-  Container, 
-  Title, 
+  Container,
+  Header,
+  Title,
+  TypeSelect,
   Table, 
   TableHeader, 
   TableRow, 
-  StatusBadge, 
   ActionButtons, 
-  ButtonWrapper 
+  ButtonWrapper,
+  LoadingMessage,
+  PaginationWrapper,
+  PaginationButton,
+  PageInfo
 } from "./ReportManagement.styles";
 
 const ReportManagement = () => {
-  const [reports] = useState([
-    { id: 1, reporter: "user1", target: "santa_user", reason: "부적절한 콘텐츠", date: "2024-12-05", status: "pending" },
-    { id: 2, reporter: "user2", target: "test_user", reason: "스팸", date: "2024-12-04", status: "pending" },
-    { id: 3, reporter: "user3", target: "user123", reason: "욕설", date: "2024-12-03", status: "approved" },
-  ]);
+  const [reports, setReports] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const [currentPage, setCurrentPage] = useState(0);
+  const [totalPages, setTotalPages] = useState(0);
+  const [reportType, setReportType] = useState("USER"); // USER, POST, REPLY
 
-  const handleApprove = (reportId) => {
-    console.log("승인:", reportId);
+  // 신고 목록 불러오기
+  const fetchReports = async (type = "USER", page = 0) => {
+    try {
+      setLoading(true);
+      const response = await getAdminReports(type, page);
+      console.log("신고 목록 응답:", response);
+      setReports(response.content || []);
+      setTotalPages(response.totalPages || 0);
+      setCurrentPage(page);
+      setReportType(type);
+    } catch (error) {
+      console.error("신고 목록 조회 실패:", error);
+      alert(`신고 목록을 불러오는데 실패했습니다.\n에러: ${error.response?.status || error.message}`);
+      setReports([]);
+    } finally {
+      setLoading(false);
+    }
   };
 
-  const handleReject = (reportId) => {
-    console.log("거절:", reportId);
+  useEffect(() => {
+    fetchReports("USER", 0);
+  }, []);
+
+  const handleApprove = async (reportId) => {
+    const days = prompt("정지 기간을 선택하세요:\n7 = 7일\n30 = 30일\n365 = 1년\n-1 = 영구", "7");
+    if (days === null) return;
+    
+    const daysNum = parseInt(days);
+    if (![7, 30, 365, -1].includes(daysNum)) {
+      alert("7, 30, 365, -1 중 하나를 입력하세요.");
+      return;
+    }
+    
+    if (!confirm(`이 신고를 승인하고 유저를 ${daysNum === -1 ? '영구' : daysNum + '일'} 정지시키겠습니까?`)) return;
+    
+    try {
+      await approveReport(reportId, daysNum);
+      alert("신고가 승인되었고 유저가 정지되었습니다.");
+      fetchReports(reportType, currentPage);
+    } catch (error) {
+      console.error("신고 승인 실패:", error);
+      alert("신고 승인에 실패했습니다.");
+    }
+  };
+
+  const handleReject = async (reportId) => {
+    if (!confirm("이 신고를 거절하시겠습니까? (신고만 삭제됩니다)")) return;
+    
+    try {
+      await rejectReport(reportId);
+      alert("신고가 거절되었습니다.");
+      fetchReports(reportType, currentPage);
+    } catch (error) {
+      console.error("신고 거절 실패:", error);
+      alert("신고 거절에 실패했습니다.");
+    }
   };
 
   return (
     <Container>
-      <Title>신고 관리</Title>
+      <Header>
+        <Title>신고 관리</Title>
+        <TypeSelect
+          value={reportType}
+          onChange={(e) => fetchReports(e.target.value, 0)}
+        >
+          <option value="USER">유저 신고</option>
+          <option value="POST">게시물 신고</option>
+          <option value="REPLY">댓글 신고</option>
+        </TypeSelect>
+      </Header>
 
-      <Table>
-        <TableHeader>
-          <div>신고자</div>
-          <div>대상</div>
-          <div>사유</div>
-          <div>상태</div>
-          <div>관리</div>
-        </TableHeader>
-        {reports.map(report => (
-          <TableRow key={report.id}>
-            <div>{report.reporter}</div>
-            <div>{report.target}</div>
-            <div>{report.reason}</div>
-            <div>
-              <StatusBadge $status={report.status}>
-                {report.status === "pending" ? "대기중" : report.status === "approved" ? "승인됨" : "거절됨"}
-              </StatusBadge>
-            </div>
-            <ActionButtons>
-              {report.status === "pending" && (
-                <>
+      {loading ? (
+        <LoadingMessage>로딩 중...</LoadingMessage>
+      ) : (
+        <>
+          <Table>
+            <TableHeader>
+              <div>신고자</div>
+              <div>대상</div>
+              <div>정지 이력</div>
+              <div>사유</div>
+              <div>신고일시</div>
+              <div>관리</div>
+            </TableHeader>
+            {reports.map(report => (
+              <TableRow key={report.reportId}>
+                <div>{report.username}</div>
+                <div>{report.targetUsername}</div>
+                <div style={{ color: report.banCount > 0 ? 'red' : 'inherit', fontWeight: report.banCount > 0 ? 'bold' : 'normal' }}>
+                  {report.banCount > 0 ? `${report.banCount}회` : '없음'}
+                </div>
+                <div>{report.content || "사유 없음"}</div>
+                <div>{new Date(report.createdAt).toLocaleDateString()}</div>
+                <ActionButtons>
                   <ButtonWrapper>
-                    <AppButton onClick={() => handleApprove(report.id)}>승인</AppButton>
+                    <AppButton onClick={() => handleApprove(report.reportId)}>승인</AppButton>
                   </ButtonWrapper>
                   <ButtonWrapper>
-                    <AppButton onClick={() => handleReject(report.id)}>거절</AppButton>
+                    <AppButton onClick={() => handleReject(report.reportId)}>거절</AppButton>
                   </ButtonWrapper>
-                </>
-              )}
-            </ActionButtons>
-          </TableRow>
-        ))}
-      </Table>
+                </ActionButtons>
+              </TableRow>
+            ))}
+          </Table>
+
+          {totalPages > 1 && (
+            <PaginationWrapper>
+              <PaginationButton
+                onClick={() => fetchReports(reportType, currentPage - 1)} 
+                disabled={currentPage === 0}
+              >
+                이전
+              </PaginationButton>
+              <PageInfo>
+                {currentPage + 1} / {totalPages}
+              </PageInfo>
+              <PaginationButton
+                onClick={() => fetchReports(reportType, currentPage + 1)} 
+                disabled={currentPage >= totalPages - 1}
+              >
+                다음
+              </PaginationButton>
+            </PaginationWrapper>
+          )}
+        </>
+      )}
     </Container>
   );
 };
