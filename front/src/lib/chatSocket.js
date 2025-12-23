@@ -1,4 +1,5 @@
 import { addMessage } from "../store/slices/messagesSlice";
+const chatIp = import.meta.env.VITE_WS_CHAT_IP || "";
 
 let socket = null;
 
@@ -9,7 +10,7 @@ export function connectChatSocket({ roomId, dispatch }) {
   const protocol = window.location.protocol === "https:" ? "wss" : "ws";
 
   // WebSocket 연결 생성
-  socket = new WebSocket(`${protocol}://192.168.0.19:8080/ws/chat/${roomId}`);
+  socket = new WebSocket(`${protocol}${chatIp}${roomId}`);
 
   // WebSocket 이벤트 핸들러 설정
   socket.onopen = () => {
