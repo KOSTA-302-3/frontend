@@ -83,7 +83,7 @@ const LoginForm = () => {
             Log in
           </StyledButton>
           <div className="signup-link">
-            <a>회원가입</a>
+            <a onClick={() => navigate("/signup")}>회원가입</a>
           </div>
         </Form.Item>
       </StyledForm>

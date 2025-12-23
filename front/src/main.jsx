@@ -26,6 +26,7 @@ import ProfileEditPage from "./pages/user/ProfileEditPage.jsx";
 import BlockListPage from "./pages/user/BlockListPage.jsx";
 import FollowListPage from "./pages/user/FollowListPage.jsx";
 import Notification from "./pages/common/Notification.jsx";
+import SignUp from "./pages/common/SignUp.jsx";
 
 const router = createBrowserRouter([
   {
@@ -55,7 +56,11 @@ const router = createBrowserRouter([
         element: <LoginForm />,
         children: [],
       },
-
+      {
+        path: "/signup",
+        element: <SignUp />,
+        children: [],
+      },
       {
         path: "/test",
         element: <DevTest />,
