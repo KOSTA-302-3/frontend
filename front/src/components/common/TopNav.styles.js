@@ -39,10 +39,14 @@ export const IconGroup = styled.div`
   align-items: center;
 `;
 
-export const HeaderIcon = styled.div`
+export const HeaderIcon = styled.span`
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
   font-size: 3.5vh;
   color: #e6c0c7;
   cursor: pointer;
+  line-height: 1;
 
   &:hover {
     color: #ffdaec;

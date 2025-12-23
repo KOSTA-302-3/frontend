@@ -25,19 +25,18 @@ function UserPage() {
 
   useEffect(() => {
     axiosInstance({
-      url: `/api/user/${id}`,
-      method: "get",
+        url: id ? `/api/user/${id}` : `/api/user/me`,
+        method: "get",
     })
       .then((result) => {
         setUser(result.data);
-        console.log("user: ", user);
-      })
-      .catch((err) => {
-        console.log(err);
-
-        if (err.response?.status === 403) {
-          alert("로그인 후 이용해주세요.");
-          nav("/login");
+        //console.log("user: ", user);
+    })
+    .catch((err) => {
+        //console.log(err);
+        if (err.response?.status === 401 || err.response?.status === 403) {
+            alert("로그인 후 이용해주세요.");
+            nav("/login");
         } else {
           alert("유저 정보를 불러오지 못했습니다.");
         }

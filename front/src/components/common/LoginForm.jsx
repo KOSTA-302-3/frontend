@@ -23,11 +23,9 @@ const LoginForm = () => {
     const formData = new FormData();
     formData.append("username", username);
     formData.append("password", password);
-
     console.log("전송 데이터:", username, password);
-
     axiosInstance
-      .post("/login", formData, {
+      .post("/api/login", formData, {
         withCredentials: true,
       })
       .then((response) => {

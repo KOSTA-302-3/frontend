@@ -1,6 +1,6 @@
 import React from "react";
 import ChatRoomItem from "./ChatRoomItem";
-import * as S from "./ChatroomList.Style.js";
+import * as S from "./ChatRoomList.Style.js";
 const { ListWrap, ListInner, Loading } = S;
 
 export default function ChatRoomList({ rooms = [] }) {

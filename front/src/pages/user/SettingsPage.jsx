@@ -1,0 +1,73 @@
+import { Outlet, useNavigate } from "react-router-dom";
+import "./SettingsPage.css";
+import { useState } from "react";
+import SettingItem from "../../components/user/SettingItem";
+import SettingToggle from "../../components/user/SettingToggle";
+
+function SettingsPage() {
+  const nav = useNavigate();
+  const [isPrivate, setPrivate] = useState();
+
+  const togglePrivate = () => {
+    setPrivate((prev) => !prev);
+    // TODO: axios PUT /api/users/privacy
+  };
+
+  const withdraw = () => {
+    //if (window.confirm("정말 탈퇴하시겠어요? 되돌릴 수 없습니다.")) {
+      // TODO: axios DELETE /api/user/softdelete
+    //}
+  };
+
+  return (
+    <div className="settings-page">
+      {/* <h2 className="settings-title">설정</h2> */}
+      
+      {/* 계정 */}
+      <div className="settings-section">
+        <div className="section-title">계정</div>
+
+        <SettingItem
+          title="프로필 수정"
+          onClick={() => nav("/settings/profile")}
+        />
+
+        <SettingToggle
+          title="비공개 계정"
+          desc="승인된 팔로워만 게시물을 볼 수 있습니다"
+          checked={isPrivate}
+          onChange={togglePrivate}
+        />
+      </div>
+
+      {/* 활동 */}
+      <div className="settings-section">
+        <div className="section-title">활동</div>
+
+        <SettingItem
+          title="차단된 계정"
+          onClick={() => nav("/settings/blocks")}
+        />
+        {/* <SettingItem
+          title="내 댓글"
+          onClick={() => nav("/settings/comments")}
+        />
+        <SettingItem
+          title="좋아요한 게시물"
+          onClick={() => nav("/settings/likes")}
+        /> */}
+      </div>
+
+      {/* 위험(탈퇴) */}
+      <div className="settings-section">
+        <div className="section-title">위험</div>
+
+        <div className="danger-item" onClick={withdraw}>
+          회원 탈퇴
+        </div>
+      </div>
+    </div>
+  );
+}
+
+export default SettingsPage;
