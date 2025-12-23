@@ -110,7 +110,6 @@ const ImageUpload = () => {
         "/api/posts/imageUpload",
         formData,
         {
-          headers: { "Content-Type": "multipart/form-data" },
           withCredentials: true,
         }
       );
