@@ -1,0 +1,27 @@
+.settings-page {
+  padding: 4.3vw;
+}
+
+.settings-title {
+  font-size: 5.0vw;
+  font-weight: 700;
+  margin-bottom: 6.5vw;
+}
+
+.settings-section {
+  margin-bottom: 7.5vw;
+}
+
+.section-title {
+  font-size: 3.5vw;
+  color: #999;
+  margin-bottom: 2.0vw;
+}
+
+/* 위험 영역(탈퇴) */
+.danger-item {
+  padding: 3.7vw 0;
+  color: #ed4956;
+  font-weight: 600;
+  cursor: pointer;
+}

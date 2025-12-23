@@ -21,8 +21,8 @@ function UserPostGrid({ userId }) {
         pageNo: 1,
       },
     })
-      .then((result) => {
-        console.log("posts", result.data.content);
+    .then((result) => {
+        //console.log("posts", result.data.content);
         setPosts(result.data.content);
       })
       .catch((err) => {
