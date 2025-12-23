@@ -4,6 +4,7 @@ import axiosInstance from "../../api/axiosInstance";
 import UserInfo from "../../components/user/UserInfo";
 import UserPostGrid from "../../components/user/UserPostGrid";
 import UserHeader from "../../components/user/UserHeader";
+import { Modal } from "antd";
 
 function UserPage() {
   const { id } = useParams(); // /user/:id
@@ -17,8 +18,8 @@ function UserPage() {
     followingCount: "",
     followerCount: "",
     customeDTO: {
-        badgeDTO: {},
-        colorDTO: {},
+      badgeDTO: {},
+      colorDTO: {},
     },
   });
 
@@ -27,7 +28,7 @@ function UserPage() {
         url: id ? `/api/user/${id}` : `/api/user/me`,
         method: "get",
     })
-    .then((result) => {
+      .then((result) => {
         setUser(result.data);
         //console.log("user: ", user);
     })
@@ -37,19 +38,18 @@ function UserPage() {
             alert("로그인 후 이용해주세요.");
             nav("/login");
         } else {
-            alert("유저 정보를 불러오지 못했습니다.");
+          alert("유저 정보를 불러오지 못했습니다.");
         }
-    });
+      });
   }, []);
 
   return (
     <>
       <UserHeader user={user} />
       <UserInfo user={user} />
-      <UserPostGrid userId={user.userId}/>
+      <UserPostGrid userId={user.userId} />
     </>
-  )
-  ;
+  );
 }
 
 export default UserPage;
