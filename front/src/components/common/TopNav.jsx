@@ -26,13 +26,13 @@ export default function TopNav({ title, onBack, onNotification, onMessage }) {
     // 컴포넌트 마운트 시 즉시 1회 호출
     fetchUnreadCount();
 
-    // 10초마다 unread count polling
-    const intervalId = setInterval(() => {
-      fetchUnreadCount();
-    }, 10000);
-    return () => {
-      clearInterval(intervalId);
-    };
+    // 일단 현재는 주석 처리
+    //   const intervalId = setInterval(() => {
+    //     fetchUnreadCount();
+    //   }, 10000);
+    //   return () => {
+    //     clearInterval(intervalId);
+    //   };
   }, [fetchUnreadCount]);
 
   return (
@@ -45,11 +45,6 @@ export default function TopNav({ title, onBack, onNotification, onMessage }) {
         </HeaderIcon>
 
         {onNotification && (
-          /* 변경:
-             1) Badge 내부에 불필요한 <span> 제거 — 아이콘을 직접 자식으로 줌
-             2) 아이콘에 스타일(fontSize 등)을 직접 줘서 크기 보장
-             3) count가 0이면 null로 전달해서 뱃지를 숨김(기존 로직 유지)
-          */
           <HeaderIcon onClick={onNotification}>
             <BellOutlined style={{ fontSize: "3.5vh", color: "inherit" }} />
             <Badge count={unreadCount > 0 ? unreadCount : null} size="small" overflowCount={99} offset={[0, 4]}></Badge>
