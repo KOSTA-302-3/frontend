@@ -13,9 +13,9 @@ export default function MainLayout() {
       <BottomNav
         onHome={() => console.log("홈")}
         onSearch={() => nav("/search")}
-        onAdd={() => console.log("추가")}
-        onProfile={() => nav("/user/1")}
-        onSetting={() => console.log("설정")}
+        onAdd={() => nav("posts")}
+        onProfile={() => nav("/mypage")}
+        onSetting={() => nav("/settings")}
       />
     </Wrapper>
   );
