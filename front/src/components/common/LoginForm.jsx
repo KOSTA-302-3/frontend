@@ -20,15 +20,14 @@ const LoginForm = () => {
   const [password, setPassword] = useState("");
 
   const clickEvent = () => {
-    const requestData = {
-      username: username,
-      password: password,
-    };
-
-    console.log("전송 데이터(JSON):", requestData);
-    
+    const formData = new FormData();
+    formData.append("username", username);
+    formData.append("password", password);
+    console.log("전송 데이터:", username, password);
     axiosInstance
-      .post("/api/login", requestData)
+      .post("/api/login", formData, {
+        withCredentials: true,
+      })
       .then((response) => {
         console.log("로그인 성공:", response);
         navigate("/main");
