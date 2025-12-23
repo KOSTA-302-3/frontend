@@ -36,7 +36,7 @@ const router = createBrowserRouter([
           { path: "search", element: <SearchPage /> },
           { path: "chat", element: <Chat /> },
           { path: "chat/:chatroomId", element: <ChatRoom /> },
-          { path: "main", element: <PostView selectMenu={0} /> },
+          { path: "main", element: <PostView /> },
         ],
       },
 

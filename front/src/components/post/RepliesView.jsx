@@ -22,7 +22,7 @@ const RepliesView = ({ open, onClose, postId }) => {
       setIsLoading(true);
 
       try {
-        const response = await axiosInstance.get("/replies/getReplies", {
+        const response = await axiosInstance.get("/api/replies/getReplies", {
           params: {
             pageNo: currentPage,
             id: postId,
@@ -82,7 +82,7 @@ const RepliesView = ({ open, onClose, postId }) => {
 
     try {
       const response = await axiosInstance.post(
-        "/replies/createReplies",
+        "/api/replies/createReplies",
         {
           postId: postId,
           replyContent: replyValue,

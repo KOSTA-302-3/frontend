@@ -2,9 +2,11 @@ import { Outlet, useNavigate } from "react-router-dom";
 import TopNav from "./TopNav";
 import BottomNav from "./BottomNav";
 import { Wrapper } from "./MainLayout.styles";
+import { useSelector } from "react-redux";
 
 export default function MainLayout() {
   const nav = useNavigate();
+  // const level = useSelector((state) => state.post.level);
 
   return (
     <Wrapper>
@@ -15,7 +17,7 @@ export default function MainLayout() {
       />
       <Outlet />
       <BottomNav
-        onHome={() => console.log("홈")}
+        onHome={() => nav("main")}
         onSearch={() => console.log("검색")}
         onAdd={() => nav("posts")}
         onProfile={() => console.log("프로필")}

@@ -20,6 +20,7 @@ import {
   LikesCount,
   Caption,
 } from "./PostCard.styles";
+import PostDropDownMenu from "./PostDropDownMenu";
 
 const PostCard = ({
   username,
@@ -27,16 +28,17 @@ const PostCard = ({
   postImage,
   caption,
   likes,
-
   badgeImageUrl,
-
   onShare,
   postId,
+  userCheck,
+  visible,
 }) => {
   const [modalOpen, setModalOpen] = useState(false);
   const [loading, setLoading] = useState(true);
   const [ckLike, setCkLike] = useState(false);
   const [likeNo, setLikeNo] = useState(likes);
+  const checkVisible = visible ? visible : true;
 
   const carouselStyle = {
     marginBottom: "20px",
@@ -103,6 +105,15 @@ const PostCard = ({
           {username}
           <Badge imageUrl={badgeImageUrl} />
         </Username>
+
+        {userCheck && (
+          <PostDropDownMenu
+            post={postId}
+            uploadedImages={imageUrls}
+            content={caption}
+            visibleCheck={checkVisible}
+          />
+        )}
       </Header>
 
       <ImageWrapper>
