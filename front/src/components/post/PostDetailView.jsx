@@ -10,7 +10,7 @@ const PostDetailView = ({ open, onClose, postId }) => {
     if (!postId) return;
 
     try {
-      const response = await axiosInstance.get("/posts/getPostsByPostId", {
+      const response = await axiosInstance.get("/api/posts/getPostsByPostId", {
         params: { PostId: postId },
         withCredentials: true,
       });
