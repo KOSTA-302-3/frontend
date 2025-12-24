@@ -1,14 +1,24 @@
-import React, { useContext } from 'react';
-import { SignUpContext } from './SignUpPage';
-import { useNavigate } from 'react-router-dom';
-import { ButtonRow, SubTitle, Title } from './SignUp.styles';
-import { StyledButton, StyledInput } from '../../components/common/LoginForm.style';
-import { ChangeImageText, HiddenFileInput, ProfileCircle, ProfileImage, ProfileImageWrapper } from '../user/ProfileEdit.styles';
-import axiosInstance from '../../api/axiosInstance';
+import React, { useContext, useRef, useState } from "react";
+import { SignUpContext } from "./SignUpPage";
+import { useNavigate } from "react-router-dom";
+import { ButtonRow, SubTitle, Title } from "./SignUp.styles";
+import {
+  StyledButton,
+  StyledInput,
+} from "../../components/common/LoginForm.style";
+import {
+  ChangeImageText,
+  HiddenFileInput,
+  ProfileCircle,
+  ProfileImage,
+  ProfileImageWrapper,
+} from "../user/ProfileEdit.styles";
+import axiosInstance from "../../api/axiosInstance";
 
 function SignUpProfile() {
   const nav = useNavigate();
   const { newUser, setNewUser } = useContext(SignUpContext);
+  const fileInputRef = useRef(null);
 
   const uploadImage = (e) => {
     const file = e.target.files[0];
@@ -17,10 +27,8 @@ function SignUpProfile() {
     const formData = new FormData();
     formData.append("file", file);
 
-    // setUploading(true);
-
     axiosInstance({
-      url: "/api/upload/profile-image",
+      url: "/api/user/upload/profile",
       method: "post",
       data: formData,
       headers: {
@@ -28,7 +36,8 @@ function SignUpProfile() {
       },
     })
       .then((res) => {
-        const imageUrl = res.data.url;
+        const imageUrl = res.data;
+        console.log("url: ", imageUrl);
 
         setNewUser({
           ...newUser,
@@ -50,22 +59,19 @@ function SignUpProfile() {
       <ProfileImageWrapper>
         <ProfileCircle>
           {newUser.profileImage && (
-            <ProfileImage
-              src={newUser.profileImage}
-              alt="profile-preview"
-            />
+            <ProfileImage src={newUser.profileImage} alt="profile-preview" />
           )}
         </ProfileCircle>
 
         <HiddenFileInput
           type="file"
           accept="image/*"
-        //   ref={fileInputRef}
-        //   onChange={uploadImage}
+          ref={fileInputRef}
+          onChange={uploadImage}
         />
 
-         <ChangeImageText onClick={uploadImage}>
-          {1===2 ? "업로드 중..." : "프로필 이미지 변경"}
+        <ChangeImageText onClick={() => fileInputRef.current?.click()}>
+          프로필 이미지 변경
         </ChangeImageText>
       </ProfileImageWrapper>
 
