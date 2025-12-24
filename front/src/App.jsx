@@ -14,10 +14,13 @@ function App() {
     socket.onopen = () => {
       console.log("Notification WS connected");
     };
-    socket.onmessage = () => {
+    socket.onmessage = (event) => {
       console.log("Notification WS message received");
-      // payload 안 보고 숫자만 증가
-      dispatch(increaseUnreadCount());
+      const msg = event.data;
+      console.log("Notification WS message content:", msg);
+      if (msg === "Notification") {
+        dispatch(increaseUnreadCount());
+      }
     };
 
     socket.onerror = (e) => {
