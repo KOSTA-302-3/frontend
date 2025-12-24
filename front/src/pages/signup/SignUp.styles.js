@@ -25,7 +25,7 @@ export const Title = styled.h1`
   font-weight: 700;
 `;
 
-export const SubTitle = styled.h3`
+export const SubTitle = styled.h4`
   color: #e9e9e9;
   text-align: center;
   margin-bottom: 3vw;

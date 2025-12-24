@@ -27,7 +27,7 @@ function SignUpLevel() {
 
   return (
     <>
-      <SubTitle>레벨 설정</SubTitle>
+      <SubTitle>레벨 설정하기</SubTitle>
 
       <Slider
         min={1}

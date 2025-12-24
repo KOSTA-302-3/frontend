@@ -60,7 +60,7 @@ function SignUpDefault() {
 
   return (
     <>
-      <SubTitle>기본 정보</SubTitle>
+      <SubTitle>기본 정보를 입력해주세요</SubTitle>
 
       <SignUpForm
         layout="vertical"

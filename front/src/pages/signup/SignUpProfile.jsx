@@ -45,7 +45,7 @@ function SignUpProfile() {
 
   return (
     <>
-      <SubTitle>프로필 설정</SubTitle>
+      <SubTitle>프로필 설정하기</SubTitle>
 
       <ProfileImageWrapper>
         <ProfileCircle>
