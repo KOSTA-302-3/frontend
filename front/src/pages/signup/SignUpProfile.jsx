@@ -10,7 +10,7 @@ function SignUpProfile() {
   const nav = useNavigate();
   const { newUser, setNewUser } = useContext(SignUpContext);
 
-   const uploadImage = (e) => {
+  const uploadImage = (e) => {
     const file = e.target.files[0];
     if (!file) return;
 
