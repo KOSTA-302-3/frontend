@@ -4,7 +4,6 @@ import { IeOutlined, InboxOutlined, LeftOutlined } from "@ant-design/icons";
 import ImgCrop from "antd-img-crop";
 import { useNavigate } from "react-router-dom";
 import axiosInstance from "../..//api/axiosInstance";
-import { BackButton } from "../../pages/common/Notification.Style";
 
 const { Dragger } = Upload;
 

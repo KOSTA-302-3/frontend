@@ -38,7 +38,6 @@ function UserPostGrid({ userId }) {
   }, [userId]);
 
   const onClick = (e) => {
-    console.log(e.target.alt);
     setModalOpen(true);
     setPostId(e.target.alt);
   };

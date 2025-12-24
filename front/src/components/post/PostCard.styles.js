@@ -31,6 +31,7 @@ export const Username = styled.div`
 export const ImageWrapper = styled.div`
   width: 100%;
   aspect-ratio: 1;
+  border: none;
 `;
 
 export const Actions = styled.div`

@@ -1,5 +1,11 @@
-import { BellOutlined, MailOutlined } from "@ant-design/icons";
-import { Wrapper, BackIcon, Title, IconGroup, HeaderIcon } from "./TopNav.styles";
+import { BellOutlined, MailOutlined, GiftOutlined } from "@ant-design/icons";
+import {
+  Wrapper,
+  BackIcon,
+  Title,
+  IconGroup,
+  HeaderIcon,
+} from "./TopNav.styles";
 import { Badge } from "antd";
 
 import UserDropDown from "../../components/common/UserDropDwonMenu";
@@ -43,11 +49,18 @@ export default function TopNav({ title, onBack, onNotification, onMessage }) {
         <HeaderIcon>
           <UserDropDown />
         </HeaderIcon>
-
+        <HeaderIcon>
+          <GiftOutlined />
+        </HeaderIcon>
         {onNotification && (
           <HeaderIcon onClick={onNotification}>
             <BellOutlined style={{ fontSize: "3.5vh", color: "inherit" }} />
-            <Badge count={unreadCount > 0 ? unreadCount : null} size="small" overflowCount={99} offset={[0, 4]}></Badge>
+            <Badge
+              count={unreadCount > 0 ? unreadCount : null}
+              size="small"
+              overflowCount={99}
+              offset={[0, 4]}
+            ></Badge>
           </HeaderIcon>
         )}
 
