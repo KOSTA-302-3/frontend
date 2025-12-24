@@ -1,7 +1,7 @@
 import { useState, useEffect, useCallback } from "react";
 import SearchBar from "../../components/common/SearchBar";
 import AppButton from "../../components/common/AppButton";
-import { suspendUser, activateUser, getAdminUsersByStatus } from "../../api/adminApi";
+import axiosInstance from "../../api/axiosInstance";
 import { 
   Container, 
   Header, 
@@ -36,11 +36,11 @@ const UserManagement = () => {
   const fetchUsers = useCallback(async (page = 0, status = statusFilter) => {
     try {
       setLoading(true);
-      const response = await getAdminUsersByStatus(status, page);
+      const response = await axiosInstance.get(`/api/admin/users/filter/${status}/${page}`);
       console.log("API 응답:", response);
       
-      setUsers(response.content || []);
-      setTotalPages(response.totalPages || 0);
+      setUsers(response.data.content || []);
+      setTotalPages(response.data.totalPages || 0);
       setCurrentPage(page);
     } catch (error) {
       console.error("유저 목록 조회 실패:", error);
@@ -78,7 +78,11 @@ const UserManagement = () => {
     const detail = prompt("상세 사유:", "");
 
     try {
-      await suspendUser(userId, parseInt(days), category, detail);
+      await axiosInstance.post(`/api/admin/users/${userId}/suspend`, {
+        days: parseInt(days),
+        category,
+        detail
+      });
       alert("유저가 정지되었습니다.");
       fetchUsers(currentPage);
     } catch (error) {
@@ -91,7 +95,7 @@ const UserManagement = () => {
     if (!confirm("정지를 해제하시겠습니까?")) return;
     
     try {
-      const response = await activateUser(userId);
+      const response = await axiosInstance.put(`/api/admin/users/${userId}/activate`);
       console.log("해제 응답:", response);
       alert("정지가 해제되었습니다.");
       // 목록 새로고침
