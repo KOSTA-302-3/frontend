@@ -21,6 +21,7 @@ import {
   Caption,
 } from "./PostCard.styles";
 import PostDropDownMenu from "./PostDropDownMenu";
+import ReportButton from "../common/ReportButton";
 
 const PostCard = ({
   username,
@@ -131,6 +132,7 @@ const PostCard = ({
                       maxHeight: "100%",
                       maxWidth: "100%",
                       objectFit: "contain",
+                      border: "none",
                     }}
                   />
                 </div>
@@ -146,6 +148,8 @@ const PostCard = ({
         <CommentButton onClick={() => setModalOpen(true)} />
 
         <ShareButton onClick={onShare} />
+
+        <ReportButton />
       </Actions>
 
       <Content>
