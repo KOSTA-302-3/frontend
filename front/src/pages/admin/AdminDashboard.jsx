@@ -10,7 +10,7 @@ import {
   Legend,
 } from 'chart.js';
 import { Bar } from 'react-chartjs-2';
-import { getDashboardStats } from "../../api/adminApi";
+import axiosInstance from "../../api/axiosInstance";
 import { 
   barChartOptions,
   createUserStatusChartData,
@@ -58,7 +58,8 @@ const AdminDashboard = () => {
   const fetchStats = async () => {
     try {
       setLoading(true);
-      const data = await getDashboardStats();
+      const response = await axiosInstance.get('/api/admin/dashboard/stats');
+      const data = response.data;
       // 임시로 활성/정지 유저 계산 (실제론 백엔드에서 받아야 함)
       const activeUsers = Math.floor(data.totalUsers * 0.95);
       const bannedUsers = data.totalUsers - activeUsers;

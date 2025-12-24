@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useNavigate, Outlet } from "react-router-dom";
-import { DashboardOutlined, UserOutlined, FileTextOutlined, WarningOutlined } from "@ant-design/icons";
+import { DashboardOutlined, UserOutlined, FileTextOutlined, WarningOutlined, ShopOutlined } from "@ant-design/icons";
 import { Container, Sidebar, Logo, MenuItem, Content } from "./AdminLayout.styles";
 
 const AdminLayout = () => {
@@ -12,6 +12,7 @@ const AdminLayout = () => {
     { key: 'users', icon: <UserOutlined />, label: '사용자 관리', path: '/admin/users' },
     { key: 'posts', icon: <FileTextOutlined />, label: '게시물 관리', path: '/admin/posts' },
     { key: 'reports', icon: <WarningOutlined />, label: '신고 관리', path: '/admin/reports' },
+    { key: 'badges', icon: <ShopOutlined />, label: '뱃지 관리', path: '/admin/badges' },
   ];
 
   const handleMenuClick = (key, path) => {
