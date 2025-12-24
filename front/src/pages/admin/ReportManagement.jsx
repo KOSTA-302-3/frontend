@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import AppButton from "../../components/common/AppButton";
-import { getAdminReports, approveReport, rejectReport } from "../../api/adminApi";
+import axiosInstance from "../../api/axiosInstance";
 import { 
   Container,
   Header,
@@ -28,10 +28,10 @@ const ReportManagement = () => {
   const fetchReports = async (type = "USER", page = 0) => {
     try {
       setLoading(true);
-      const response = await getAdminReports(type, page);
+      const response = await axiosInstance.get(`/api/admin/reports/${type}/${page}`);
       console.log("신고 목록 응답:", response);
-      setReports(response.content || []);
-      setTotalPages(response.totalPages || 0);
+      setReports(response.data.content || []);
+      setTotalPages(response.data.totalPages || 0);
       setCurrentPage(page);
       setReportType(type);
     } catch (error) {
@@ -60,7 +60,7 @@ const ReportManagement = () => {
     if (!confirm(`이 신고를 승인하고 유저를 ${daysNum === -1 ? '영구' : daysNum + '일'} 정지시키겠습니까?`)) return;
     
     try {
-      await approveReport(reportId, daysNum);
+      await axiosInstance.post(`/api/admin/reports/${reportId}/approve?days=${daysNum}`);
       alert("신고가 승인되었고 유저가 정지되었습니다.");
       fetchReports(reportType, currentPage);
     } catch (error) {
@@ -73,7 +73,7 @@ const ReportManagement = () => {
     if (!confirm("이 신고를 거절하시겠습니까? (신고만 삭제됩니다)")) return;
     
     try {
-      await rejectReport(reportId);
+      await axiosInstance.delete(`/api/admin/reports/${reportId}`);
       alert("신고가 거절되었습니다.");
       fetchReports(reportType, currentPage);
     } catch (error) {

@@ -12,6 +12,7 @@ import AdminDashboard from "./pages/admin/AdminDashboard";
 import UserManagement from "./pages/admin/UserManagement";
 import PostManagement from "./pages/admin/PostManagement";
 import ReportManagement from "./pages/admin/ReportManagement";
+import BadgeManagement from "./pages/admin/BadgeManagement";
 import ChatRoom from "./pages/chat/ChatRoom.jsx";
 import LoginForm from "./components/common/LoginForm";
 import PostView from "./pages/post/posts/PostView";
@@ -25,6 +26,7 @@ import SettingsPage from "./pages/user/SettingsPage.jsx";
 import ProfileEditPage from "./pages/user/ProfileEditPage.jsx";
 import BlockListPage from "./pages/user/BlockListPage.jsx";
 import FollowListPage from "./pages/user/FollowListPage.jsx";
+import BadgeShop from "./pages/user/BadgeShop.jsx";
 import Notification from "./pages/common/Notification.jsx";
 import SignUp from "./pages/signup/SignUpDefault.jsx";
 import SignUpLayout from "./pages/signup/SignUpPage.jsx";
@@ -48,6 +50,7 @@ const router = createBrowserRouter([
           { path: "settings", element: <SettingsPage /> },
           { path: "settings/profile", element: <ProfileEditPage /> },
           { path: "settings/blocks", element: <BlockListPage /> },
+          { path: "shop", element: <BadgeShop /> },
           { path: "search", element: <SearchPage /> },
           { path: "chat", element: <Chat /> },
           { path: "chat/:chatroomId", element: <ChatRoom /> },
@@ -94,6 +97,7 @@ const router = createBrowserRouter([
           { path: "users", element: <UserManagement /> },
           { path: "posts", element: <PostManagement /> },
           { path: "reports", element: <ReportManagement /> },
+          { path: "badges", element: <BadgeManagement /> },
         ],
       },
     ],
