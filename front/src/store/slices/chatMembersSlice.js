@@ -36,8 +36,13 @@ const chatMembersSlice = createSlice({
       const { id, online } = action.payload;
       if (state.byId[id]) state.byId[id].online = online;
     },
+    resetChatMembers(state) {
+      state.byId = {};
+      state.allIds = [];
+    },
   },
 });
 
-export const { setChatMembers, addChatMember, removeChatMember, setOnline } = chatMembersSlice.actions;
+export const { setChatMembers, addChatMember, removeChatMember, setOnline, resetChatMembers } =
+  chatMembersSlice.actions;
 export default chatMembersSlice.reducer;

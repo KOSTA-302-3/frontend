@@ -4,10 +4,13 @@ import ChatRoomList from "../../components/chat/ChatRoomList";
 import CreateChatModal from "../../components/chat/CreateChatModal";
 import * as S from "./Chat.Style.js";
 import { useDispatch, useSelector } from "react-redux";
-import { loadChatRooms } from "../../store/thunks/chatThunks.js";
+import { enterChatRoomAndConnect, loadChatRooms } from "../../store/thunks/chatThunks.js";
+import axiosInstance from "../../api/axiosInstance.js";
+import { useNavigate } from "react-router-dom";
 const { PageWrap, HeaderArea, ContentArea } = S;
 
 export default function Chat() {
+  const nav = useNavigate();
   const [view, setView] = useState("me"); // 'me' | 'all'
   const initialChatRooms = useSelector(
     (state) => state.chatroom.allIds.map((id) => state.chatroom.byId[id]),
@@ -29,19 +32,16 @@ export default function Chat() {
     setShowCreate(false);
   }
 
-  function handleCreateRoom(newRoom) {
-    // UI에 바로 보이도록 가장 위에 추가
-    console.log("새 채팅방 생성:", newRoom);
-  }
-
-  // filter according to view (demo)
-  const filteredRooms = React.useMemo(() => {
-    if (view === "me") {
-      // demo: show every other room as 내 채팅방
-      return rooms.filter((r, idx) => idx % 2 === 0);
+  async function handleCreateRoom(newRoom) {
+    // api요청 보내기
+    try {
+      const response = await axiosInstance.post("/api/chatroom", newRoom);
+      const chatroomId = response.data;
+      nav(`/chat/${chatroomId}`);
+    } catch (error) {
+      console.error("채팅방 생성 실패:", error);
     }
-    return rooms;
-  }, [rooms, view]);
+  }
 
   return (
     <PageWrap>
@@ -50,7 +50,7 @@ export default function Chat() {
       </HeaderArea>
 
       <ContentArea>
-        <ChatRoomList rooms={filteredRooms} />
+        <ChatRoomList rooms={rooms} />
       </ContentArea>
 
       {showCreate && <CreateChatModal onClose={handleCreateModalClose} onCreate={handleCreateRoom} />}

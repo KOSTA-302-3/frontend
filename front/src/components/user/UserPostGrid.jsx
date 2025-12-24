@@ -14,23 +14,23 @@ function UserPostGrid({ userId }) {
     if (!userId) return;
 
     axiosInstance({
-      url: `/posts/getPostsByUserId`,
+      url: `/api/posts/getPostsByUserId`,
       method: "get",
       params: {
         userId,
         pageNo: 1,
       },
     })
-    .then((result) => {
+      .then((result) => {
         //console.log("posts", result.data.content);
         setPosts(result.data.content);
       })
       .catch((err) => {
         console.log(err);
 
-        if (err.response?.status === 403) {
-          alert("로그인 후 이용해주세요.");
-          nav("/login");
+        if (err.response?.status === 401 || err.response?.status === 403) {
+            alert("로그인 후 이용해주세요.");
+            nav("/login");
         } else {
           alert("게시물을 불러오지 못했습니다.");
         }

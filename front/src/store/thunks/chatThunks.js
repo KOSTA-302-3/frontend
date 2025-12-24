@@ -3,6 +3,8 @@ import { setChatMembers } from "../slices/chatMembersSlice";
 import { setMessages, prependMessages } from "../slices/messagesSlice";
 import axiosInstance from "../../api/axiosInstance";
 import { setChatroom } from "../slices/chatroomSlice";
+import { connectChatSocket } from "../../lib/chatSocket";
+import { fetchMyInfo } from "./authThunks";
 
 /*
   채팅방 최초 진입 시 초기 데이터 로딩 thunk
@@ -10,8 +12,6 @@ import { setChatroom } from "../slices/chatroomSlice";
 export const fetchChatInit = createAsyncThunk("chat/fetchInit", async (chatroomId, thunkAPI) => {
   const { dispatch } = thunkAPI;
 
-  // TODO: 나중에 여기서 fetch("/api/chat/init")로 교체됨
-  // 실제 서버 요청
   try {
     // 두 요청을 병렬로 실행
     const [messageRes, memberRes] = await Promise.all([
@@ -29,7 +29,6 @@ export const fetchChatInit = createAsyncThunk("chat/fetchInit", async (chatroomI
 
     // 채팅방 멤버 세팅
     dispatch(setChatMembers(memberRes.data));
-
     // fulfilled payload (의미 있는 값 반환 가능)
     return {
       messageCount: newMessages.length,
@@ -79,7 +78,6 @@ export const loadChatRooms = createAsyncThunk("chat/loadChatRooms", async ({ pag
 
     // 실제 데이터 추출
     const chatroomList = response.data.content;
-    console.log("Fetched chatroom list:", chatroomList);
 
     // slice로 데이터 저장
     dispatch(setChatroom(chatroomList));
@@ -91,3 +89,38 @@ export const loadChatRooms = createAsyncThunk("chat/loadChatRooms", async ({ pag
     return thunkAPI.rejectWithValue(error);
   }
 });
+
+/**
+ * 채팅방 입장 요청 thunk(ChatroomMmeber 생성)
+ */
+export const enterChatRoom = createAsyncThunk("chat/enterChatRoom", async ({ chatroomId }, thunkAPI) => {
+  const { dispatch } = thunkAPI;
+  try {
+    const response = await axiosInstance.post(`/api/chatmember`, {
+      chatroomId: chatroomId,
+    });
+    return response.data;
+  } catch (error) {
+    return thunkAPI.rejectWithValue(error);
+  }
+});
+
+export const enterChatRoomAndConnect = createAsyncThunk(
+  "chat/enterChatRoomAndConnect",
+  async ({ chatroomId }, thunkAPI) => {
+    const { dispatch } = thunkAPI;
+
+    // 1️⃣ 입장
+    await dispatch(enterChatRoom({ chatroomId })).unwrap();
+
+    // 2️⃣ WS 연결
+    connectChatSocket({
+      roomId: chatroomId,
+      dispatch,
+      onOpen: () => {
+        dispatch(fetchMyInfo());
+        dispatch(fetchChatInit(chatroomId));
+      },
+    });
+  }
+);

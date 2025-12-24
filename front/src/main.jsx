@@ -26,6 +26,12 @@ import ProfileEditPage from "./pages/user/ProfileEditPage.jsx";
 import BlockListPage from "./pages/user/BlockListPage.jsx";
 import FollowListPage from "./pages/user/FollowListPage.jsx";
 import Notification from "./pages/common/Notification.jsx";
+import SignUp from "./pages/signup/SignUpDefault.jsx";
+import SignUpLayout from "./pages/signup/SignUpPage.jsx";
+import SignUpProfile from "./pages/signup/SignUpProfile.jsx";
+import SignUpPage from "./pages/signup/SignUpPage.jsx";
+import SignUpDefault from "./pages/signup/SignUpDefault.jsx";
+import SignUpLevel from "./pages/signup/SignUpLevel.jsx";
 
 const router = createBrowserRouter([
   {
@@ -55,7 +61,15 @@ const router = createBrowserRouter([
         element: <LoginForm />,
         children: [],
       },
-
+      {
+        path: "/signup",
+        element: <SignUpPage />,
+        children: [
+          { index: true, element: <SignUpDefault /> },
+          { path: "profile", element: <SignUpProfile /> },
+          { path: "level", element: <SignUpLevel /> },
+        ],
+      },
       {
         path: "/test",
         element: <DevTest />,
