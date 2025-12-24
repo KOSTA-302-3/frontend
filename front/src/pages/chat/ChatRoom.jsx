@@ -3,11 +3,12 @@ import { useDispatch, useSelector } from "react-redux";
 import MessageList from "../../components/chat/MessageList";
 import ChatInput from "../../components/chat/ChatInput";
 import UserList from "../../components/chat/UserList";
-import { enterChatRoom, fetchChatInit, loadOlderMessages } from "../../store/thunks/chatThunks";
-import { connectChatSocket, sendMessageViaSocket } from "../../lib/chatSocket";
+import { enterChatRoomAndConnect, loadOlderMessages } from "../../store/thunks/chatThunks";
+import { disconnectChatSocket, sendMessageViaSocket } from "../../lib/chatSocket";
 import { useParams } from "react-router-dom";
 import * as S from "./ChatRoom.Style";
-import { fetchMyInfo } from "../../store/thunks/authThunks";
+import { resetMessages } from "../../store/slices/messagesSlice";
+import { resetChatMembers } from "../../store/slices/chatMembersSlice";
 
 const { Wrapper, LeftMessages, InputSlot, Drawer, Overlay, HamburgerButton } = S;
 
@@ -31,18 +32,12 @@ export default function ChatRoom() {
   const [isUserDrawerOpen, setUserDrawerOpen] = useState(false);
 
   useEffect(() => {
-    const init = async () => {
-      await dispatch(enterChatRoom({ chatroomId })).unwrap();
-      connectChatSocket({
-        roomId: chatroomId,
-        dispatch,
-        onOpen: () => {
-          dispatch(fetchMyInfo());
-          dispatch(fetchChatInit(chatroomId));
-        },
-      });
+    dispatch(enterChatRoomAndConnect({ chatroomId }));
+    return () => {
+      disconnectChatSocket();
+      dispatch(resetMessages());
+      dispatch(resetChatMembers());
     };
-    init();
   }, [dispatch, chatroomId]);
 
   // ESC로 닫기

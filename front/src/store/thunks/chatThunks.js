@@ -3,6 +3,8 @@ import { setChatMembers } from "../slices/chatMembersSlice";
 import { setMessages, prependMessages } from "../slices/messagesSlice";
 import axiosInstance from "../../api/axiosInstance";
 import { setChatroom } from "../slices/chatroomSlice";
+import { connectChatSocket } from "../../lib/chatSocket";
+import { fetchMyInfo } from "./authThunks";
 
 /*
   채팅방 최초 진입 시 초기 데이터 로딩 thunk
@@ -102,3 +104,23 @@ export const enterChatRoom = createAsyncThunk("chat/enterChatRoom", async ({ cha
     return thunkAPI.rejectWithValue(error);
   }
 });
+
+export const enterChatRoomAndConnect = createAsyncThunk(
+  "chat/enterChatRoomAndConnect",
+  async ({ chatroomId }, thunkAPI) => {
+    const { dispatch } = thunkAPI;
+
+    // 1️⃣ 입장
+    await dispatch(enterChatRoom({ chatroomId })).unwrap();
+
+    // 2️⃣ WS 연결
+    connectChatSocket({
+      roomId: chatroomId,
+      dispatch,
+      onOpen: () => {
+        dispatch(fetchMyInfo());
+        dispatch(fetchChatInit(chatroomId));
+      },
+    });
+  }
+);
