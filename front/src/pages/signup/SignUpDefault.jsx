@@ -43,7 +43,6 @@ function SignUpDefault() {
       method: "get",
     })
       .then((res) => {
-        console.log("result: ", res);
         if (res.data === "OK") {
           setUsernameChecked(true);
           setUsernameHelp("사용 가능한 아이디입니다");
