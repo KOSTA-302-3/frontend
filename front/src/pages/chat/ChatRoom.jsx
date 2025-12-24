@@ -8,6 +8,7 @@ import { addMessage } from "../../store/slices/messagesSlice";
 import { connectChatSocket, sendMessageViaSocket } from "../../lib/chatSocket";
 import { useParams } from "react-router-dom";
 import * as S from "./ChatRoom.Style";
+import { fetchMyInfo } from "../../store/thunks/authThunks";
 
 const { Wrapper, LeftMessages, InputSlot, Drawer, Overlay, HamburgerButton } = S;
 
@@ -32,6 +33,7 @@ export default function ChatRoom() {
   const [isUserDrawerOpen, setUserDrawerOpen] = useState(false);
 
   useEffect(() => {
+    dispatch(fetchMyInfo());
     //초기 데이터 로드
     dispatch(fetchChatInit(chatroomId));
 
