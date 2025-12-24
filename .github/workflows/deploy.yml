@@ -1,49 +1,69 @@
-name: Frontend Deploy 
+name: Frontend Direct Deploy
 
 on:
   push:
-    branches:
-      - dev
+    branches: ["main"]
 
 jobs:
   deploy:
     runs-on: ubuntu-latest
 
-    defaults:
-      run:
-        working-directory: front
-
     steps:
-      - name: Checkout
+      - name: 코드 체크아웃
         uses: actions/checkout@v4
 
-      - name: Set up Node.js
+      - name: Node.js 세팅
         uses: actions/setup-node@v4
         with:
-          node-version: 22
-          cache: "npm"
-          cache-dependency-path: front/package-lock.json
+          node-version: "18"
 
-      - name: Install dependencies
-        run: |
-          npm ci
-          npm install @rollup/rollup-linux-x64-gnu
-      - name: Create .env file
+      - name: 환경변수 파일 생성
+        working-directory: ./front
         run: |
           echo "VITE_API_SERVER_IP=${{ secrets.VITE_API_SERVER_IP }}" >> .env.production
-      - name: Build React App
-        run: npm run build
+          echo "VITE_WS_CHAT_IP=${{ secrets.VITE_WS_CHAT_IP }}" >> .env.production
+          echo "VITE_WS_NOTIFICATION_IP=${{ secrets.VITE_WS_NOTIFICATION_IP }}" >> .env.production
 
-      - name: Configure AWS credentials
-        uses: aws-actions/configure-aws-credentials@v4
+      - name: 의존성 설치 및 빌드
+        working-directory: ./front
+        run: |
+          npm install
+          npm run build
+
+      - name: 빌드 결과물 이동
+        run: |
+          mv front/dist ./dist
+
+      - name: EC2로 파일 전송 (SCP)
+        uses: appleboy/scp-action@master
         with:
-          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          aws-region: ${{ secrets.AWS_REGION }}
+          host: ${{ secrets.AWS_HOST }}
+          username: ${{ secrets.AWS_USERNAME }}
+          key: ${{ secrets.AWS_KEY }}
 
-      - name: Deploy to S3
-        run: |
-          aws s3 sync dist/ s3://${{ secrets.S3_BUCKET_NAME }} --delete
-      - name: CloudFront Invalidation
-        run: |
-          aws cloudfront create-invalidation --distribution-id ${{ secrets.CLOUDFRONT_DISTRIBUTION_ID }} --paths "/*"
+          source: "dist,Dockerfile,nginx.conf"
+          target: "/home/ubuntu/frontend"
+
+      - name: EC2에서 Docker 빌드 및 실행 (SSH)
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.AWS_HOST }}
+          username: ${{ secrets.AWS_USERNAME }}
+          key: ${{ secrets.AWS_KEY }}
+          script: |
+            cd /home/ubuntu/frontend
+
+            # 기존 컨테이너 및 이미지 정리
+            sudo docker stop santa-frontend || true
+            sudo docker rm santa-frontend || true
+            sudo docker rmi santa-frontend-img || true
+
+            # 도커 빌드 (파일들이 제자리에 있으니 . 하나면 끝)
+            sudo docker build -t santa-frontend-img .
+
+            # 컨테이너 실행
+            sudo docker run -d --name santa-frontend \
+              --network host \
+              santa-frontend-img
+              
+            sudo docker image prune -f
