@@ -3,8 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import MessageList from "../../components/chat/MessageList";
 import ChatInput from "../../components/chat/ChatInput";
 import UserList from "../../components/chat/UserList";
-import { fetchChatInit, loadOlderMessages } from "../../store/thunks/chatThunks";
-import { addMessage } from "../../store/slices/messagesSlice";
+import { enterChatRoom, fetchChatInit, loadOlderMessages } from "../../store/thunks/chatThunks";
 import { connectChatSocket, sendMessageViaSocket } from "../../lib/chatSocket";
 import { useParams } from "react-router-dom";
 import * as S from "./ChatRoom.Style";
@@ -17,7 +16,6 @@ const CURRENT_USER_ID = "me";
 export default function ChatRoom() {
   const { chatroomId } = useParams();
 
-  console.log("ChatRoom mounted with chatroomId:", chatroomId);
   const dispatch = useDispatch();
 
   const messages = useSelector(
@@ -33,12 +31,18 @@ export default function ChatRoom() {
   const [isUserDrawerOpen, setUserDrawerOpen] = useState(false);
 
   useEffect(() => {
-    dispatch(fetchMyInfo());
-    //초기 데이터 로드
-    dispatch(fetchChatInit(chatroomId));
-
-    //웹소켓 연결
-    connectChatSocket({ roomId: chatroomId, dispatch });
+    const init = async () => {
+      await dispatch(enterChatRoom({ chatroomId })).unwrap();
+      connectChatSocket({
+        roomId: chatroomId,
+        dispatch,
+        onOpen: () => {
+          dispatch(fetchMyInfo());
+          dispatch(fetchChatInit(chatroomId));
+        },
+      });
+    };
+    init();
   }, [dispatch, chatroomId]);
 
   // ESC로 닫기
@@ -65,11 +69,12 @@ export default function ChatRoom() {
       //   ts: Date.now(),
       // };
       // dispatch(addMessage(payload));
-      sendMessageViaSocket(text, "TEXT");
       if (files && files.length) {
         files.forEach((file) => {
           sendMessageViaSocket(file, "IMAGE");
         });
+      } else {
+        sendMessageViaSocket(text, "TEXT");
       }
     },
     [dispatch, users]

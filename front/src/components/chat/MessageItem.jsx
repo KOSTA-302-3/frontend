@@ -22,8 +22,6 @@ function formatTime(ts) {
 
 export default function MessageItem({ message }) {
   const userId = useSelector((state) => state.auth.userId);
-  console.log("Current userId in MessageItem:", userId);
-  console.log("message senderId in MessageItem:", message);
   if (!message) return null;
 
   const messageWithType = {
