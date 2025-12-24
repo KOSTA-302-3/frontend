@@ -28,9 +28,9 @@ function UserPostGrid({ userId }) {
       .catch((err) => {
         console.log(err);
 
-        if (err.response?.status === 403) {
-          alert("로그인 후 이용해주세요.");
-          nav("/login");
+        if (err.response?.status === 401 || err.response?.status === 403) {
+            alert("로그인 후 이용해주세요.");
+            nav("/login");
         } else {
           alert("게시물을 불러오지 못했습니다.");
         }
