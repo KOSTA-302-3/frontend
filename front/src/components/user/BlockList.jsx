@@ -1,6 +1,9 @@
+import { useNavigate } from 'react-router-dom';
 import './ListContent.css';
 
 function BlockList({ users, posts, tab }) {
+  const nav = useNavigate();
+
   if (tab === 0) {
     if (!users || users.length === 0) {
       return <div className="empty">차단한 유저가 없습니다.</div>;
@@ -9,7 +12,7 @@ function BlockList({ users, posts, tab }) {
     return (
       <div className="list-body">
         {users.map(user => (
-          <div className="list-item" key={user.id}>
+          <div className="list-item" key={user.id} onClick={() => nav("/user/" + user.userId)}>
             <img src={user.profileImage} className="avatar" />
 
             <div className="info">

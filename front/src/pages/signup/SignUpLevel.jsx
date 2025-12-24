@@ -10,7 +10,7 @@ function SignUpLevel() {
   const nav = useNavigate();
   const { newUser, setNewUser } = useContext(SignUpContext);
 
-    const submitSignup = () => {
+  const submitSignup = () => {
     axiosInstance({
       url: "/api/user",
       method: "POST",
