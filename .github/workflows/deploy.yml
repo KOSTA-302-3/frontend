@@ -2,7 +2,7 @@ name: Frontend Direct Deploy
 
 on:
   push:
-    branches: ["dev"]
+    branches: ["dev-test"]
 
 jobs:
   deploy:
