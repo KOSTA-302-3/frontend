@@ -27,6 +27,7 @@ const PostWrite = () => {
       return;
     }
 
+    console.log(method);
     setIsSubmitting(true);
     if (method == 1) {
       try {
