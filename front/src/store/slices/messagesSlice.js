@@ -44,8 +44,12 @@ const messagesSlice = createSlice({
         state.allIds.push(m.id);
       });
     },
+    resetMessages(state) {
+      state.byId = {};
+      state.allIds = [];
+    },
   },
 });
 
-export const { addMessage, prependMessages, markRead, setMessages } = messagesSlice.actions;
+export const { addMessage, prependMessages, markRead, setMessages, resetMessages } = messagesSlice.actions;
 export default messagesSlice.reducer;

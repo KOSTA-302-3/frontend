@@ -1,5 +1,6 @@
 import React from "react";
 import * as S from "./MessageItem.Style.js";
+import { useSelector } from "react-redux";
 const { Row, Container, Avatar, MetaRow, Time, Bubble, UnreadBadge } = S;
 
 /**
@@ -20,7 +21,13 @@ function formatTime(ts) {
 }
 
 export default function MessageItem({ message }) {
+  const userId = useSelector((state) => state.auth.userId);
   if (!message) return null;
+
+  const messageWithType = {
+    ...message, // 기존 message 복사
+    type: message.type === "notice" ? "notice" : message.userId === userId ? "me" : "other",
+  };
 
   if (message.type === "notice") {
     return (
@@ -34,27 +41,33 @@ export default function MessageItem({ message }) {
     );
   }
 
-  const isMe = message.type === "me";
+  const isMe = messageWithType.type === "me";
   return (
     <Row $right={isMe} aria-live="polite">
       {/* 왼쪽 아바타 (다른사람) */}
-      {!isMe && message.avatarUrl && <Avatar src={message.avatarUrl} alt={`${message.username} avatar`} />}
+      {!isMe && messageWithType.avatarUrl && (
+        <Avatar src={messageWithType.avatarUrl} alt={`${messageWithType.username} avatar`} />
+      )}
       <Container $right={isMe}>
         <MetaRow style={{ justifyContent: isMe ? "flex-end" : "flex-start" }}>
-          {!isMe && <strong>{message.username}</strong>}
-          {message.unreadCount > 0 && (
-            <UnreadBadge aria-label={`${message.unreadCount} unread messages`}>{message.unreadCount}</UnreadBadge>
+          {!isMe && <strong>{messageWithType.username}</strong>}
+          {messageWithType.unreadCount > 0 && (
+            <UnreadBadge aria-label={`${messageWithType.unreadCount} unread messages`}>
+              {messageWithType.unreadCount}
+            </UnreadBadge>
           )}
-          <Time>{formatTime(message.ts)}</Time>
+          <Time>{formatTime(messageWithType.ts)}</Time>
         </MetaRow>
 
         <Bubble $me={isMe} $other={!isMe}>
-          {message.text}
+          {messageWithType.text}
         </Bubble>
       </Container>
 
       {/* 오른쪽 아바타 (나) */}
-      {isMe && message.avatarUrl && <Avatar src={message.avatarUrl} alt={`${message.username} avatar`} />}
+      {isMe && messageWithType.avatarUrl && (
+        <Avatar src={messageWithType.avatarUrl} alt={`${messageWithType.username} avatar`} />
+      )}
     </Row>
   );
 }

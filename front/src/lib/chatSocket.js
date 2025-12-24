@@ -3,7 +3,7 @@ const chatIp = import.meta.env.VITE_WS_CHAT_IP || "";
 
 let socket = null;
 
-export function connectChatSocket({ roomId, dispatch }) {
+export function connectChatSocket({ roomId, dispatch, onOpen }) {
   if (socket) return;
 
   //ws, wss 구별하기
@@ -15,11 +15,13 @@ export function connectChatSocket({ roomId, dispatch }) {
   // WebSocket 이벤트 핸들러 설정
   socket.onopen = () => {
     console.log("WS connected");
+    if (onOpen) {
+      onOpen();
+    }
   };
 
   socket.onmessage = (event) => {
     const msg = JSON.parse(event.data);
-    console.log("WS message received:", msg);
     // 서버에서 온 메시지를 Redux로 흘림
     dispatch(addMessage(msg));
   };

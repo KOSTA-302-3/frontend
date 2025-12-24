@@ -60,13 +60,10 @@ export default function CreateChatModal({ onClose, onCreate }) {
     }
 
     const newRoom = {
-      id: `${Date.now()}`,
       name: name.trim(),
-      membersCount: 1,
-      hasUnread: false,
-      imagePreview: preview, // UI 전용
-      isPublic,
+      isPrivate: !isPublic,
       password: requirePassword ? password : null,
+      imageUrl: "test",
       description,
     };
 

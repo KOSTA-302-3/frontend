@@ -3,11 +3,12 @@ import { useDispatch, useSelector } from "react-redux";
 import MessageList from "../../components/chat/MessageList";
 import ChatInput from "../../components/chat/ChatInput";
 import UserList from "../../components/chat/UserList";
-import { fetchChatInit, loadOlderMessages } from "../../store/thunks/chatThunks";
-import { addMessage } from "../../store/slices/messagesSlice";
-import { connectChatSocket, sendMessageViaSocket } from "../../lib/chatSocket";
+import { enterChatRoomAndConnect, loadOlderMessages } from "../../store/thunks/chatThunks";
+import { disconnectChatSocket, sendMessageViaSocket } from "../../lib/chatSocket";
 import { useParams } from "react-router-dom";
 import * as S from "./ChatRoom.Style";
+import { resetMessages } from "../../store/slices/messagesSlice";
+import { resetChatMembers } from "../../store/slices/chatMembersSlice";
 
 const { Wrapper, LeftMessages, InputSlot, Drawer, Overlay, HamburgerButton } = S;
 
@@ -16,7 +17,6 @@ const CURRENT_USER_ID = "me";
 export default function ChatRoom() {
   const { chatroomId } = useParams();
 
-  console.log("ChatRoom mounted with chatroomId:", chatroomId);
   const dispatch = useDispatch();
 
   const messages = useSelector(
@@ -32,11 +32,12 @@ export default function ChatRoom() {
   const [isUserDrawerOpen, setUserDrawerOpen] = useState(false);
 
   useEffect(() => {
-    //초기 데이터 로드
-    dispatch(fetchChatInit(chatroomId));
-
-    //웹소켓 연결
-    connectChatSocket({ roomId: chatroomId, dispatch });
+    dispatch(enterChatRoomAndConnect({ chatroomId }));
+    return () => {
+      disconnectChatSocket();
+      dispatch(resetMessages());
+      dispatch(resetChatMembers());
+    };
   }, [dispatch, chatroomId]);
 
   // ESC로 닫기
@@ -63,11 +64,12 @@ export default function ChatRoom() {
       //   ts: Date.now(),
       // };
       // dispatch(addMessage(payload));
-      sendMessageViaSocket(text, "TEXT");
       if (files && files.length) {
         files.forEach((file) => {
           sendMessageViaSocket(file, "IMAGE");
         });
+      } else {
+        sendMessageViaSocket(text, "TEXT");
       }
     },
     [dispatch, users]

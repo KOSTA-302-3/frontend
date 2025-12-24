@@ -11,7 +11,9 @@ function App() {
 
   useEffect(() => {
     const socket = new WebSocket(`${protocol}${wsNotificationIp}`);
-
+    socket.onopen = () => {
+      console.log("Notification WS connected");
+    };
     socket.onmessage = () => {
       console.log("Notification WS message received");
       // payload 안 보고 숫자만 증가
@@ -21,7 +23,9 @@ function App() {
     socket.onerror = (e) => {
       console.error("WebSocket error", e);
     };
-
+    socket.onclose = () => {
+      console.log("Notification WS disconnected");
+    };
     return () => {
       socket.close();
     };
