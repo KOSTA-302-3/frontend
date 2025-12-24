@@ -25,7 +25,7 @@ function UserPostGrid({ userId }) {
     .catch((err) => {
         console.log(err);
 
-        if (err.response?.status === 403) {
+        if (err.response?.status === 401 || err.response?.status === 403) {
             alert("로그인 후 이용해주세요.");
             nav("/login");
         } else {
