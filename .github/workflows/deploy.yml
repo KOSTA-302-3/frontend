@@ -2,7 +2,7 @@ name: Frontend Direct Deploy
 
 on:
   push:
-    branches: ["main"]
+    branches: ["dev"]
 
 jobs:
   deploy:
@@ -53,15 +53,12 @@ jobs:
           script: |
             cd /home/ubuntu/frontend
 
-            # 기존 컨테이너 및 이미지 정리
             sudo docker stop santa-frontend || true
             sudo docker rm santa-frontend || true
             sudo docker rmi santa-frontend-img || true
 
-            # 도커 빌드 (파일들이 제자리에 있으니 . 하나면 끝)
             sudo docker build -t santa-frontend-img .
 
-            # 컨테이너 실행
             sudo docker run -d --name santa-frontend \
               --network host \
               santa-frontend-img

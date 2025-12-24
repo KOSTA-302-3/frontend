@@ -4,13 +4,7 @@ import { Checkbox, Flex, Form } from "antd"; // ConfigProvider 제거됨
 import { useNavigate } from "react-router-dom";
 
 // 스타일 파일 import
-import {
-  LoginContainer,
-  StyledForm,
-  StyledTitle,
-  StyledButton,
-  StyledInput,
-} from "./LoginForm.style";
+import { LoginContainer, StyledForm, StyledTitle, StyledButton, StyledInput } from "./LoginForm.style";
 import axiosInstance from "../../api/axiosInstance";
 
 const LoginForm = () => {
@@ -42,10 +36,7 @@ const LoginForm = () => {
       <StyledForm name="login" initialValues={{ remember: true }}>
         <StyledTitle level={1}>LOGIN</StyledTitle>
 
-        <Form.Item
-          name="username"
-          rules={[{ required: true, message: "아이디를 입력하세요" }]}
-        >
+        <Form.Item name="username" rules={[{ required: true, message: "아이디를 입력하세요" }]}>
           <StyledInput
             prefix={<UserOutlined />}
             placeholder="Username"
@@ -54,10 +45,7 @@ const LoginForm = () => {
           />
         </Form.Item>
 
-        <Form.Item
-          name="password"
-          rules={[{ required: true, message: "패스워드를 입력하세요" }]}
-        >
+        <Form.Item name="password" rules={[{ required: true, message: "패스워드를 입력하세요" }]}>
           <StyledInput
             prefix={<LockOutlined />}
             type="password"
