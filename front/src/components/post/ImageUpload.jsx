@@ -106,10 +106,13 @@ const ImageUpload = () => {
         formData.append("files", file);
       });
 
-      const response = await axiosInstance.post("posts/imageUpload", formData, {
-        headers: { "Content-Type": "multipart/form-data" },
-        withCredentials: true,
-      });
+      const response = await axiosInstance.post(
+        "/api/posts/imageUpload",
+        formData,
+        {
+          withCredentials: true,
+        }
+      );
 
       const uploadedImageUrls = response.data;
 
@@ -118,6 +121,7 @@ const ImageUpload = () => {
       navigate("/write", {
         state: {
           uploadedImages: uploadedImageUrls,
+          method: 1,
         },
       });
     } catch (error) {
@@ -144,7 +148,14 @@ const ImageUpload = () => {
   };
 
   return (
-    <div style={{ maxWidth: "600px", margin: "20px auto", padding: "0 10px" }}>
+    <div
+      style={{
+        maxWidth: "600px",
+        margin: "20px auto",
+        padding: "0 10px",
+        bottom: "0px",
+      }}
+    >
       {/* 미리보기 슬라이더 (이미지가 있을 때만 표시) */}
       {previewUrls.length > 0 && (
         <Carousel draggable arrows style={carouselStyle}>
@@ -174,14 +185,17 @@ const ImageUpload = () => {
           beforeUpload={() => false}
           showUploadList={false}
           disabled={fileList.length >= 5}
+          style={{ color: "blue" }}
         >
           <p className="ant-upload-drag-icon">
             <InboxOutlined />
           </p>
-          <p className="ant-upload-text">
+          <p className="ant-upload-text" style={{ color: "blue" }}>
             클릭하거나 이미지를 드래그하여 추가하세요
           </p>
-          <p className="ant-upload-hint">최대 5장까지 업로드 가능합니다.</p>
+          <p className="ant-upload-hint" style={{ color: "blue" }}>
+            최대 5장까지 업로드 가능합니다.
+          </p>
         </Dragger>
       </ImgCrop>
 
@@ -196,8 +210,8 @@ const ImageUpload = () => {
           height: "50px",
           fontSize: "16px",
           fontWeight: "bold",
+          color: "blue",
         }}
-        disabled={fileList.length === 0}
       >
         다음 (글 작성하기)
       </Button>

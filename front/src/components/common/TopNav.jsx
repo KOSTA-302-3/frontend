@@ -3,37 +3,17 @@ import { Wrapper, BackIcon, Title, IconGroup, HeaderIcon } from "./TopNav.styles
 import { Badge } from "antd";
 
 import UserDropDown from "../../components/common/UserDropDwonMenu";
-import { useCallback, useEffect, useState } from "react";
-import axiosInstance from "../../api/axiosInstance";
+import { useDispatch, useSelector } from "react-redux";
+import { useEffect } from "react";
+import { fetchUnreadCount } from "../../store/thunks/notificationThunks";
 
 export default function TopNav({ title, onBack, onNotification, onMessage }) {
-  const [unreadCount, setUnreadCount] = useState(0);
-
-  const fetchUnreadCount = useCallback(async () => {
-    try {
-      const res = await axiosInstance.get("/api/notification/count", {
-        withCredentials: true,
-      });
-
-      setUnreadCount(res.data);
-      console.log("Fetched unread notification count:", res.data);
-    } catch (err) {
-      console.error(err);
-    }
-  }, []);
+  const dispatch = useDispatch();
+  const unreadCount = useSelector((state) => state.notification.unreadCount);
 
   useEffect(() => {
-    // 컴포넌트 마운트 시 즉시 1회 호출
-    fetchUnreadCount();
-
-    // 일단 현재는 주석 처리
-    //   const intervalId = setInterval(() => {
-    //     fetchUnreadCount();
-    //   }, 10000);
-    //   return () => {
-    //     clearInterval(intervalId);
-    //   };
-  }, [fetchUnreadCount]);
+    dispatch(fetchUnreadCount());
+  }, [dispatch]);
 
   return (
     <Wrapper>

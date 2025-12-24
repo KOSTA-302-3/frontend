@@ -11,7 +11,9 @@ const PostWrite = () => {
   const [isPublic, setIsPublic] = useState(true);
 
   const imageUrls = location.state?.uploadedImages || [];
-
+  const contentValue = location.state?.contentValue || "";
+  const visibleCheck = location.state?.visibleCheck || "";
+  const method = location.state?.method || 0;
   useEffect(() => {
     if (imageUrls.length === 0) {
       message.error("이미지 정보가 없습니다. 사진을 먼저 선택해주세요.");
@@ -26,28 +28,52 @@ const PostWrite = () => {
     }
 
     setIsSubmitting(true);
+    if (method == 1) {
+      try {
+        await axiosInstance.put(
+          "/api/posts/updatePosts",
+          {
+            createAt: new Date(),
+            content: content,
+            imageUrls: imageUrls,
+            contentVisible: isPublic,
+            hashTagsList: extractHashTags(content),
+            imageSourcesList: imageUrls,
+          },
+          { withCredentials: true }
+        );
 
-    try {
-      await axiosInstance.post(
-        "/posts/createPosts",
-        {
-          createAt: new Date(),
-          content: content,
-          imageUrls: imageUrls,
-          contentVisible: isPublic,
-          hashTagsList: extractHashTags(content),
-          imageSourcesList: imageUrls,
-        },
-        { withCredentials: true }
-      );
+        message.success("게시글이 성공적으로 처리되었습니다!");
+        navigate(-2);
+      } catch (e) {
+        console.error(e);
+        message.error("게시글 처리에 실패했습니다.");
+      } finally {
+        setIsSubmitting(false);
+      }
+    } else {
+      try {
+        await axiosInstance.post(
+          "/api/posts/createPosts",
+          {
+            createAt: new Date(),
+            content: content,
+            imageUrls: imageUrls,
+            contentVisible: isPublic,
+            hashTagsList: extractHashTags(content),
+            imageSourcesList: imageUrls,
+          },
+          { withCredentials: true }
+        );
 
-      message.success("게시글이 성공적으로 등록되었습니다!");
-      navigate("/main");
-    } catch (e) {
-      console.error(e);
-      message.error("게시글 등록에 실패했습니다.");
-    } finally {
-      setIsSubmitting(false);
+        message.success("게시글이 성공적으로 처리되었습니다!");
+        navigate(-2);
+      } catch (e) {
+        console.error(e);
+        message.error("게시글 처리에 실패했습니다.");
+      } finally {
+        setIsSubmitting(false);
+      }
     }
   };
 

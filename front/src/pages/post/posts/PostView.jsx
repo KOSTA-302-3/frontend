@@ -3,6 +3,7 @@ import { useSelector } from "react-redux";
 import axiosInstance from "../../../api/axiosInstance";
 import { Container } from "./PostView.style";
 import PostCard from "../../../components/post/PostCard";
+import { message } from "antd";
 
 const PostView = () => {
   const level = useSelector((state) => state.post.level);
@@ -13,7 +14,10 @@ const PostView = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [hasMore, setHasMore] = useState(true);
 
-  const selectUrl = ["/posts/getAllOnFilter", "/posts/getFollowOnFilter"];
+  const selectUrl = [
+    "/api/posts/getAllOnFilter",
+    "/api/posts/getFollowOnFilter",
+  ];
 
   const fetchPosts = useCallback(
     async (isReset = false) => {
@@ -38,6 +42,7 @@ const PostView = () => {
           `페이지: ${currentPage}, 레벨: ${level}, 데이터수신:`,
           response.data
         );
+        message.success("필터가 적용되었습니다.");
 
         const newContent = response.data.content;
 
@@ -108,6 +113,7 @@ const PostView = () => {
           onComment={() => console.log("댓글 클릭")}
           onShare={() => console.log("공유 클릭")}
           postId={item.postId}
+          userCheck={item.userCheck}
         />
       ))}
     </Container>
