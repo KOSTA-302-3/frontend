@@ -4,7 +4,7 @@ import { setMessages, prependMessages } from "../slices/messagesSlice";
 import axiosInstance from "../../api/axiosInstance";
 import { setChatroom } from "../slices/chatroomSlice";
 import { connectChatSocket } from "../../lib/chatSocket";
-import { fetchMyInfo } from "./authThunks";
+import { fetchMyInfo, getChatMemberRole } from "./authThunks";
 
 /*
   채팅방 최초 진입 시 초기 데이터 로딩 thunk
@@ -110,17 +110,26 @@ export const enterChatRoomAndConnect = createAsyncThunk(
   async ({ chatroomId }, thunkAPI) => {
     const { dispatch } = thunkAPI;
 
-    // 1️⃣ 입장
+    // 입장
     await dispatch(enterChatRoom({ chatroomId })).unwrap();
 
-    // 2️⃣ WS 연결
+    // WS 연결
     connectChatSocket({
       roomId: chatroomId,
       dispatch,
       onOpen: () => {
         dispatch(fetchMyInfo());
+        dispatch(getChatMemberRole(chatroomId));
         dispatch(fetchChatInit(chatroomId));
       },
     });
   }
 );
+
+export const deleteChatRoom = createAsyncThunk("chat/deleteChatRoom", async (chatroomId, thunkAPI) => {
+  try {
+    await axiosInstance.delete(`/api/chatroom/${chatroomId}`);
+  } catch (error) {
+    return thunkAPI.rejectWithValue(error);
+  }
+});
