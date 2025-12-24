@@ -10,11 +10,11 @@ export const LayoutWrapper = styled.div`
 `;
 
 export const Card = styled.div`
+  max-width: 80%;
   width: 100%;
-  max-width: 380px;
   background: #1a001f;
   border-radius: 1.2vw;
-  padding: 2.5vw;
+  padding: 2.8vw;
   color: #fff;
 `;
 
@@ -29,7 +29,7 @@ export const SubTitle = styled.h3`
   color: #e9e9e9;
   text-align: center;
   margin-bottom: 3vw;
-  font-weight: 500;
+  font-weight: 300;
 `;
 
 export const SignUpForm = styled(Form)`

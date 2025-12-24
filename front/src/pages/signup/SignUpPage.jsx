@@ -2,6 +2,7 @@
 import { createContext, useState } from "react";
 import { Outlet } from "react-router-dom";
 import { LayoutWrapper, Card, Title } from "./SignUp.styles";
+import { StyledTitle } from "../../components/common/LoginForm.style";
 
 export const SignUpContext = createContext();
 
@@ -20,7 +21,7 @@ function SignUpPage() {
     <SignUpContext.Provider value={{ newUser, setNewUser }}>
       <LayoutWrapper>
         <Card>
-          <Title>SIGN UP</Title>
+          <StyledTitle>SIGN UP</StyledTitle>
           <Outlet />
         </Card>
       </LayoutWrapper>
