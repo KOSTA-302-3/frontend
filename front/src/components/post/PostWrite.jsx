@@ -32,7 +32,6 @@ const PostWrite = () => {
       return;
     }
 
-    console.log(method);
     setIsSubmitting(true);
     if (method == 2) {
       try {
