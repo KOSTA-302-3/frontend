@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from "react";
 import { Upload, Button, message, Carousel } from "antd";
-import { InboxOutlined } from "@ant-design/icons";
+import { IeOutlined, InboxOutlined, LeftOutlined } from "@ant-design/icons";
 import ImgCrop from "antd-img-crop";
 import { useNavigate } from "react-router-dom";
 import axiosInstance from "../..//api/axiosInstance";
+import { BackButton } from "../../pages/common/Notification.Style";
 
 const { Dragger } = Upload;
 
@@ -121,6 +122,7 @@ const ImageUpload = () => {
       navigate("/write", {
         state: {
           uploadedImages: uploadedImageUrls,
+          visibleCheck: true,
           method: 1,
         },
       });
@@ -145,6 +147,10 @@ const ImageUpload = () => {
     justifyContent: "center",
     alignItems: "center",
     background: "#000",
+  };
+
+  const backButtonClick = () => {
+    navigate(-1);
   };
 
   return (
@@ -210,10 +216,26 @@ const ImageUpload = () => {
           height: "50px",
           fontSize: "16px",
           fontWeight: "bold",
-          color: "blue",
+          color: "white",
         }}
       >
         다음 (글 작성하기)
+      </Button>
+
+      <Button
+        type="danger"
+        onClick={backButtonClick}
+        block
+        style={{
+          marginTop: 24,
+          height: "50px",
+          fontSize: "16px",
+          fontWeight: "bold",
+          color: "black",
+          background: "red",
+        }}
+      >
+        취소 (이전으로 돌아가기)
       </Button>
     </div>
   );
