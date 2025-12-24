@@ -60,7 +60,8 @@ jobs:
             sudo docker build -t santa-frontend-img .
 
             sudo docker run -d --name santa-frontend \
-              --network host \
-              santa-frontend-img
+            --network host \
+            -v /etc/letsencrypt:/etc/letsencrypt \
+            santa-frontend-img
               
             sudo docker image prune -f
