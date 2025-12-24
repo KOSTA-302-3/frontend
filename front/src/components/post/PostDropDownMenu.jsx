@@ -26,7 +26,7 @@ const PostDropDownMenu = ({
     },
   ];
   const navigate = useNavigate();
-  const onClick = (e) => {
+  const onClick = async (e) => {
     switch (Number(e.key)) {
       case 1:
         console.log(postId);
@@ -46,7 +46,7 @@ const PostDropDownMenu = ({
       case 2:
         if (confirm("삭제 하시겟습니까?")) {
           try {
-            axiosInstance.delete("/api/posts/deletePosts", {
+            await axiosInstance.delete("/api/posts/deletePosts", {
               data: {
                 postId: postId,
                 createUserName: "string",

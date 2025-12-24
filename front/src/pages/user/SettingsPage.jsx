@@ -3,6 +3,7 @@ import "./SettingsPage.css";
 import { useState } from "react";
 import SettingItem from "../../components/user/SettingItem";
 import SettingToggle from "../../components/user/SettingToggle";
+import axiosInstance from "../../api/axiosInstance";
 
 function SettingsPage() {
   const nav = useNavigate();
@@ -18,6 +19,14 @@ function SettingsPage() {
       // TODO: axios DELETE /api/user/softdelete
     //}
   };
+
+  const logout = () => {
+    axiosInstance({
+        url: "/api/logout",
+        method: "post",
+    })
+    nav("/login");
+  }
 
   return (
     <div className="settings-page">
@@ -56,6 +65,10 @@ function SettingsPage() {
           title="좋아요한 게시물"
           onClick={() => nav("/settings/likes")}
         /> */}
+        <SettingItem
+          title="로그아웃"
+          onClick={logout}
+        />
       </div>
 
       {/* 위험(탈퇴) */}
