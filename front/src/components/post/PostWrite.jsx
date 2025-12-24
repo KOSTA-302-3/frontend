@@ -2,18 +2,23 @@ import React, { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { Button, Input, message, Switch, Carousel } from "antd";
 import axiosInstance from "../../api/axiosInstance";
+import { StyledProfileImage } from "../common/ProfileImage.styles";
 
 const PostWrite = () => {
   const location = useLocation();
   const navigate = useNavigate();
-  const [content, setContent] = useState("");
-  const [isSubmitting, setIsSubmitting] = useState(false);
-  const [isPublic, setIsPublic] = useState(true);
-
-  const imageUrls = location.state?.uploadedImages || [];
   const contentValue = location.state?.contentValue || "";
-  const visibleCheck = location.state?.visibleCheck || "";
+  const [content, setContent] = useState(contentValue);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const visibleCheck = location.state?.visibleCheck;
+  const [isPublic, setIsPublic] = useState(visibleCheck);
+
+  const imageUrlsa = location.state?.uploadedImages || [];
+  const [imageUrls, setImageUrls] = useState(imageUrlsa);
+  const postId = location.state.postId;
   const method = location.state?.method || 0;
+
+  console.log(postId);
   useEffect(() => {
     if (imageUrls.length === 0) {
       message.error("이미지 정보가 없습니다. 사진을 먼저 선택해주세요.");
@@ -28,14 +33,14 @@ const PostWrite = () => {
     }
 
     setIsSubmitting(true);
-    if (method == 1) {
+    if (method == 2) {
       try {
         await axiosInstance.put(
           "/api/posts/updatePosts",
           {
-            createAt: new Date(),
+            postId: postId,
+            createAt: null,
             content: content,
-            imageUrls: imageUrls,
             contentVisible: isPublic,
             hashTagsList: extractHashTags(content),
             imageSourcesList: imageUrls,
@@ -100,11 +105,35 @@ const PostWrite = () => {
     justifyContent: "center",
     alignItems: "center",
     background: "#000",
+    position: "relative",
+  };
+
+  const onDelButton = (e) => {
+    const delImg = e.target.parentNode.parentNode.parentNode.firstChild.alt;
+
+    if (delImg === undefined) {
+      message.error("일시적인 오류입니다 다시 시도해주세요");
+      return;
+    }
+    console.log("인덱스 : " + delImg);
+    if (imageUrls.length <= 1) {
+      console.log(imageUrls);
+      message.error("사진은 최소 1장있어야 합니다.");
+      return;
+    }
+    console.log(delImg);
+    const newUrls = imageUrls.filter((_, index) => index !== Number(delImg));
+    setImageUrls(newUrls);
+    message.success("삭제 되었습니다");
+  };
+
+  const backButtonClick = () => {
+    navigate(-1);
   };
 
   return (
     <div style={{ maxWidth: "600px", margin: "20px auto", padding: "0 20px" }}>
-      <h2>새 게시글 작성</h2>
+      <h2> {method === 2 ? "게시글 수정" : "새 게시글 작성"}</h2>
 
       {imageUrls.length > 0 && (
         <Carousel draggable arrows style={carouselStyle}>
@@ -113,13 +142,26 @@ const PostWrite = () => {
               <div style={imageWrapperStyle}>
                 <img
                   src={url}
-                  alt={`preview-${index}`}
+                  alt={`${index}`}
                   style={{
                     maxHeight: "100%",
                     maxWidth: "100%",
                     objectFit: "contain",
                   }}
                 />
+                <Button
+                  style={{
+                    marginBottom: "90%",
+                    marginLeft: "90%",
+                    position: "absolute",
+                    borderRadius: "30px",
+                    border: "0px",
+                    background: "#FFFFFF",
+                  }}
+                  onClick={onDelButton}
+                >
+                  X
+                </Button>
               </div>
             </div>
           ))}
@@ -158,7 +200,23 @@ const PostWrite = () => {
         block
         style={{ marginTop: 20, height: "45px", fontSize: "16px" }}
       >
-        등록하기
+        {method === 2 ? "수정하기" : "등록하기"}
+      </Button>
+
+      <Button
+        type="danger"
+        onClick={backButtonClick}
+        block
+        style={{
+          marginTop: 24,
+          height: "50px",
+          fontSize: "16px",
+          fontWeight: "bold",
+          color: "black",
+          background: "red",
+        }}
+      >
+        취소 (이전으로 돌아가기)
       </Button>
     </div>
   );

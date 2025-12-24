@@ -29,13 +29,15 @@ const PostDropDownMenu = ({
   const onClick = (e) => {
     switch (Number(e.key)) {
       case 1:
+        console.log(postId);
         if (confirm("수정하시겟습니까?")) {
           navigate("/write", {
             state: {
               uploadedImages: uploadedImages,
               contentValue: content,
               visibleCheck: visibleCheck,
-              method: 1,
+              method: 2,
+              postId: postId,
             },
           });
         }

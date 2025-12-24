@@ -14,14 +14,14 @@ function UserPostGrid({ userId }) {
     if (!userId) return;
 
     axiosInstance({
-      url: `/posts/getPostsByUserId`,
+      url: `/api/posts/getPostsByUserId`,
       method: "get",
       params: {
         userId,
         pageNo: 1,
       },
     })
-    .then((result) => {
+      .then((result) => {
         //console.log("posts", result.data.content);
         setPosts(result.data.content);
       })

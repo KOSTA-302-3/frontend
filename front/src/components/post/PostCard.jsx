@@ -87,7 +87,7 @@ const PostCard = ({
     setCkLike(!ckLike);
 
     axiosInstance.post(
-      "posts/like",
+      "api/posts/like",
       { targetId: postId },
       {
         withCredentials: true,
@@ -108,7 +108,7 @@ const PostCard = ({
 
         {userCheck && (
           <PostDropDownMenu
-            post={postId}
+            postId={postId}
             uploadedImages={imageUrls}
             content={caption}
             visibleCheck={checkVisible}
