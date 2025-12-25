@@ -6,9 +6,12 @@ import { useNavigate } from "react-router-dom";
 // 스타일 파일 import
 import { LoginContainer, StyledForm, StyledTitle, StyledButton, StyledInput } from "./LoginForm.style";
 import axiosInstance from "../../api/axiosInstance";
+import { useDispatch } from "react-redux";
+import { setIsLogin } from "../../store/slices/authSlice";
 
 const LoginForm = () => {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   const [username, setUserName] = useState("");
   const [password, setPassword] = useState("");
@@ -24,6 +27,7 @@ const LoginForm = () => {
       })
       .then((response) => {
         console.log("로그인 성공:", response);
+        dispatch(setIsLogin(true));
         navigate("/main");
       })
       .catch(() => {

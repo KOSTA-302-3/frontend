@@ -4,13 +4,18 @@ import { fetchMyInfo, getChatMemberRole } from "../thunks/authThunks";
 const initialState = {
   userId: null,
   role: null,
+  isLogin: false,
   loading: false,
 };
 
 const authSlice = createSlice({
   name: "auth",
   initialState,
-  reducers: {},
+  reducers: {
+    setIsLogin(state, action) {
+      state.isLogin = action.payload;
+    },
+  },
   extraReducers: (builder) => {
     builder
       .addCase(fetchMyInfo.pending, (state) => {
@@ -38,4 +43,5 @@ const authSlice = createSlice({
   },
 });
 
+export const { setIsLogin } = authSlice.actions;
 export default authSlice.reducer;
