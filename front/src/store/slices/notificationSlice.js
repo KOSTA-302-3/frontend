@@ -1,9 +1,16 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { fetchNotifications, fetchUnreadCount, markRead, markAllRead } from "../thunks/notificationThunks";
+import {
+  fetchNotifications,
+  fetchUnreadCount,
+  markRead,
+  markAllRead,
+  fetchNewMessages,
+} from "../thunks/notificationThunks";
 
 const initialState = {
   items: [], // 알림 목록
   unreadCount: 0, // 안 읽은 개수 (count API 기준)
+  newMessage: 0, // 새로운 메시지 도착 여부
   loadingList: false, // 알림 목록 로딩 중
   markingOne: false, // 개별 읽음 처리 중
   markingAll: false, // 전체 읽음 처리 중
@@ -15,6 +22,9 @@ const notificationSlice = createSlice({
   reducers: {
     increaseUnreadCount: (state) => {
       state.unreadCount += 1;
+    },
+    increaseNewMessage: (state) => {
+      state.newMessage += 1;
     },
   },
   extraReducers: (builder) => {
@@ -38,6 +48,10 @@ const notificationSlice = createSlice({
          ===================== */
       .addCase(fetchUnreadCount.fulfilled, (state, action) => {
         state.unreadCount = action.payload;
+      })
+
+      .addCase(fetchNewMessages.fulfilled, (state, action) => {
+        state.newMessage = action.payload;
       })
 
       /* =====================
@@ -78,5 +92,5 @@ const notificationSlice = createSlice({
   },
 });
 
-export const { increaseUnreadCount } = notificationSlice.actions;
+export const { increaseUnreadCount, increaseNewMessage } = notificationSlice.actions;
 export default notificationSlice.reducer;
