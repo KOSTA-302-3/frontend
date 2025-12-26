@@ -2,17 +2,22 @@ import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Outlet } from "react-router-dom";
 import { increaseUnreadCount } from "./store/slices/notificationSlice";
+import { fetchMyInfo } from "./store/thunks/authThunks";
 const wsNotificationIp = import.meta.env.VITE_WS_NOTIFICATION_IP || "";
 
 function App() {
   const dispatch = useDispatch();
 
+  const userId = useSelector((state) => state.auth.userId);
+
   const protocol = window.location.protocol === "https:" ? "wss" : "ws";
 
-  const isLogin = useSelector((state) => state.auth.isLogin);
+  useEffect(() => {
+    dispatch(fetchMyInfo());
+  }, [dispatch]);
 
   useEffect(() => {
-    if (!isLogin) return;
+    if (userId == null) return;
     const socket = new WebSocket(`${protocol}${wsNotificationIp}`);
     socket.onopen = () => {
       console.log("Notification WS connected");
@@ -35,7 +40,7 @@ function App() {
     return () => {
       socket.close();
     };
-  }, [dispatch, isLogin]);
+  }, [dispatch, userId]);
 
   return <Outlet />;
 }
