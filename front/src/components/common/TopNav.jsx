@@ -5,16 +5,17 @@ const wsNotificationIp = import.meta.env.VITE_WS_NOTIFICATION_IP || "";
 import UserDropDown from "../../components/common/UserDropDwonMenu";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
-import { fetchUnreadCount } from "../../store/thunks/notificationThunks";
+import { fetchNewMessages, fetchUnreadCount } from "../../store/thunks/notificationThunks";
 import { fetchMyInfo } from "../../store/thunks/authThunks";
-import { increaseUnreadCount } from "../../store/slices/notificationSlice";
+import { increaseNewMessage, increaseUnreadCount } from "../../store/slices/notificationSlice";
 
 export default function TopNav({ title, onBack, onNotification, onMessage }) {
   const dispatch = useDispatch();
   const unreadCount = useSelector((state) => state.notification.unreadCount);
-
+  const newMessage = useSelector((state) => state.notification.newMessage);
   useEffect(() => {
     dispatch(fetchUnreadCount());
+    dispatch(fetchNewMessages());
   }, [dispatch]);
 
   const userId = useSelector((state) => state.auth.userId);
@@ -37,6 +38,8 @@ export default function TopNav({ title, onBack, onNotification, onMessage }) {
       console.log("Notification WS message content:", msg);
       if (msg === "Notification") {
         dispatch(increaseUnreadCount());
+      } else {
+        dispatch(increaseNewMessage());
       }
     };
 
@@ -72,6 +75,7 @@ export default function TopNav({ title, onBack, onNotification, onMessage }) {
         {onMessage && (
           <HeaderIcon onClick={onMessage}>
             <MailOutlined />
+            <Badge count={newMessage > 0 ? newMessage : null} size="small" overflowCount={99} offset={[0, 4]}></Badge>
           </HeaderIcon>
         )}
       </IconGroup>

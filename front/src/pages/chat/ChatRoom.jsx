@@ -14,6 +14,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import * as S from "./ChatRoom.Style";
 import { resetMessages } from "../../store/slices/messagesSlice";
 import { resetChatMembers } from "../../store/slices/chatMembersSlice";
+import { fetchNewMessages } from "../../store/thunks/notificationThunks";
 
 const { Wrapper, LeftMessages, InputSlot, Drawer, Overlay, HamburgerButton } = S;
 
@@ -43,11 +44,14 @@ export default function ChatRoom() {
   const [isUserDrawerOpen, setUserDrawerOpen] = useState(false);
 
   useEffect(() => {
-    dispatch(enterChatRoomAndConnect({ chatroomId }));
+    dispatch(enterChatRoomAndConnect({ chatroomId })).then(() => {
+      dispatch(fetchNewMessages());
+    });
     return () => {
       disconnectChatSocket();
       dispatch(resetMessages());
       dispatch(resetChatMembers());
+      dispatch(fetchNewMessages());
     };
   }, [dispatch, chatroomId]);
 
