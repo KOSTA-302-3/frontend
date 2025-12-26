@@ -8,8 +8,9 @@ import { useEffect } from "react";
 import { fetchNewMessages, fetchUnreadCount } from "../../store/thunks/notificationThunks";
 import { fetchMyInfo } from "../../store/thunks/authThunks";
 import { increaseNewMessage, increaseUnreadCount } from "../../store/slices/notificationSlice";
+import { Link } from "react-router-dom";
 
-export default function TopNav({ title, onBack, onNotification, onMessage }) {
+export default function TopNav({ title, onBack, onNotification, onMessage, onTitle }) {
   const dispatch = useDispatch();
   const unreadCount = useSelector((state) => state.notification.unreadCount);
   const newMessage = useSelector((state) => state.notification.newMessage);
@@ -57,7 +58,11 @@ export default function TopNav({ title, onBack, onNotification, onMessage }) {
   return (
     <Wrapper>
       {onBack && <BackIcon onClick={onBack} />}
-      <Title>{title}</Title>
+
+      <Title onClick={onTitle} style={{ cursor: onTitle ? "pointer" : "default" }}>
+        {title}
+      </Title>
+
       <IconGroup>
         <HeaderIcon>
           <UserDropDown />

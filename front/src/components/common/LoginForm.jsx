@@ -24,7 +24,7 @@ const LoginForm = () => {
       })
       .then((response) => {
         console.log("로그인 성공:", response);
-        navigate("/main");
+        navigate("/");
       })
       .catch(() => {
         alert("오류입니다!");
