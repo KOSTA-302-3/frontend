@@ -8,8 +8,10 @@ import { useEffect } from "react";
 import { fetchUnreadCount } from "../../store/thunks/notificationThunks";
 import { fetchMyInfo } from "../../store/thunks/authThunks";
 import { increaseUnreadCount } from "../../store/slices/notificationSlice";
+import { useNavigate } from "react-router-dom";
 
 export default function TopNav({ title, onBack, onNotification, onMessage }) {
+  const navigate = useNavigate();
   const dispatch = useDispatch();
   const unreadCount = useSelector((state) => state.notification.unreadCount);
 
@@ -59,7 +61,7 @@ export default function TopNav({ title, onBack, onNotification, onMessage }) {
         <HeaderIcon>
           <UserDropDown />
         </HeaderIcon>
-        <HeaderIcon>
+        <HeaderIcon onClick={() => navigate('/shop')}>
           <GiftOutlined />
         </HeaderIcon>
         {onNotification && (
