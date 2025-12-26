@@ -39,7 +39,7 @@ const PostCard = ({
   const [loading, setLoading] = useState(true);
   const [ckLike, setCkLike] = useState(false);
   const [likeNo, setLikeNo] = useState(likes);
-  const checkVisible = visible ? visible : true;
+  const checkVisible = visible ? true : visible;
 
   const carouselStyle = {
     marginBottom: "20px",

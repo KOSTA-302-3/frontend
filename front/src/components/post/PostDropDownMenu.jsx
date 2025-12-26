@@ -25,6 +25,7 @@ const PostDropDownMenu = ({
       label: "삭제하기",
     },
   ];
+
   const navigate = useNavigate();
   const onClick = async (e) => {
     switch (Number(e.key)) {
