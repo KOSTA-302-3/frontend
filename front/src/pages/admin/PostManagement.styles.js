@@ -39,7 +39,7 @@ export const Table = styled.div`
 
 export const TableHeader = styled.div`
   display: grid;
-  grid-template-columns: 1fr 2fr 2fr 2fr 2fr;
+  grid-template-columns: 2fr 4fr 1.5fr;
   padding: 2.5vh 2.5vw;
   background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
   font-weight: 700;
@@ -49,7 +49,7 @@ export const TableHeader = styled.div`
 
 export const TableRow = styled.div`
   display: grid;
-  grid-template-columns: 1fr 2fr 2fr 2fr 2fr;
+  grid-template-columns: 2fr 4fr 1.5fr;
   padding: 2.5vh 2.5vw;
   border-bottom: 0.1vh solid #e9ecef;
   align-items: center;
@@ -82,4 +82,39 @@ export const PostImage = styled.div`
 
 export const ButtonWrapper = styled.div`
   width: 10vw;
+`;
+
+export const Pagination = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 2vw;
+  margin-top: 3vh;
+  font-size: 2vh;
+  font-weight: 600;
+  color: #495057;
+`;
+
+export const PageButton = styled.button`
+  padding: 1vh 2vw;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  border: none;
+  border-radius: 1vh;
+  font-size: 1.8vh;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 0.5vh 1.5vh rgba(102, 126, 234, 0.3);
+
+  &:hover:not(:disabled) {
+    transform: translateY(-0.3vh);
+    box-shadow: 0 0.8vh 2vh rgba(102, 126, 234, 0.4);
+  }
+
+  &:disabled {
+    background: linear-gradient(135deg, #dee2e6 0%, #adb5bd 100%);
+    cursor: not-allowed;
+    box-shadow: none;
+  }
 `;

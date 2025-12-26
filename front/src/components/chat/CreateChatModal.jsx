@@ -1,5 +1,7 @@
 import React from "react";
 import * as S from "./CreateChatModal.Style.js";
+import axiosInstance from "../../api/axiosInstance.js";
+
 const {
   Overlay,
   Modal,
@@ -24,7 +26,7 @@ const {
 export default function CreateChatModal({ onClose, onCreate }) {
   const [name, setName] = React.useState("");
   const [file, setFile] = React.useState(null);
-  const [preview, setPreview] = React.useState(null);
+  const [preview, setPreview] = React.useState("");
   const [isPublic, setIsPublic] = React.useState(true);
   const [requirePassword, setRequirePassword] = React.useState(false);
   const [password, setPassword] = React.useState("");
@@ -35,9 +37,24 @@ export default function CreateChatModal({ onClose, onCreate }) {
       setPreview(null);
       return;
     }
-    const reader = new FileReader();
-    reader.onload = (e) => setPreview(e.target.result);
-    reader.readAsDataURL(file);
+
+    //const reader = new FileReader();
+    //reader.onload = (e) => setPreview(e.target.result);
+    //reader.readAsDataURL(file);
+
+    const uploadFile = async () => {
+      const formData = new FormData();
+      formData.append("file", file);
+      try {
+        const res = await axiosInstance.post("/api/chatroom/file", formData);
+        console.log("File upload response:", res.data);
+        setPreview(res.data);
+      } catch (error) {
+        console.error("File upload error:", error);
+      }
+    };
+    uploadFile();
+
     return () => {
       // nothing
     };
@@ -63,7 +80,7 @@ export default function CreateChatModal({ onClose, onCreate }) {
       name: name.trim(),
       isPrivate: !isPublic,
       password: requirePassword ? password : null,
-      imageUrl: "test",
+      imageUrl: preview,
       description,
     };
 

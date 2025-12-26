@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import { Preview } from "./CreateChatModal.Style";
 
 export const ItemWrap = styled.button`
   display: flex;
@@ -17,6 +18,17 @@ export const ItemWrap = styled.button`
   }
 `;
 
+export const Thumbnail = styled.img`
+  width: 44px;
+  height: 44px;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #111827;
+  font-weight: 700;
+  flex-shrink: 0;
+`;
 export const Avatar = styled.div`
   width: 44px;
   height: 44px;
