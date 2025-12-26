@@ -19,24 +19,24 @@ const UserDropDwonMenu = () => {
       case 0:
         message.success("현재 모든 유저 게시물을 볼수있습니다.");
         dispatch(setLayer(0));
-        navigate("/main");
+        navigate("/");
         break;
 
       case 1:
         message.success("현재 팔로우한 유저 게시물을 볼수있습니다.");
         dispatch(setLayer(1));
-        navigate("/main");
+        navigate("/");
         break;
 
       case 2:
         setIsModalOpen(true);
-        navigate("/main");
+        navigate("/");
         break;
 
       case 3:
         message.success("현재 필터 Off상태입니다.");
         dispatch(setLevel(10));
-        navigate("/main");
+        navigate("/");
 
         break;
     }

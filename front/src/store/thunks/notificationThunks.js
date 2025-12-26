@@ -28,3 +28,8 @@ export const markRead = createAsyncThunk("notification/markRead", async (id) => 
 export const markAllRead = createAsyncThunk("notification/markAllRead", async () => {
   await axiosInstance.delete("/api/notification");
 });
+
+export const fetchNewMessages = createAsyncThunk("notification/fetchNewMessages", async () => {
+  const res = await axiosInstance.get("/api/message/count");
+  return res.data;
+});

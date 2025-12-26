@@ -44,6 +44,7 @@ const router = createBrowserRouter([
         path: "/",
         element: <MainLayout />,
         children: [
+          { index: true, element: <PostView selectMenu={0} /> },
           { path: "mypage", element: <UserPage /> },
           { path: "user/:id", element: <UserPage /> },
           { path: "user/:id/follow", element: <FollowListPage /> },
@@ -54,7 +55,6 @@ const router = createBrowserRouter([
           { path: "search", element: <SearchPage /> },
           { path: "chat", element: <Chat /> },
           { path: "chat/:chatroomId", element: <ChatRoom /> },
-          { path: "main", element: <PostView selectMenu={0} /> },
           { path: "notifications", element: <Notification /> },
         ],
       },

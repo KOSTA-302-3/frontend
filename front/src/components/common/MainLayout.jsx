@@ -10,10 +10,15 @@ export default function MainLayout() {
 
   return (
     <Wrapper>
-      <TopNav title="SANTA" onNotification={() => nav("/notifications")} onMessage={() => nav("/chat")} />
+      <TopNav
+        title="SANTA"
+        onTitle={() => nav("/")}
+        onNotification={() => nav("/notifications")}
+        onMessage={() => nav("/chat")}
+      />
       <Outlet />
       <BottomNav
-        onHome={() => nav("main")}
+        onHome={() => nav("/")}
         onSearch={() => console.log("검색")}
         onAdd={() => nav("posts")}
         onProfile={() => nav("/mypage")}

@@ -14,6 +14,9 @@ import { useNavigate, useParams } from "react-router-dom";
 import * as S from "./ChatRoom.Style";
 import { resetMessages } from "../../store/slices/messagesSlice";
 import { resetChatMembers } from "../../store/slices/chatMembersSlice";
+import { fetchNewMessages } from "../../store/thunks/notificationThunks";
+import axios from "axios";
+import axiosInstance from "../../api/axiosInstance";
 
 const { Wrapper, LeftMessages, InputSlot, Drawer, Overlay, HamburgerButton } = S;
 
@@ -43,11 +46,14 @@ export default function ChatRoom() {
   const [isUserDrawerOpen, setUserDrawerOpen] = useState(false);
 
   useEffect(() => {
-    dispatch(enterChatRoomAndConnect({ chatroomId }));
+    dispatch(enterChatRoomAndConnect({ chatroomId })).then(() => {
+      dispatch(fetchNewMessages());
+    });
     return () => {
       disconnectChatSocket();
       dispatch(resetMessages());
       dispatch(resetChatMembers());
+      dispatch(fetchNewMessages());
     };
   }, [dispatch, chatroomId]);
 
@@ -63,7 +69,7 @@ export default function ChatRoom() {
   }, [isUserDrawerOpen]);
 
   const handleSend = useCallback(
-    (text, files) => {
+    async (text, files) => {
       // const currentUser = users.find((u) => u.id === CURRENT_USER_ID) || { username: "나", avatarUrl: undefined };
       // const payload = {
       //   id: `m${Date.now()}`,
@@ -76,8 +82,20 @@ export default function ChatRoom() {
       // };
       // dispatch(addMessage(payload));
       if (files && files.length) {
-        files.forEach((file) => {
-          sendMessageViaSocket(file, "IMAGE");
+        const uploadPromises = files.map((file) => {
+          const formData = new FormData();
+          formData.append("file", file); // 각 파일을 FormData로 감쌈
+
+          // axios 요청 Promise 반환함
+          return axiosInstance.post("/api/message/file", formData);
+        });
+
+        // 모든 업로드가 끝날 때까지 대기함
+        const responses = await Promise.all(uploadPromises);
+
+        responses.forEach((res) => {
+          const fileUrl = res.data; // 서버에서 내려준 URL
+          sendMessageViaSocket(fileUrl, "IMAGE"); // 메시지 전송함
         });
       } else {
         sendMessageViaSocket(text, "TEXT");
