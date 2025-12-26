@@ -1,4 +1,7 @@
-import { addMessage } from "../store/slices/messagesSlice";
+import { resetChatMembers } from "../store/slices/chatMembersSlice";
+import { addMessage, resetMessages } from "../store/slices/messagesSlice";
+import { fetchMyInfo, getChatMemberRole } from "../store/thunks/authThunks";
+import { fetchChatInit } from "../store/thunks/chatThunks";
 const chatIp = import.meta.env.VITE_WS_CHAT_IP || "";
 
 let socket = null;
@@ -23,6 +26,13 @@ export function connectChatSocket({ roomId, dispatch, onOpen }) {
   socket.onmessage = (event) => {
     const msg = JSON.parse(event.data);
     // 서버에서 온 메시지를 Redux로 흘림
+    if (msg.messageType === "STATUS") {
+      dispatch(resetMessages());
+      dispatch(resetChatMembers());
+      dispatch(fetchMyInfo());
+      dispatch(getChatMemberRole(roomId));
+      dispatch(fetchChatInit(roomId));
+    }
     dispatch(addMessage(msg));
   };
 
