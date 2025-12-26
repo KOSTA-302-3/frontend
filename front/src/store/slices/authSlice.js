@@ -1,8 +1,9 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { fetchMyInfo } from "../thunks/authThunks";
+import { fetchMyInfo, getChatMemberRole } from "../thunks/authThunks";
 
 const initialState = {
   userId: null,
+  role: null,
   loading: false,
 };
 
@@ -22,8 +23,20 @@ const authSlice = createSlice({
       .addCase(fetchMyInfo.rejected, (state) => {
         state.loading = false;
         state.userId = null;
+      })
+      .addCase(getChatMemberRole.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(getChatMemberRole.fulfilled, (state, action) => {
+        state.loading = false;
+        state.role = action.payload;
+      })
+      .addCase(getChatMemberRole.rejected, (state) => {
+        state.loading = false;
+        state.role = null;
       });
   },
 });
 
+export const { setIsLogin } = authSlice.actions;
 export default authSlice.reducer;

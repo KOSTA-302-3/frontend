@@ -4,7 +4,7 @@ import ChatRoomList from "../../components/chat/ChatRoomList";
 import CreateChatModal from "../../components/chat/CreateChatModal";
 import * as S from "./Chat.Style.js";
 import { useDispatch, useSelector } from "react-redux";
-import { enterChatRoomAndConnect, loadChatRooms } from "../../store/thunks/chatThunks.js";
+import { loadChatRooms } from "../../store/thunks/chatThunks.js";
 import axiosInstance from "../../api/axiosInstance.js";
 import { useNavigate } from "react-router-dom";
 const { PageWrap, HeaderArea, ContentArea } = S;

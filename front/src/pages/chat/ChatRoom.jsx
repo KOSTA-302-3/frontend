@@ -3,12 +3,18 @@ import { useDispatch, useSelector } from "react-redux";
 import MessageList from "../../components/chat/MessageList";
 import ChatInput from "../../components/chat/ChatInput";
 import UserList from "../../components/chat/UserList";
-import { enterChatRoomAndConnect, loadOlderMessages } from "../../store/thunks/chatThunks";
+import {
+  deleteChatMember,
+  deleteChatRoom,
+  enterChatRoomAndConnect,
+  loadOlderMessages,
+} from "../../store/thunks/chatThunks";
 import { disconnectChatSocket, sendMessageViaSocket } from "../../lib/chatSocket";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import * as S from "./ChatRoom.Style";
 import { resetMessages } from "../../store/slices/messagesSlice";
 import { resetChatMembers } from "../../store/slices/chatMembersSlice";
+import { fetchNewMessages } from "../../store/thunks/notificationThunks";
 
 const { Wrapper, LeftMessages, InputSlot, Drawer, Overlay, HamburgerButton } = S;
 
@@ -16,8 +22,14 @@ const CURRENT_USER_ID = "me";
 
 export default function ChatRoom() {
   const { chatroomId } = useParams();
-
   const dispatch = useDispatch();
+  const nav = useNavigate();
+  const role = useSelector((state) => state.auth.role);
+
+  let isAdmin = false;
+  if (role === "ADMIN") {
+    isAdmin = true;
+  }
 
   const messages = useSelector(
     (state) => state.messages.allIds.map((id) => state.messages.byId[id]),
@@ -32,11 +44,14 @@ export default function ChatRoom() {
   const [isUserDrawerOpen, setUserDrawerOpen] = useState(false);
 
   useEffect(() => {
-    dispatch(enterChatRoomAndConnect({ chatroomId }));
+    dispatch(enterChatRoomAndConnect({ chatroomId })).then(() => {
+      dispatch(fetchNewMessages());
+    });
     return () => {
       disconnectChatSocket();
       dispatch(resetMessages());
       dispatch(resetChatMembers());
+      dispatch(fetchNewMessages());
     };
   }, [dispatch, chatroomId]);
 
@@ -79,6 +94,16 @@ export default function ChatRoom() {
     dispatch(loadOlderMessages());
   }, [dispatch]);
 
+  const onDelete = () => {
+    dispatch(deleteChatRoom(chatroomId));
+    nav("/chat");
+  };
+
+  const onLeave = () => {
+    dispatch(deleteChatMember(chatroomId));
+    nav("/chat");
+  };
+
   return (
     <Wrapper>
       <LeftMessages>
@@ -101,7 +126,7 @@ export default function ChatRoom() {
 
       {/* Drawer: Wrapper 내부에 absolute로 겹쳐 표시 (grid 컬럼을 변경할 필요 없음) */}
       <Drawer id="user-drawer" open={isUserDrawerOpen} role="dialog" aria-hidden={!isUserDrawerOpen}>
-        <UserList users={users} />
+        <UserList users={users} isAdmin={isAdmin} onLeave={onLeave} onDelete={onDelete} />
       </Drawer>
 
       {/* 오버레이: Drawer 열렸을 때만 보임, 클릭하면 닫힘 */}
