@@ -4,6 +4,7 @@ import { fetchMyInfo, getChatMemberRole } from "../thunks/authThunks";
 const initialState = {
   userId: null,
   role: null,
+  online: false,
   loading: false,
 };
 
