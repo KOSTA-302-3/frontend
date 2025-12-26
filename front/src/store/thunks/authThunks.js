@@ -5,3 +5,9 @@ export const fetchMyInfo = createAsyncThunk("auth/fetchMyInfo", async () => {
   const res = await axiosInstance.get("/api/user/userId");
   return res.data;
 });
+
+export const getChatMemberRole = createAsyncThunk("auth/getChatMemberRole", async (chatroomId) => {
+  const res = await axiosInstance.get(`/api/chatmember/role/${chatroomId}`);
+  console.log("getChatMemberRole", res.data);
+  return res.data;
+});
