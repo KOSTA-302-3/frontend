@@ -42,7 +42,6 @@ const PostView = () => {
           `페이지: ${currentPage}, 레벨: ${level}, 데이터수신:`,
           response.data
         );
-        message.success("필터가 적용되었습니다.");
 
         const newContent = response.data.content;
 

@@ -18,6 +18,8 @@ const PostWrite = () => {
   const postId = location.state.postId;
   const method = location.state?.method || 0;
 
+  console.log(visibleCheck);
+
   console.log(postId);
   useEffect(() => {
     if (imageUrls.length === 0) {
@@ -112,7 +114,7 @@ const PostWrite = () => {
     const delImg = e.target.parentNode.parentNode.parentNode.firstChild.alt;
 
     if (delImg === undefined) {
-      message.error("일시적인 오류입니다 다시 시도해주세요");
+      message.warning("삭제할 사진을 불러오는 중입니다.");
       return;
     }
     console.log("인덱스 : " + delImg);
