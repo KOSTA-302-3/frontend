@@ -3,7 +3,12 @@ import { useDispatch, useSelector } from "react-redux";
 import MessageList from "../../components/chat/MessageList";
 import ChatInput from "../../components/chat/ChatInput";
 import UserList from "../../components/chat/UserList";
-import { deleteChatRoom, enterChatRoomAndConnect, loadOlderMessages } from "../../store/thunks/chatThunks";
+import {
+  deleteChatMember,
+  deleteChatRoom,
+  enterChatRoomAndConnect,
+  loadOlderMessages,
+} from "../../store/thunks/chatThunks";
 import { disconnectChatSocket, sendMessageViaSocket } from "../../lib/chatSocket";
 import { useNavigate, useParams } from "react-router-dom";
 import * as S from "./ChatRoom.Style";
@@ -90,6 +95,11 @@ export default function ChatRoom() {
     nav("/chat");
   };
 
+  const onLeave = () => {
+    dispatch(deleteChatMember(chatroomId));
+    nav("/chat");
+  };
+
   return (
     <Wrapper>
       <LeftMessages>
@@ -112,7 +122,7 @@ export default function ChatRoom() {
 
       {/* Drawer: Wrapper 내부에 absolute로 겹쳐 표시 (grid 컬럼을 변경할 필요 없음) */}
       <Drawer id="user-drawer" open={isUserDrawerOpen} role="dialog" aria-hidden={!isUserDrawerOpen}>
-        <UserList users={users} isAdmin={isAdmin} onLeave={() => {}} onDelete={onDelete} />
+        <UserList users={users} isAdmin={isAdmin} onLeave={onLeave} onDelete={onDelete} />
       </Drawer>
 
       {/* 오버레이: Drawer 열렸을 때만 보임, 클릭하면 닫힘 */}

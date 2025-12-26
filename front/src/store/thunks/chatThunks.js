@@ -133,3 +133,11 @@ export const deleteChatRoom = createAsyncThunk("chat/deleteChatRoom", async (cha
     return thunkAPI.rejectWithValue(error);
   }
 });
+
+export const deleteChatMember = createAsyncThunk("chat/deleteChatMember", async (chatMemberId, thunkAPI) => {
+  try {
+    await axiosInstance.delete(`/api/chatmember/${chatMemberId}`);
+  } catch (error) {
+    return thunkAPI.rejectWithValue(error);
+  }
+});
