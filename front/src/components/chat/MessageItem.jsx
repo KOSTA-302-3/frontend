@@ -42,6 +42,7 @@ export default function MessageItem({ message }) {
   }
 
   const isMe = messageWithType.type === "me";
+  const isImage = messageWithType.messageType === "IMAGE";
   return (
     <Row $right={isMe} aria-live="polite">
       {/* 왼쪽 아바타 (다른사람) */}
@@ -60,7 +61,20 @@ export default function MessageItem({ message }) {
         </MetaRow>
 
         <Bubble $me={isMe} $other={!isMe}>
-          {messageWithType.text}
+          {/* ⭐ TEXT / IMAGE 분기 */}
+          {isImage ? (
+            <img
+              src={messageWithType.text} // IMAGE일 때 text = imageUrl
+              alt="chat image"
+              style={{
+                maxWidth: "220px",
+                borderRadius: "8px",
+                display: "block",
+              }}
+            />
+          ) : (
+            messageWithType.text
+          )}
         </Bubble>
       </Container>
 
