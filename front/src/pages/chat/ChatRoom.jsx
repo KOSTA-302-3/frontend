@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from "react";
+import React, { use, useCallback, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import MessageList from "../../components/chat/MessageList";
 import ChatInput from "../../components/chat/ChatInput";
@@ -15,8 +15,8 @@ import * as S from "./ChatRoom.Style";
 import { resetMessages } from "../../store/slices/messagesSlice";
 import { resetChatMembers } from "../../store/slices/chatMembersSlice";
 import { fetchNewMessages } from "../../store/thunks/notificationThunks";
-import axios from "axios";
 import axiosInstance from "../../api/axiosInstance";
+import { selectAllMessages, selectAllUsers } from "../../store/slices/selector";
 
 const { Wrapper, LeftMessages, InputSlot, Drawer, Overlay, HamburgerButton } = S;
 
@@ -33,29 +33,29 @@ export default function ChatRoom() {
     isAdmin = true;
   }
 
-  const messages = useSelector(
-    (state) => state.messages.allIds.map((id) => state.messages.byId[id]),
-    (prev, next) => JSON.stringify(prev) === JSON.stringify(next) // 비교 함수
-  );
-
-  const users = useSelector(
-    (state) => state.chatMembers.allIds.map((id) => state.chatMembers.byId[id]),
-    (prev, next) => JSON.stringify(prev) === JSON.stringify(next) // 비교 함수
-  );
+  const messages = useSelector(selectAllMessages);
+  const users = useSelector(selectAllUsers);
 
   const [isUserDrawerOpen, setUserDrawerOpen] = useState(false);
 
   useEffect(() => {
-    dispatch(enterChatRoomAndConnect({ chatroomId })).then(() => {
-      dispatch(fetchNewMessages());
-    });
+    const fetchData = async () => {
+      dispatch(enterChatRoomAndConnect({ chatroomId }));
+      setTimeout(() => {
+        dispatch(fetchNewMessages());
+      }, 500);
+    };
+    fetchData();
     return () => {
       disconnectChatSocket();
       dispatch(resetMessages());
       dispatch(resetChatMembers());
-      dispatch(fetchNewMessages());
     };
   }, [dispatch, chatroomId]);
+
+  useEffect(() => {
+    dispatch(fetchNewMessages());
+  }, [dispatch]);
 
   // ESC로 닫기
   useEffect(() => {

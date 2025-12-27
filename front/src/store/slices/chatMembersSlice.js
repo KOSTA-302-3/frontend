@@ -19,6 +19,7 @@ const chatMembersSlice = createSlice({
       });
     },
     addChatMember(state, action) {
+      console.log("Adding chat member:", action.payload);
       const u = action.payload;
       if (!state.byId[u.id]) {
         state.byId[u.id] = u;
