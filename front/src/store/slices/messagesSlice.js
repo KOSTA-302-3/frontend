@@ -35,6 +35,20 @@ const messagesSlice = createSlice({
         state.byId[messageId].unreadCount = 0;
       }
     },
+    updateUnreadCount(state, action) {
+      const { lastRead } = action.payload;
+      // lastRead 이후 메시지들의 unreadCount를 1 감소
+      console.log("Updating unread counts for messages after:", lastRead);
+      console.log("byId values:", Object.values(state.byId));
+      Object.values(state.byId).forEach((msg) => {
+        if (msg.id > lastRead && msg.unreadCount > 0) {
+          console.log("Decreasing unread count for message:", msg.id);
+          console.log("Before:", msg.unreadCount);
+          msg.unreadCount -= 1;
+        }
+      });
+    },
+
     setMessages(state, action) {
       const arr = action.payload;
       state.byId = {};
@@ -51,5 +65,5 @@ const messagesSlice = createSlice({
   },
 });
 
-export const { addMessage, prependMessages, markRead, setMessages, resetMessages } = messagesSlice.actions;
+export const { addMessage, prependMessages, markRead, setMessages, resetMessages, updateUnreadCount } = messagesSlice.actions;
 export default messagesSlice.reducer;
