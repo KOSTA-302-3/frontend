@@ -1,5 +1,5 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
-import { setChatMembers } from "../slices/chatMembersSlice";
+import { addChatMember, setChatMembers } from "../slices/chatMembersSlice";
 import { setMessages, prependMessages } from "../slices/messagesSlice";
 import axiosInstance from "../../api/axiosInstance";
 import { setChatroom } from "../slices/chatroomSlice";
@@ -95,6 +95,12 @@ export const enterChatRoom = createAsyncThunk("chat/enterChatRoom", async ({ cha
     const response = await axiosInstance.post(`/api/chatmember`, {
       chatroomId: chatroomId,
     });
+    console.log("Entered chat room, member info:", response.data);
+    const member = response.data;
+
+    if (member && member.id != null) {
+      dispatch(addChatMember(member));
+    } 
     return response.data;
   } catch (error) {
     return thunkAPI.rejectWithValue(error);
@@ -108,6 +114,7 @@ export const enterChatRoomAndConnect = createAsyncThunk(
 
     // 입장
     await dispatch(enterChatRoom({ chatroomId })).unwrap();
+    console.log("Entered chat room:", chatroomId);
 
     // WS 연결
     connectChatSocket({
@@ -116,9 +123,13 @@ export const enterChatRoomAndConnect = createAsyncThunk(
       onOpen: () => {
         dispatch(fetchMyInfo());
         dispatch(getChatMemberRole(chatroomId));
-        dispatch(fetchChatInit(chatroomId));
+        setTimeout(() => {
+          dispatch(fetchChatInit(chatroomId));
+        }, 500);
+        
       },
     });
+    return true;
   }
 );
 
