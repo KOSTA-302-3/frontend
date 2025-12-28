@@ -1,5 +1,5 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
-import { setChatMembers } from "../slices/chatMembersSlice";
+import { addChatMember, setChatMembers } from "../slices/chatMembersSlice";
 import { setMessages, prependMessages } from "../slices/messagesSlice";
 import axiosInstance from "../../api/axiosInstance";
 import { setChatroom } from "../slices/chatroomSlice";
@@ -45,25 +45,21 @@ export const fetchChatInit = createAsyncThunk("chat/fetchInit", async (chatroomI
 /*
   과거 메시지 로딩 thunk
 */
-export const loadOlderMessages = createAsyncThunk("chat/loadOlderMessages", async (chatroomId, thunkAPI) => {
+export const loadOlderMessages = createAsyncThunk("chat/loadOlderMessages", async ({ chatroomId, page }, thunkAPI) => {
   const { dispatch } = thunkAPI;
 
   // 서버 요청 흉내
   await new Promise((r) => setTimeout(r, 700));
 
-  const olderMessages = [
-    {
-      id: `m-old-${Date.now()}`,
-      type: "other",
-      userId: "u2",
-      username: "민수",
-      avatarUrl: "https://i.pravatar.cc/40?u=2",
-      text: "이전 대화 예시입니다.",
-      ts: Date.now() - 1000 * 60 * 60,
-    },
-  ];
+  try {
+    const response = await axiosInstance.get(`/api/message/older/${chatroomId}?page=${page}`);
+    const messages = response.data.content; // 역순 정렬
+    const olderMessages = [...messages].reverse();
+    dispatch(prependMessages(olderMessages));
+  } catch (error) {
+    return thunkAPI.rejectWithValue(error);
+  }
 
-  dispatch(prependMessages(olderMessages));
   return true;
 });
 
@@ -99,6 +95,12 @@ export const enterChatRoom = createAsyncThunk("chat/enterChatRoom", async ({ cha
     const response = await axiosInstance.post(`/api/chatmember`, {
       chatroomId: chatroomId,
     });
+    console.log("Entered chat room, member info:", response.data);
+    const member = response.data;
+
+    if (member && member.id != null) {
+      dispatch(addChatMember(member));
+    } 
     return response.data;
   } catch (error) {
     return thunkAPI.rejectWithValue(error);
@@ -112,6 +114,7 @@ export const enterChatRoomAndConnect = createAsyncThunk(
 
     // 입장
     await dispatch(enterChatRoom({ chatroomId })).unwrap();
+    console.log("Entered chat room:", chatroomId);
 
     // WS 연결
     connectChatSocket({
@@ -120,9 +123,13 @@ export const enterChatRoomAndConnect = createAsyncThunk(
       onOpen: () => {
         dispatch(fetchMyInfo());
         dispatch(getChatMemberRole(chatroomId));
-        dispatch(fetchChatInit(chatroomId));
+        setTimeout(() => {
+          dispatch(fetchChatInit(chatroomId));
+        }, 500);
+        
       },
     });
+    return true;
   }
 );
 
