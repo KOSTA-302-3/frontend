@@ -16,6 +16,12 @@ const authSlice = createSlice({
     updatePrivacy(state, action) {
       state.user.isPrivate = action.payload;
     },
+    updateUser(state, action) {
+      state.user = {
+        ...state.user,
+        ...action.payload,
+      }
+    }
   },
   extraReducers: (builder) => {
     builder
@@ -55,5 +61,5 @@ const authSlice = createSlice({
   },
 });
 
-export const { setIsLogin, updatePrivacy } = authSlice.actions;
+export const { setIsLogin, updatePrivacy, updateUser } = authSlice.actions;
 export default authSlice.reducer;

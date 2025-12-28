@@ -40,7 +40,7 @@ export default function BottomNav({
 
       <ProfileItem onClick={onProfile}>
         <ProfileImageWrapper>
-          <ProfileImage src={user?.ProfileImage} />
+          <ProfileImage src={user?.profileImage} />
         </ProfileImageWrapper>
         프로필
       </ProfileItem>
