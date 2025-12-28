@@ -1,8 +1,9 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { fetchMyInfo, getChatMemberRole } from "../thunks/authThunks";
+import { fetchMyInfo, fetchMyProfile, getChatMemberRole } from "../thunks/authThunks";
 
 const initialState = {
   userId: null,
+  user: null,
   role: null,
   online: false,
   loading: false,
@@ -11,7 +12,11 @@ const initialState = {
 const authSlice = createSlice({
   name: "auth",
   initialState,
-  reducers: {},
+  reducers: {
+    updatePrivacy(state, action) {
+      state.user.isPrivate = action.payload;
+    },
+  },
   extraReducers: (builder) => {
     builder
       .addCase(fetchMyInfo.pending, (state) => {
@@ -35,9 +40,20 @@ const authSlice = createSlice({
       .addCase(getChatMemberRole.rejected, (state) => {
         state.loading = false;
         state.role = null;
+      })
+      .addCase(fetchMyProfile.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(fetchMyProfile.fulfilled, (state, action) => {
+        state.loading = false;
+        state.user = action.payload;
+      })
+      .addCase(fetchMyProfile.rejected, (state) => {
+        state.loading = false;
+        state.user = null;
       });
   },
 });
 
-export const { setIsLogin } = authSlice.actions;
+export const { setIsLogin, updatePrivacy } = authSlice.actions;
 export default authSlice.reducer;

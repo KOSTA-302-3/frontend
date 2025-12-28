@@ -1,23 +1,44 @@
 import { Outlet, useNavigate } from "react-router-dom";
 import "./SettingsPage.css";
-import { useState } from "react";
 import SettingItem from "../../components/user/SettingItem";
 import SettingToggle from "../../components/user/SettingToggle";
 import axiosInstance from "../../api/axiosInstance";
+import { useDispatch, useSelector } from "react-redux";
+import { updatePrivacy } from "../../store/slices/authSlice";
 
 function SettingsPage() {
   const nav = useNavigate();
-  const [isPrivate, setPrivate] = useState();
+  const dispatch = useDispatch();
+  const loginUser = useSelector((state) => state.auth.user);
 
   const togglePrivate = () => {
-    setPrivate((prev) => !prev);
-    // TODO: axios PUT /api/users/privacy
+    axiosInstance({
+      url: "/api/user/privacy",
+      method: "PUT",
+    })
+      .then((res) => {
+        console.log("result: ", res);
+        dispatch(updatePrivacy(res.data.isPrivate));
+      })
+      .catch(() => {
+        alert("비공개 전환 실패");
+      });
   };
 
   const withdraw = () => {
-    //if (window.confirm("정말 탈퇴하시겠어요? 되돌릴 수 없습니다.")) {
-      // TODO: axios DELETE /api/user/softdelete
-    //}
+    if (!confirm("정말 탈퇴하시겠어요? 되돌릴 수 없습니다.")) return;
+
+    axiosInstance({
+      url: "/api/user/softdelete",
+      method: "DELETE",
+    })
+      .then((res) => {
+        console.log("result: ", res);
+        nav("/login");
+      })
+      .catch(() => {
+        alert("탈퇴 실패");
+      });
   };
 
   const logout = () => {
@@ -25,7 +46,9 @@ function SettingsPage() {
         url: "/api/logout",
         method: "post",
     })
-    nav("/login");
+    .finally(() => {
+      nav("/login");
+    })
   }
 
   return (
@@ -44,7 +67,7 @@ function SettingsPage() {
         <SettingToggle
           title="비공개 계정"
           desc="승인된 팔로워만 게시물을 볼 수 있습니다"
-          checked={isPrivate}
+          checked={loginUser.isPrivate}
           onChange={togglePrivate}
         />
       </div>

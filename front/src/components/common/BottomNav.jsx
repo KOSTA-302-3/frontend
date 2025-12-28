@@ -11,6 +11,7 @@ import {
   ProfileItem,
   ProfileImageWrapper,
 } from "./BottomNav.styles";
+import { useDispatch, useSelector } from "react-redux";
 
 export default function BottomNav({
   onHome,
@@ -19,6 +20,8 @@ export default function BottomNav({
   onProfile,
   onSetting,
 }) {
+  const user = useSelector((state) => state.auth.user);
+
   return (
     <Bar>
       <NavItem onClick={onHome}>
@@ -37,7 +40,7 @@ export default function BottomNav({
 
       <ProfileItem onClick={onProfile}>
         <ProfileImageWrapper>
-          <ProfileImage src="https://i.namu.wiki/i/TUPFV3G5bPhTqh4VvoRYnmkRxa3SoPGPUTzQZt-er6orxSIDgJi_CTbMAFBXyZWw6xJyTOLkbjmL6YpMhFkj-Q.webp" />
+          <ProfileImage src={user?.ProfileImage} />
         </ProfileImageWrapper>
         프로필
       </ProfileItem>
