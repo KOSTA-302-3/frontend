@@ -1,8 +1,25 @@
 import { useNavigate } from 'react-router-dom';
 import './ListContent.css';
+import axiosInstance from '../../api/axiosInstance';
 
-function BlockList({ users, posts, tab }) {
+function BlockList({ users, setUsers, posts, tab }) {
   const nav = useNavigate();
+
+  const unblock = (userId) => {
+    if (!confirm("차단 해제하시겠습니까?")) return;
+
+    axiosInstance({
+      url: `/api/block/USER/${userId}`,
+      method: "DELETE",
+    })
+      .then(() => {
+        alert("차단 해제했습니다.");
+        setUsers(prev => prev.filter(u => u.userId !== userId));
+      })
+      .catch(() => {
+        alert("차단 해제 실패");
+      });
+  }
 
   if (tab === 0) {
     if (!users || users.length === 0) {
@@ -12,14 +29,14 @@ function BlockList({ users, posts, tab }) {
     return (
       <div className="list-body">
         {users.map(user => (
-          <div className="list-item" key={user.id} onClick={() => nav("/user/" + user.userId)}>
-            <img src={user.profileImage} className="avatar" />
+          <div className="list-item" key={user.id}>
+            <img src={user.profileImage} className="avatar"/>
 
-            <div className="info">
+            <div className="info" onClick={() => nav("/user/" + user.userId)}>
               <div className="username">{user.username}</div>
             </div>
 
-            <button>차단 해제</button>
+            <button onClick={() => unblock(user.userId)}>차단 해제</button>
           </div>
         ))}
       </div>

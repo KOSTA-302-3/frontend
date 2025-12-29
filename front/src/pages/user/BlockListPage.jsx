@@ -40,6 +40,7 @@ function BlockListPage() {
       <BlockList
         tab={tab}
         users={blockUsers}
+        setUsers={setBlockUsers}
         posts={blockPosts}
       />
     </div>
