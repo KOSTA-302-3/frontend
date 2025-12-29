@@ -11,23 +11,25 @@ export const ModalWrapper = styled(Modal)`
     padding-bottom: 0 !important;
     max-width: 100% !important;
     width: 100% !important;
+   
   }
 
   .ant-modal-container{
-    background-color:white;
+    background-color:#130016;
     max-height : 70vh;
     display: flex;
     overflow-y : auto;
     flex-direction: column;
-    height : 50vh
+    height : 50vh;
+  
 
-    
+
 
   }
 
 .ant-modal-close{
 
-  
+
 }
 
   // 3. 헤더 디자인
@@ -41,7 +43,7 @@ export const ModalWrapper = styled(Modal)`
 
   .ant-modal-title,
   .ant-modal-close {
-    color: black;
+color: white !important;
   }
 
   // 4. 모달 본문 (Body) 스크롤 처리

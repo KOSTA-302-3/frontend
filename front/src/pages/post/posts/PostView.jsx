@@ -113,6 +113,7 @@ const PostView = () => {
           onShare={() => console.log("공유 클릭")}
           postId={item.postId}
           userCheck={item.userCheck}
+          createUserId={item.createUserId}
         />
       ))}
     </Container>

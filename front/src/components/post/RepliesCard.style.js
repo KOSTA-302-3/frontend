@@ -2,9 +2,10 @@ import styled from "styled-components";
 
 export const Card = styled.div`
   width: 95%;
-  background: white;
+  background: black;
   overflow: hidden;
   margin-top: 1vh;
+  border-top: 1px solid #e6c0c7;
 `;
 
 export const Header = styled.div`
@@ -12,6 +13,8 @@ export const Header = styled.div`
   align-items: center;
   padding: 1vh 1vw;
   gap: 1vw;
+  background: black;
+  border-top: transparent;
 `;
 
 export const ProfileImageWrapper = styled.div`
@@ -24,11 +27,13 @@ export const Username = styled.div`
   font-size: 2vh;
   font-weight: bold;
   flex: 1;
+  color: #e6c0c7;
 `;
 
 export const Content = styled.div`
   padding: 0 1vw 1vh;
-  color: black;
+  color: #e6c0c7;
+  background: black;
 `;
 
 export const LikesCount = styled.div`
