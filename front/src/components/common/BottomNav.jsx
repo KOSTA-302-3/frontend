@@ -5,6 +5,7 @@ import {
   SearchOutlined,
 } from "@ant-design/icons";
 import ProfileImage from "./ProfileImage";
+import person_basic from "../../assets/person_basic.png";
 import {
   Bar,
   NavItem,
@@ -13,6 +14,7 @@ import {
 } from "./BottomNav.styles";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
+import person_basic from "../../assets/person_basic.png";
 
 export default function BottomNav({
   onHome,
@@ -21,6 +23,7 @@ export default function BottomNav({
   onProfile,
   onSetting,
 }) {
+  perso;
   const user = useSelector((state) => state.auth.user);
   const nav = useNavigate();
 
@@ -42,7 +45,9 @@ export default function BottomNav({
 
       <ProfileItem onClick={onProfile}>
         <ProfileImageWrapper>
-          <ProfileImage src={user?.profileImage} />
+          <ProfileImage
+            src={user?.profileImage ? user?.profileImage : person_basic}
+          />
         </ProfileImageWrapper>
         프로필
       </ProfileItem>
