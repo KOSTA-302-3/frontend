@@ -37,7 +37,7 @@ function SignUpProfile() {
     })
       .then((res) => {
         const imageUrl = res.data;
-        console.log("url: ", imageUrl);
+        //console.log("url: ", imageUrl);
 
         setNewUser({
           ...newUser,

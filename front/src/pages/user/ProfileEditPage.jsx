@@ -40,7 +40,7 @@ function ProfileEditPage() {
     })
       .then((res) => {
         const imageUrl = res.data;
-        console.log("url: ", imageUrl);
+        //console.log("url: ", imageUrl);
         dispatch(updateUser({ profileImage: imageUrl}));
       })
       .catch(() => {

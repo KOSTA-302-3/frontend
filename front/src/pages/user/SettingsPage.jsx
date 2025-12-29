@@ -17,7 +17,7 @@ function SettingsPage() {
       method: "PUT",
     })
       .then((res) => {
-        console.log("result: ", res);
+        //console.log("result: ", res);
         dispatch(updatePrivacy(res.data.isPrivate));
       })
       .catch(() => {
@@ -33,7 +33,7 @@ function SettingsPage() {
       method: "DELETE",
     })
       .then((res) => {
-        console.log("result: ", res);
+        //console.log("result: ", res);
         nav("/login");
       })
       .catch(() => {

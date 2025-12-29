@@ -22,7 +22,7 @@ function UserInfo({ user }) {
       method: "GET",
     })
       .then((res) => {
-        console.log("result: ", res);
+        //console.log("result: ", res);
         setIsFollowing(res.data);
         setFollowerCount(user.followerCount);
       })
@@ -40,7 +40,7 @@ function UserInfo({ user }) {
       },
     })
       .then((res) => {
-        console.log("result: ", res);
+        //console.log("result: ", res);
         setIsFollowing(true);
         setFollowerCount((cnt) => cnt + 1);
       })
@@ -57,7 +57,7 @@ function UserInfo({ user }) {
       method: "DELETE",
     })
       .then((res) => {
-        console.log("result: ", res);
+        //console.log("result: ", res);
         setIsFollowing(false);
         setFollowerCount((cnt) => cnt - 1);
       })
@@ -72,7 +72,7 @@ function UserInfo({ user }) {
       method: "POST",
     })
       .then((res) => {
-        console.log("result: ", res);
+        //console.log("result: ", res);
         nav(`/chat/${res.chatroomId}`);
       })
       .catch(() => {
