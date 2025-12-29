@@ -1,8 +1,9 @@
+import React, { useEffect, useState, useCallback } from "react";
 import styled from "styled-components";
 import { ArrowLeftOutlined } from "@ant-design/icons";
 import SearchBar from "../../components/common/SearchBar";
-import SearchGrid from "../../components/common/SearchGrid";
 import { useNavigate } from "react-router-dom";
+import axiosInstance from "../../api/axiosInstance";
 
 const Wrapper = styled.div`
   width: 100%;
@@ -41,21 +42,107 @@ const SearchBarWrapper = styled.div`
 `;
 
 const Content = styled.div`
-  margin-top: 1vh;
+  margin-top: 13vh;
   padding: 0;
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: 0;
-  width: 300%;
+  gap: 1px;
+  width: 100%;
   padding-bottom: 10vh;
+`;
+
+const GridItem = styled.div`
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  background-color: #333;
+  overflow: hidden;
+  cursor: pointer;
+
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
 `;
 
 export default function SearchPage() {
   const nav = useNavigate();
+  const [posts, setPosts] = useState([]);
+  const [pageNo, setPageNo] = useState(1);
+  const [isLoading, setIsLoading] = useState(false);
+  const [hasMore, setHasMore] = useState(true);
+
+  const fetchPosts = useCallback(
+    async (isReset = false) => {
+      if (isLoading) return;
+
+      setIsLoading(true);
+      const currentPage = isReset ? 1 : pageNo;
+
+      try {
+        const response = await axiosInstance.get("/api/posts/getAllOnFilter", {
+          params: {
+            pageNo: currentPage,
+            postLevel: 1,
+          },
+          withCredentials: true,
+        });
+
+        const newContent = response.data.content;
+
+        if (newContent.length === 0) {
+          setHasMore(false);
+        }
+
+        if (isReset) {
+          setPosts(newContent);
+        } else {
+          setPosts((prev) => [...prev, ...newContent]);
+        }
+      } catch (e) {
+        console.error(e);
+      } finally {
+        setIsLoading(false);
+      }
+    },
+    [pageNo, isLoading]
+  );
+
+  useEffect(() => {
+    setPageNo(1);
+    setHasMore(true);
+    fetchPosts(true);
+  }, []);
+
+  useEffect(() => {
+    if (pageNo > 1) {
+      fetchPosts(false);
+    }
+  }, [pageNo]);
+
+  const handleScroll = () => {
+    const scrollTop = window.scrollY;
+    const clientHeight = window.innerHeight;
+    const scrollHeight = document.documentElement.scrollHeight;
+
+    if (
+      scrollTop + clientHeight >= scrollHeight - 100 &&
+      !isLoading &&
+      hasMore
+    ) {
+      setPageNo((prev) => prev + 1);
+    }
+  };
+
+  useEffect(() => {
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, [isLoading, hasMore]);
 
   const onBack = () => {
     nav(-1);
   };
+
   return (
     <Wrapper>
       <Header>
@@ -66,7 +153,17 @@ export default function SearchPage() {
       </Header>
 
       <Content>
-        <SearchGrid />
+        {posts.map((item) => (
+          <GridItem
+            key={item.postId}
+            onClick={() => console.log("Post Clicked", item.postId)}
+          >
+            <img
+              src={item.imageSourcesList || "https://placeholder.com/post.png"}
+              alt="post thumbnail"
+            />
+          </GridItem>
+        ))}
       </Content>
     </Wrapper>
   );
