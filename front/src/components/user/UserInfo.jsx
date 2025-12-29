@@ -10,13 +10,26 @@ import axiosInstance from "../../api/axiosInstance";
 
 function UserInfo({ user }) {
   const nav = useNavigate();
-  const [isFollowing, setIsFollowing] = useState(user.isFollowing);
+  const [isFollowing, setIsFollowing] = useState(false);
   const [followerCount, setFollowerCount] = useState(user.followerCount);
 
   useEffect(() => {
-    setIsFollowing(user.isFollowing);
-    setFollowerCount(user.followerCount);
-  }, [user]);
+    if (user.isMe) return;
+    if (!user.userId) return;
+
+    axiosInstance({
+      url: `/api/follow/${user.userId}`,
+      method: "GET",
+    })
+      .then((res) => {
+        console.log("result: ", res);
+        setIsFollowing(res.data);
+        setFollowerCount(user.followerCount);
+      })
+      .catch(() => {
+        alert("팔로우 조회 실패");
+      });
+  }, [user.userId]);
 
   const follow = () => {
     axiosInstance({
@@ -59,7 +72,7 @@ function UserInfo({ user }) {
       method: "POST",
     })
       .then((res) => {
-        //console.log("result: ", res);
+        console.log("result: ", res);
         nav(`/chat/${res.chatroomId}`);
       })
       .catch(() => {
@@ -84,7 +97,7 @@ function UserInfo({ user }) {
             <UserStat label="게시물" value={0} />
             <UserStat
               label="팔로워"
-              value={followerCount}
+              value={followerCount || 0}
               onClick={() => nav(`/user/${user.userId}/follow?tab=followers`)}
             />
             <UserStat
