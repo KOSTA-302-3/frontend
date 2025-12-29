@@ -1,5 +1,12 @@
-import { addChatMember, removeChatMember, setOnline } from "../store/slices/chatMembersSlice";
+import {
+  addChatMember,
+  removeChatMember,
+  resetChatMembers,
+  setChatMembers,
+  setOnline,
+} from "../store/slices/chatMembersSlice";
 import { addMessage, updateUnreadCount } from "../store/slices/messagesSlice";
+import { fetchChatMembers } from "../store/thunks/chatThunks";
 const chatIp = import.meta.env.VITE_WS_CHAT_IP || "";
 
 let socket = null;
@@ -42,11 +49,13 @@ export function connectChatSocket({ roomId, dispatch, onOpen }) {
         return;
       }
       if (msg.messageType === "MEMBER_IN") {
-        dispatch(addChatMember(msg.chatroomMemberDTO));
+        dispatch(resetChatMembers());
+        dispatch(fetchChatMembers(roomId));
         return;
       }
       if (msg.messageType === "MEMBER_OUT") {
-        dispatch(removeChatMember(msg.userId));
+        dispatch(resetChatMembers());
+        dispatch(fetchChatMembers(roomId));
         return;
       }
       dispatch(addMessage(msg));

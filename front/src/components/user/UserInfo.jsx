@@ -102,7 +102,7 @@ function UserInfo({ user, postCount, isBlocked, setIsBlocked, isFollowing, setIs
     })
       .then((res) => {
         //console.log("result: ", res);
-        nav(`/chat/${res.chatroomId}`);
+        nav(`/chat/${res.data}`);
       })
       .catch(() => {
         alert("메시지를 보낼 수 없습니다.");
@@ -174,10 +174,7 @@ function UserInfo({ user, postCount, isBlocked, setIsBlocked, isFollowing, setIs
       <div className={`actions ${user.isMe ? "me" : "other"}`}>
         {user.isMe ? (
           <>
-            <ProfileButton
-              btnType="default"
-              onClick={() => nav("/settings/profile")}
-            >
+            <ProfileButton btnType="default" onClick={() => nav("/settings/profile")}>
               프로필 편집
             </ProfileButton>
             <ProfileButton btnType="default">프로필 공유</ProfileButton>
