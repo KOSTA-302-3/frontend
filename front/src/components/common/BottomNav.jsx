@@ -22,7 +22,6 @@ export default function BottomNav({
   onProfile,
   onSetting,
 }) {
-  perso;
   const user = useSelector((state) => state.auth.user);
   const nav = useNavigate();
 
