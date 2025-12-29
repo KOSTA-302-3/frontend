@@ -1,4 +1,4 @@
-import React, { use, useCallback, useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import MessageList from "../../components/chat/MessageList";
 import ChatInput from "../../components/chat/ChatInput";
@@ -41,9 +41,9 @@ export default function ChatRoom() {
   useEffect(() => {
     const fetchData = async () => {
       dispatch(enterChatRoomAndConnect({ chatroomId }));
-      setTimeout(() => {
-        dispatch(fetchNewMessages());
-      }, 500);
+      // setTimeout(() => {
+      //   dispatch(fetchNewMessages());
+      // }, 500);
     };
     fetchData();
     return () => {

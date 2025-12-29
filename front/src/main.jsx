@@ -100,6 +100,11 @@ const router = createBrowserRouter([
           { path: "badges", element: <BadgeManagement /> },
         ],
       },
+      {
+        path: "/*",
+        element: <MainLayout />,
+        children: [{ path: "*", element: <PostView selectMenu={0} /> }],
+      },
     ],
   },
 ]);

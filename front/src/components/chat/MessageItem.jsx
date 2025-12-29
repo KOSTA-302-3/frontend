@@ -17,6 +17,7 @@ const { Row, Container, Avatar, MetaRow, Time, Bubble, UnreadBadge } = S;
 function formatTime(ts) {
   if (!ts) return "";
   const d = new Date(ts);
+  d.setHours(d.getHours() + 9);
   return d.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" });
 }
 
