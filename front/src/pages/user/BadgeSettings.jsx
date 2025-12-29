@@ -34,6 +34,20 @@ function BadgeSettings() {
     }
   };
 
+  const changeBadge = (id, name) => {
+    if (!confirm(name + "(으)로 뱃지를 바꾸시겠습니까?")) return;
+    axiosInstance({
+      url: `/api/user/custom/BADGE/${id}`,
+      method: "PUT",
+    })
+      .then(() => {
+        alert("뱃지 변경 완료!");
+      })
+      .catch(() => {
+        alert("뱃지 변경을 실패했습니다.");
+      });
+  }
+
   if (loading) {
     return (
       <Container>
@@ -61,7 +75,7 @@ function BadgeSettings() {
       ) : (
         <BadgeGrid>
           {myBadges.map((badge) => (
-            <BadgeCard key={badge.badgeId}>
+            <BadgeCard key={badge.badgeId} onClick={() => changeBadge(badge.badgeId, badge.name)}>
               <BadgeImage src={badge.imageUrl} alt={badge.name} />
               <BadgeName>{badge.name}</BadgeName>
               <BadgeDescription>{badge.description}</BadgeDescription>

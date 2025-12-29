@@ -11,29 +11,14 @@ import { Dropdown } from "antd";
 import { EllipsisOutlined } from "@ant-design/icons";
 import ReportModal from "../common/ReportModal";
 
-function UserInfo({ user, postCount, isBlocked, setIsBlocked }) {
+function UserInfo({ user, postCount, isBlocked, setIsBlocked, isFollowing, setIsFollowing }) {
   const nav = useNavigate();
-  const [isFollowing, setIsFollowing] = useState(false);
   const [followerCount, setFollowerCount] = useState(user.followerCount);
   const [reportOpen, setReportOpen] = useState(false);
 
   useEffect(() => {
-    if (user.isMe) return;
-    if (!user.userId) return;
-
-    axiosInstance({
-      url: `/api/follow/${user.userId}`,
-      method: "GET",
-    })
-      .then((res) => {
-        //console.log("result: ", res);
-        setIsFollowing(res.data);
-        setFollowerCount(user.followerCount);
-      })
-      .catch(() => {
-        alert("팔로우 조회 실패");
-      });
-  }, [user.userId]);
+    setFollowerCount(user.followerCount);
+  }, [user]);
 
   const follow = () => {
     axiosInstance({
@@ -44,12 +29,12 @@ function UserInfo({ user, postCount, isBlocked, setIsBlocked }) {
       },
     })
       .then((res) => {
-        //console.log("result: ", res);
-        setIsFollowing(true);
+        console.log("result: ", res);
+        setIsFollowing(res.data);
         setFollowerCount((cnt) => cnt + 1);
       })
       .catch(() => {
-        alert("팔로우 실패");
+        alert("이미 팔로우 요청을 보냈습니다.");
       });
   };
 
@@ -158,7 +143,7 @@ function UserInfo({ user, postCount, isBlocked, setIsBlocked }) {
         <div className="profile-right">
           <h2 className="username-row">
             <span className="username">
-              {user.username}
+              {user.username} &nbsp;
               <Badge imageUrl={user.customDTO?.badgeDTO?.imageUrl} />
             </span>
 
@@ -196,18 +181,12 @@ function UserInfo({ user, postCount, isBlocked, setIsBlocked }) {
           </>
         ) : (
           <>
-            {isFollowing ? (
-              <ProfileButton btnType="point" onClick={unfollow}>
-                팔로우 중
-              </ProfileButton>
-            ) : (
-              <ProfileButton btnType="point" onClick={follow}>
-                팔로우
-              </ProfileButton>
-            )}
-            <ProfileButton btnType="default" onClick={makeChatroom}>
-              메시지 보내기
-            </ProfileButton>
+            {isFollowing ? 
+              <ProfileButton btnType="default" onClick={unfollow}>팔로우 중</ProfileButton>
+              :
+              <ProfileButton btnType="point" onClick={follow}>팔로우</ProfileButton>
+            }
+            <ProfileButton btnType="default" onClick={makeChatroom}>메시지 보내기</ProfileButton>
           </>
         )}
       </div>
