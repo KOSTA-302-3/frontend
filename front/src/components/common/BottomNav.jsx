@@ -14,7 +14,6 @@ import {
 } from "./BottomNav.styles";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import person_basic from "../../assets/person_basic.png";
 
 export default function BottomNav({
   onHome,
