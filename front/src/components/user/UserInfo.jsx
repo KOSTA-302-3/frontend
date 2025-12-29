@@ -11,29 +11,16 @@ import { Dropdown } from "antd";
 import { EllipsisOutlined } from "@ant-design/icons";
 import ReportModal from "../common/ReportModal";
 
-function UserInfo({ user, postCount, isBlocked, setIsBlocked }) {
+function UserInfo({ user, postCount, isBlocked, setIsBlocked, isFollowing, setIsFollowing }) {
   const nav = useNavigate();
-  const [isFollowing, setIsFollowing] = useState(false);
   const [followerCount, setFollowerCount] = useState(user.followerCount);
+  const [followingCount, setFollowingCount] = useState(user.followingCount);
   const [reportOpen, setReportOpen] = useState(false);
 
   useEffect(() => {
-    if (user.isMe) return;
-    if (!user.userId) return;
-
-    axiosInstance({
-      url: `/api/follow/${user.userId}`,
-      method: "GET",
-    })
-      .then((res) => {
-        //console.log("result: ", res);
-        setIsFollowing(res.data);
-        setFollowerCount(user.followerCount);
-      })
-      .catch(() => {
-        alert("팔로우 조회 실패");
-      });
-  }, [user.userId]);
+    setFollowerCount(user.followerCount);
+    setFollowingCount(user.followingCount);
+  }, [user]);
 
   const follow = () => {
     axiosInstance({
@@ -44,12 +31,16 @@ function UserInfo({ user, postCount, isBlocked, setIsBlocked }) {
       },
     })
       .then((res) => {
-        //console.log("result: ", res);
-        setIsFollowing(true);
-        setFollowerCount((cnt) => cnt + 1);
+        console.log("result: ", res.data);
+        if (res.data.pending === true) {
+          setIsFollowing(false);
+        } else {
+          setIsFollowing(true);
+          setFollowerCount((cnt) => cnt + 1);
+        }
       })
       .catch(() => {
-        alert("팔로우 실패");
+        alert("이미 팔로우 요청을 보냈습니다.");
       });
   };
 
@@ -117,11 +108,22 @@ function UserInfo({ user, postCount, isBlocked, setIsBlocked }) {
     })
       .then((res) => {
         //console.log("result: ", res);
-        nav(`/chat/${res.chatroomId}`);
+        nav(`/chat/${res.data}`);
       })
       .catch(() => {
         alert("메시지를 보낼 수 없습니다.");
       });
+  };
+
+  const copyProfileLink = async () => {
+    try {
+      const origin = window.location.origin;
+      const profileUrl = `${origin}/user/${user.userId}`;
+      await navigator.clipboard.writeText(profileUrl);
+      alert("프로필 링크가 복사되었습니다!");
+    } catch (err) {
+      alert("링크 복사에 실패했습니다.", err);
+    }
   };
 
   const moreMenu = {
@@ -158,7 +160,7 @@ function UserInfo({ user, postCount, isBlocked, setIsBlocked }) {
         <div className="profile-right">
           <h2 className="username-row">
             <span className="username">
-              {user.username}
+              {user.username} &nbsp;
               <Badge imageUrl={user.customDTO?.badgeDTO?.imageUrl} />
             </span>
 
@@ -177,7 +179,7 @@ function UserInfo({ user, postCount, isBlocked, setIsBlocked }) {
             />
             <UserStat
               label="팔로잉"
-              value={user.followingCount}
+              value={followingCount || 0}
               onClick={() => nav(`/user/${user.userId}/follow?tab=followings`)}
             />
           </div>
@@ -189,18 +191,15 @@ function UserInfo({ user, postCount, isBlocked, setIsBlocked }) {
       <div className={`actions ${user.isMe ? "me" : "other"}`}>
         {user.isMe ? (
           <>
-            <ProfileButton
-              btnType="default"
-              onClick={() => nav("/settings/profile")}
-            >
+            <ProfileButton btnType="default" onClick={() => nav("/settings/profile")}>
               프로필 편집
             </ProfileButton>
-            <ProfileButton btnType="default">프로필 공유</ProfileButton>
+            <ProfileButton btnType="default" onClick={copyProfileLink}>프로필 공유</ProfileButton>
           </>
         ) : (
           <>
             {isFollowing ? 
-              <ProfileButton btnType="point" onClick={unfollow}>팔로우 중</ProfileButton>
+              <ProfileButton btnType="default" onClick={unfollow}>팔로우 중</ProfileButton>
               :
               <ProfileButton btnType="point" onClick={follow}>팔로우</ProfileButton>
             }

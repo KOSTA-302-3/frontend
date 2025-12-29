@@ -35,6 +35,7 @@ import SignUpProfile from "./pages/signup/SignUpProfile.jsx";
 import SignUpPage from "./pages/signup/SignUpPage.jsx";
 import SignUpDefault from "./pages/signup/SignUpDefault.jsx";
 import SignUpLevel from "./pages/signup/SignUpLevel.jsx";
+import SearchView from "./pages/post/posts/SearchView";
 
 const router = createBrowserRouter([
   {
@@ -58,6 +59,7 @@ const router = createBrowserRouter([
           { path: "chat", element: <Chat /> },
           { path: "chat/:chatroomId", element: <ChatRoom /> },
           { path: "notifications", element: <Notification /> },
+          { path: "searchDetail", element: <SearchView /> },
         ],
       },
 

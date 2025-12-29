@@ -28,6 +28,7 @@ const PostDropDownMenu = ({
 
   const navigate = useNavigate();
   const onClick = async (e) => {
+    console.log(postId);
     switch (Number(e.key)) {
       case 1:
         console.log(postId);

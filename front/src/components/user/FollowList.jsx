@@ -1,6 +1,7 @@
 import { useNavigate } from 'react-router-dom';
 import './ListContent.css';
 import axiosInstance from '../../api/axiosInstance';
+import Badge from '../common/Badge';
 
 function FollowList({ list }) {
   const nav = useNavigate();
@@ -30,7 +31,9 @@ function FollowList({ list }) {
           <img src={user.profileImage} className="avatar" />
 
           <div className="info">
-            <div className="username">{user.username}</div>
+            <div className="username">{user.username} &nbsp;
+              <Badge imageUrl={user.customDTO?.badgeDTO?.imageUrl} />
+            </div>
           </div>
 
           <button onClick={() => makeChatroom(user.userId)}>메시지</button>

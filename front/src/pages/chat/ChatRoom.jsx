@@ -27,6 +27,7 @@ export default function ChatRoom() {
   const dispatch = useDispatch();
   const nav = useNavigate();
   const role = useSelector((state) => state.auth.role);
+  const userId = useSelector((state) => state.auth.userId);
   const [page, setPage] = useState(1);
 
   let isAdmin = false;
@@ -110,16 +111,19 @@ export default function ChatRoom() {
     setPage((p) => p + 1);
   }, [dispatch, chatroomId, page]);
 
-  const onDelete = () => {
-    dispatch(deleteChatRoom(chatroomId));
-    nav("/chat");
+  const onDelete = async () => {
+    await dispatch(deleteChatRoom(chatroomId)).unwrap();
+    setTimeout(() => {
+      nav("/chat");
+    }, 500);
   };
 
-  const onLeave = () => {
-    dispatch(deleteChatMember(chatroomId));
-    nav("/chat");
+  const onLeave = async () => {
+    await dispatch(deleteChatMember(chatroomId)).unwrap();
+    setTimeout(() => {
+      nav("/chat");
+    }, 500);
   };
-
   return (
     <Wrapper>
       <LeftMessages>
@@ -142,7 +146,7 @@ export default function ChatRoom() {
 
       {/* Drawer: Wrapper 내부에 absolute로 겹쳐 표시 (grid 컬럼을 변경할 필요 없음) */}
       <Drawer id="user-drawer" open={isUserDrawerOpen} role="dialog" aria-hidden={!isUserDrawerOpen}>
-        <UserList users={users} isAdmin={isAdmin} onLeave={onLeave} onDelete={onDelete} />
+        <UserList users={users} isAdmin={isAdmin} onLeave={onLeave} onDelete={onDelete} userId={userId} />
       </Drawer>
 
       {/* 오버레이: Drawer 열렸을 때만 보임, 클릭하면 닫힘 */}

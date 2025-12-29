@@ -1,28 +1,27 @@
 import { useEffect, useState } from "react";
 import axiosInstance from "../../api/axiosInstance";
-import "./UserPostGrid.css";
+import "./SearchGrid";
 import { useNavigate } from "react-router-dom";
 import PostDetailView from "../post/PostDetailView";
 
-function UserPostGrid({ user, onPostCountChange, isBlocked, isFollowing }) {
+function SearchGrid({ userId, onPostCountChange }) {
   const [posts, setPosts] = useState([]);
   const [modalOpen, setModalOpen] = useState(false);
   const [postId, setPostId] = useState(0);
   const nav = useNavigate();
 
   useEffect(() => {
-    if (!user.userId) return;
-
     axiosInstance({
-      url: `/api/posts/getPostsByUserId`,
+      url: `/api/posts/getAllOnFilter`,
       method: "get",
       params: {
-        userId: user.userId,
         pageNo: 1,
+        postLevel: 10,
       },
     })
       .then((result) => {
         //console.log("posts", result.data);
+        console.log(result.data.content);
         setPosts(result.data.content);
         onPostCountChange?.(result.data.totalElements);
       })
@@ -30,34 +29,18 @@ function UserPostGrid({ user, onPostCountChange, isBlocked, isFollowing }) {
         //console.log(err);
 
         if (err.response?.status === 401 || err.response?.status === 403) {
-            alert("로그인 후 이용해주세요.");
-            nav("/login");
+          alert("로그인 후 이용해주세요.");
+          nav("/login");
         } else {
           alert("게시물을 불러오지 못했습니다.");
         }
       });
-  }, [user]);
+  }, [userId]);
 
   const onClick = (e) => {
     setModalOpen(true);
     setPostId(e.target.alt);
   };
-
-  if (isBlocked) {
-    return (
-      <div className="post-grid">
-        <div className="no-posts">차단한 유저입니다.</div>
-      </div>
-    )
-  }
-
-  if (!isFollowing && user.isPrivate && !user.isMe) {
-    return (
-      <div className="post-grid">
-        <div className="no-posts">비공개 유저입니다.</div>
-      </div>
-    )
-  }
 
   return (
     <div className="post-grid">
@@ -86,4 +69,4 @@ function UserPostGrid({ user, onPostCountChange, isBlocked, isFollowing }) {
   );
 }
 
-export default UserPostGrid;
+export default SearchGrid;

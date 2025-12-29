@@ -12,6 +12,7 @@ import {
   ProfileImageWrapper,
 } from "./BottomNav.styles";
 import { useDispatch, useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
 
 export default function BottomNav({
   onHome,
@@ -21,6 +22,7 @@ export default function BottomNav({
   onSetting,
 }) {
   const user = useSelector((state) => state.auth.user);
+  const nav = useNavigate();
 
   return (
     <Bar>
@@ -28,7 +30,7 @@ export default function BottomNav({
         <HomeOutlined />홈
       </NavItem>
 
-      <NavItem onClick={onSearch}>
+      <NavItem onClick={() => nav("search")}>
         <SearchOutlined />
         검색
       </NavItem>

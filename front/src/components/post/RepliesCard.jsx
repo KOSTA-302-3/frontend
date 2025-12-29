@@ -16,10 +16,17 @@ import {
   Caption,
 } from "./RepliesCard.style";
 
-const RepliesCard = ({ profileImage, username, likes, caption }) => {
+const RepliesCard = ({
+  profileImage,
+  username,
+  likes,
+  caption,
+  key,
+  userId,
+}) => {
   return (
     <Card>
-      <Header>
+      <Header onClick={() => (window.location.href = "/user/" + userId)}>
         <ProfileImageWrapper>
           <ProfileImage src={profileImage} />
         </ProfileImageWrapper>

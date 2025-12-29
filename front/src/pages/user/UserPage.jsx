@@ -11,6 +11,7 @@ function UserPage() {
   const nav = useNavigate();
   const loginUser = useSelector((state) => state.auth.user);
   const [postCount, setPostCount] = useState(0);
+  const [isFollowing, setIsFollowing] = useState(false);
   const [isBlocked, setIsBlocked] = useState(false);
 
   const [user, setUser] = useState({
@@ -35,7 +36,7 @@ function UserPage() {
     })
       .then((result) => {
         setUser(result.data);
-        console.log("user: ", user);
+        //console.log("user: ", user);
     })
       .catch((err) => {
         //console.log(err);
@@ -57,6 +58,18 @@ function UserPage() {
       .catch(() => {
         console.error("차단 상태 조회 실패");
       });
+    
+    axiosInstance({
+      url: `/api/follow/${id}`,
+      method: "GET",
+    })
+      .then((res) => {
+        //console.log("result: ", res);
+        setIsFollowing(res.data);
+      })
+      .catch(() => {
+        alert("팔로우 조회 실패");
+      });
   }, [id, loginUser]);
 
   const targetUser = id ? user : loginUser;
@@ -65,8 +78,11 @@ function UserPage() {
   return (
     <>
       <UserHeader user={targetUser} />
-      <UserInfo user={targetUser} postCount={postCount} isBlocked={isBlocked} setIsBlocked={setIsBlocked} />
-      <UserPostGrid userId={targetUser.userId} onPostCountChange={setPostCount} isBlocked={isBlocked} />
+      <UserInfo user={targetUser} postCount={postCount} 
+        isBlocked={isBlocked} setIsBlocked={setIsBlocked}
+        isFollowing={isFollowing} setIsFollowing={setIsFollowing} />
+      <UserPostGrid user={targetUser} onPostCountChange={setPostCount} 
+        isBlocked={isBlocked} isFollowing={isFollowing} />
     </>
   );
 }

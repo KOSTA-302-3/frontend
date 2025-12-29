@@ -23,6 +23,7 @@ import {
 } from "./PostCard.styles";
 import PostDropDownMenu from "./PostDropDownMenu";
 import ReportButton from "../common/ReportButton";
+import ReportModal from "../common/ReportModal";
 import FeedBackButton from "../common/FeedBackButton";
 import FeedBackRate from "./FeedBackRate";
 import { useNavigate } from "react-router-dom";
@@ -42,6 +43,7 @@ const PostCard = ({
 }) => {
   const [modalOpen, setModalOpen] = useState(false);
   const [isFeedBackModalOpen, setIsFeedBackModalOpen] = useState(false);
+  const [reportModalOpen, setReportModalOpen] = useState(false);
   const [feedBackOpen, setFeedBackOpen] = useState(false);
   const [loading, setLoading] = useState(true);
   const [ckLike, setCkLike] = useState(false);
@@ -107,8 +109,8 @@ const PostCard = ({
 
   return (
     <Card>
-      <Header onClick={() => nav("/user/" + createUserId)}>
-        <ProfileImageWrapper>
+      <Header>
+        <ProfileImageWrapper onClick={() => nav("/user/" + createUserId)}>
           <ProfileImage src={profileImages} />
         </ProfileImageWrapper>
         <Username>
@@ -158,7 +160,7 @@ const PostCard = ({
 
         <ShareButton onClick={onShare} />
 
-        <ReportButton />
+        <ReportButton onClick={() => setReportModalOpen(true)} />
         <FeedBackButton onClick={() => setIsFeedBackModalOpen(true)} />
       </Actions>
 
@@ -175,6 +177,17 @@ const PostCard = ({
           profileImage={profileImages}
         />
       )}
+
+      <ReportModal
+        open={reportModalOpen}
+        onClose={() => setReportModalOpen(false)}
+        reportType="POST"
+        targetId={postId}
+        onSuccess={() => {
+          setReportModalOpen(false);
+          alert('신고가 접수되었습니다.');
+        }}
+      />
 
       <Modal
         title="피드백 레벨 설정"
