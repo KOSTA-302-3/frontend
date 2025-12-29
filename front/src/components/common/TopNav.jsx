@@ -1,34 +1,17 @@
 import { BellOutlined, MailOutlined, GiftOutlined } from "@ant-design/icons";
-import {
-  Wrapper,
-  BackIcon,
-  Title,
-  IconGroup,
-  HeaderIcon,
-} from "./TopNav.styles";
+import { Wrapper, BackIcon, Title, IconGroup, HeaderIcon } from "./TopNav.styles";
 import { Badge } from "antd";
 const wsNotificationIp = import.meta.env.VITE_WS_NOTIFICATION_IP || "";
 import UserDropDown from "../../components/common/UserDropDwonMenu";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
-import {
-  fetchNewMessages,
-  fetchUnreadCount,
-} from "../../store/thunks/notificationThunks";
+import { fetchNewMessages, fetchUnreadCount } from "../../store/thunks/notificationThunks";
 import { fetchMyInfo } from "../../store/thunks/authThunks";
-import {
-  increaseNewMessage,
-  increaseUnreadCount,
-} from "../../store/slices/notificationSlice";
+import { increaseNewMessage, increaseUnreadCount } from "../../store/slices/notificationSlice";
 import { useNavigate } from "react-router-dom";
+import { updateChatroom } from "../../store/slices/chatroomSlice";
 
-export default function TopNav({
-  title,
-  onBack,
-  onNotification,
-  onMessage,
-  onTitle,
-}) {
+export default function TopNav({ title, onBack, onNotification, onMessage, onTitle }) {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const unreadCount = useSelector((state) => state.notification.unreadCount);
@@ -60,6 +43,7 @@ export default function TopNav({
         dispatch(increaseUnreadCount());
       } else {
         dispatch(increaseNewMessage());
+        dispatch(updateChatroom({ id: msg.chatroomId, hasUnread: true }));
       }
     };
 
@@ -78,10 +62,7 @@ export default function TopNav({
     <Wrapper>
       {onBack && <BackIcon onClick={onBack} />}
 
-      <Title
-        onClick={onTitle}
-        style={{ cursor: onTitle ? "pointer" : "default" }}
-      >
+      <Title onClick={onTitle} style={{ cursor: onTitle ? "pointer" : "default" }}>
         {title}
       </Title>
 
@@ -95,24 +76,14 @@ export default function TopNav({
         {onNotification && (
           <HeaderIcon onClick={onNotification}>
             <BellOutlined style={{ fontSize: "3.5vh", color: "inherit" }} />
-            <Badge
-              count={unreadCount > 0 ? unreadCount : null}
-              size="small"
-              overflowCount={99}
-              offset={[0, 4]}
-            ></Badge>
+            <Badge count={unreadCount > 0 ? unreadCount : null} size="small" overflowCount={99} offset={[0, 4]}></Badge>
           </HeaderIcon>
         )}
 
         {onMessage && (
           <HeaderIcon onClick={onMessage}>
             <MailOutlined />
-            <Badge
-              count={newMessage > 0 ? newMessage : null}
-              size="small"
-              overflowCount={99}
-              offset={[0, 4]}
-            ></Badge>
+            <Badge count={newMessage > 0 ? newMessage : null} size="small" overflowCount={99} offset={[0, 4]}></Badge>
           </HeaderIcon>
         )}
       </IconGroup>
