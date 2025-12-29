@@ -41,10 +41,32 @@ function ProfileEditPage() {
       .then((res) => {
         const imageUrl = res.data;
         //console.log("url: ", imageUrl);
-        dispatch(updateUser({ profileImage: imageUrl}));
+        //dispatch(updateUser({ profileImage: imageUrl}));
+        changeImage(imageUrl);
       })
       .catch(() => {
         alert("프로필 이미지 업로드에 실패했습니다.");
+      });
+  };
+
+  const changeImage = (imageUrl) => {
+    const payload = {
+      username: loginUser.username,
+      profileImage: imageUrl,
+      description: loginUser.description,
+      level: loginUser.level,
+    };
+
+    axiosInstance({
+      url: "/api/user",
+      method: "PUT",
+      data: payload,
+    })
+      .then((res) => {
+        dispatch(updateUser(res.data));
+      })
+      .catch(() => {
+        alert("프로필 이미지 수정 실패");
       });
   };
 
