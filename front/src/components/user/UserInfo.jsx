@@ -9,11 +9,13 @@ import { useNavigate } from "react-router-dom";
 import axiosInstance from "../../api/axiosInstance";
 import { Dropdown } from "antd";
 import { EllipsisOutlined } from "@ant-design/icons";
+import ReportModal from "../common/ReportModal";
 
 function UserInfo({ user, postCount, isBlocked, setIsBlocked }) {
   const nav = useNavigate();
   const [isFollowing, setIsFollowing] = useState(false);
   const [followerCount, setFollowerCount] = useState(user.followerCount);
+  const [reportOpen, setReportOpen] = useState(false);
 
   useEffect(() => {
     if (user.isMe) return;
@@ -105,8 +107,7 @@ function UserInfo({ user, postCount, isBlocked, setIsBlocked }) {
   }
 
   const reportUser = () => {
-    if (!confirm("이 사용자를 신고하시겠습니까?")) return;
-    
+    setReportOpen(true);
   }
 
   const makeChatroom = () => {
@@ -207,6 +208,8 @@ function UserInfo({ user, postCount, isBlocked, setIsBlocked }) {
           </>
         )}
       </div>
+      
+      <ReportModal open={reportOpen} onClose={() => setReportOpen(false)} reportType="USER" targetId={user.userId} onSuccess={() => alert("신고 완료")} />
     </div>
   );
 }
