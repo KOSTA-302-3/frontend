@@ -33,7 +33,7 @@ const PostDropDownMenu = ({
       case 1:
         console.log(postId);
         if (confirm("수정하시겟습니까?")) {
-          navigate("/write", {
+          await navigate("/write", {
             state: {
               uploadedImages: uploadedImages,
               contentValue: content,
