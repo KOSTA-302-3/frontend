@@ -91,7 +91,7 @@ const RepliesView = ({ open, onClose, postId, profileImage }) => {
           withCredentials: true,
         }
       );
-
+      console.log(response.data);
       setReplies((prev) => [...prev, response.data]);
       setReplyValue("");
 
@@ -141,6 +141,7 @@ const RepliesView = ({ open, onClose, postId, profileImage }) => {
             username={item.createUserName}
             caption={item.replyContent}
             likes={item.replyLike}
+            userId={item.createUserId}
           />
         ))}
         {isLoading && <div style={{ textAlign: "center" }}>Loading...</div>}

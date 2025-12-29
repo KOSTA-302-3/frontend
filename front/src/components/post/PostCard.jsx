@@ -109,8 +109,8 @@ const PostCard = ({
 
   return (
     <Card>
-      <Header onClick={() => nav("/user/" + createUserId)}>
-        <ProfileImageWrapper>
+      <Header>
+        <ProfileImageWrapper onClick={() => nav("/user/" + createUserId)}>
           <ProfileImage src={profileImages} />
         </ProfileImageWrapper>
         <Username>
