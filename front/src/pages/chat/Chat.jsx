@@ -23,9 +23,6 @@ export default function Chat() {
   useEffect(() => {
     dispatch(loadChatRooms({ page: 0, type: view === "me" ? "me" : "all", word: "" }));
   }, [dispatch, view]);
-  useEffect(() => {
-    dispatch(updateChatroom());
-  }, [dispatch]);
 
   function handleCreateModalOpen() {
     setShowCreate(true);
