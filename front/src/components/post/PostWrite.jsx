@@ -51,7 +51,7 @@ const PostWrite = () => {
         );
 
         message.success("게시글이 성공적으로 처리되었습니다!");
-        navigate(-2);
+        navigate(-1);
       } catch (e) {
         console.error(e);
         message.error("게시글 처리에 실패했습니다.");
@@ -178,7 +178,12 @@ const PostWrite = () => {
         onChange={(e) => setContent(e.target.value)}
         placeholder="어떤 이야기를 나누고 싶으신가요?
         (태그할 게시물은 앞에 #을 붙여주세요)"
-        style={{ resize: "none" }}
+        style={{
+          resize: "none",
+          background: "#7F7282",
+          border: "none",
+          color: "white",
+        }}
       />
 
       <div
