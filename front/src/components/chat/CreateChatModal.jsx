@@ -125,8 +125,7 @@ export default function CreateChatModal({ onClose, onCreate }) {
                 </RadioLabel>
               </RadioGroup>
             </Row>
-
-            <Row>
+            {/* <Row>
               <Label>비밀번호 설정</Label>
               <CheckboxLabel>
                 <input
@@ -136,7 +135,7 @@ export default function CreateChatModal({ onClose, onCreate }) {
                 />
                 비밀번호 사용
               </CheckboxLabel>
-            </Row>
+            </Row> */}
           </RowInline>
 
           {requirePassword && (

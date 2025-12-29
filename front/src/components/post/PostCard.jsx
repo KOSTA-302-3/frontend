@@ -50,7 +50,7 @@ const PostCard = ({
   const [likeNo, setLikeNo] = useState(likes);
   const checkVisible = visible ? true : visible;
   // const profileImages = profileImage ? profileImage : person_basic;
-  const profileImages = person_basic;
+  const profileImages = profileImage ? profileImage : person_basic;
   const nav = useNavigate();
   const carouselStyle = {
     marginBottom: "20px",
@@ -185,7 +185,7 @@ const PostCard = ({
         targetId={postId}
         onSuccess={() => {
           setReportModalOpen(false);
-          alert('신고가 접수되었습니다.');
+          alert("신고가 접수되었습니다.");
         }}
       />
 

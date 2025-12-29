@@ -137,7 +137,7 @@ const RepliesView = ({ open, onClose, postId, profileImage }) => {
         {replies.map((item, key) => (
           <RepliesCard
             key={`${item.replyId || key}`}
-            profileImage={profileImage}
+            profileImage={item.userProfileImage}
             username={item.createUserName}
             caption={item.replyContent}
             likes={item.replyLike}
