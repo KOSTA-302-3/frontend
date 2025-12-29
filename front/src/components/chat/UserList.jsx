@@ -1,6 +1,8 @@
 import React from "react";
 import UserItem from "./UserItem";
 import * as S from "./UserList.Style.js";
+import { useDispatch } from "react-redux";
+import { removeChatMember } from "../../store/slices/chatMembersSlice.js";
 const { Wrap, Header, Title, List, Footer, Button, DangerButton, Count } = S;
 
 /**
@@ -15,11 +17,14 @@ const { Wrap, Header, Title, List, Footer, Button, DangerButton, Count } = S;
  * - onLeave: 채팅방 나가기 콜백 (함수)
  * - onDelete: 채팅방 삭제 콜백 (함수) — 관리자만 호출 가능
  */
-export default function UserList({ users = [], isAdmin = false, onLeave = () => {}, onDelete = () => {} }) {
+export default function UserList({ users = [], isAdmin = false, onLeave = () => {}, onDelete = () => {}, userId }) {
+  const dispatch = useDispatch();
+
   function handleLeave() {
     // 간단한 확인
     if (window.confirm("정말 채팅방을 나가시겠습니까?")) {
       onLeave();
+      dispatch(removeChatMember(userId));
     }
   }
 

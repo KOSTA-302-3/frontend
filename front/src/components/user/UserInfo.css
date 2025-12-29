@@ -61,3 +61,20 @@
 .actions.other {
     grid-template-columns: repeat(2, 1fr);
 }
+
+/* Username + Menu */
+.username-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.more-btn {
+  font-size: 20px;
+  cursor: pointer;
+  color: #888;
+}
+
+.more-btn:hover {
+  color: #000;
+}

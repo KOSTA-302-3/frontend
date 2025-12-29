@@ -72,12 +72,22 @@ function SettingsPage() {
         />
       </div>
 
+      {/* 커스터마이징 */}
+      <div className="settings-section">
+        <div className="section-title">커스터마이징</div>
+
+        <SettingItem
+          title="뱃지 관리"
+          onClick={() => nav("/settings/badges")}
+        />
+      </div>
+
       {/* 활동 */}
       <div className="settings-section">
         <div className="section-title">활동</div>
 
         <SettingItem
-          title="차단된 계정"
+          title="차단 목록"
           onClick={() => nav("/settings/blocks")}
         />
         {/* <SettingItem

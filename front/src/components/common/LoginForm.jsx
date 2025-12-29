@@ -24,7 +24,10 @@ const LoginForm = () => {
       })
       .then((response) => {
         console.log("로그인 성공:", response);
-        navigate("/");
+        if (response.data.role === "ADMIN")
+          navigate("/admin");
+        else
+          navigate("/");
       })
       .catch(() => {
         alert("오류입니다!");

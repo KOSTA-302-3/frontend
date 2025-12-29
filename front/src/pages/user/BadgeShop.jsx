@@ -94,6 +94,7 @@ const BadgeShop = () => {
             headers: { 'Content-Type': 'application/json' }
           });
           message.success(`${badge.name} 뱃지를 구매했습니다!`);
+          await fetchBadges(); // 뱃지 목록 새로고침
           // 포인트 갱신
           await fetchUserInfo();
         } catch (error) {

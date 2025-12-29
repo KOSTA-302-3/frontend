@@ -15,7 +15,11 @@ export default function NotificationItem({ item, onMarkRead }) {
 
   function onClick() {
     // 알림 상세 페이지로 (UI용 라우트 필요)
-    navigate(`/notifications/${item.id}`);
+    console.log("Notification clicked:", item);
+    if (item.link !== undefined && item.link !== null) {
+      onMarkRead(item.id);
+      navigate(item.link);
+    }
   }
 
   function handleMarkRead(e) {

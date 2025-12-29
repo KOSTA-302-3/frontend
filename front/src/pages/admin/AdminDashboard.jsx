@@ -4,17 +4,19 @@ import {
   Chart as ChartJS,
   CategoryScale,
   LinearScale,
-  BarElement,
+  PointElement,
+  LineElement,
   Title as ChartTitle,
   Tooltip,
   Legend,
+  Filler,
 } from 'chart.js';
-import { Bar } from 'react-chartjs-2';
+import { Line } from 'react-chartjs-2';
 import axiosInstance from "../../api/axiosInstance";
 import { 
   barChartOptions,
-  createUserStatusChartData,
-  createReportedUsersChartData
+  createWeeklyUserChartData,
+  createWeeklyPostChartData
 } from "./chartConfig";
 import { 
   Container, 
@@ -35,10 +37,12 @@ import {
 ChartJS.register(
   CategoryScale,
   LinearScale,
-  BarElement,
+  PointElement,
+  LineElement,
   ChartTitle,
   Tooltip,
-  Legend
+  Legend,
+  Filler
 );
 
 const AdminDashboard = () => {
@@ -46,8 +50,8 @@ const AdminDashboard = () => {
     totalUsers: 0,
     todayUsers: 0,
     todayPosts: 0,
-    activeUsers: 0,
-    bannedUsers: 0
+    weeklyUserStats: [],
+    weeklyPostStats: []
   });
   const [loading, setLoading] = useState(true);
 
@@ -59,16 +63,7 @@ const AdminDashboard = () => {
     try {
       setLoading(true);
       const response = await axiosInstance.get('/api/admin/dashboard/stats');
-      const data = response.data;
-      // 임시로 활성/정지 유저 계산 (실제론 백엔드에서 받아야 함)
-      const activeUsers = Math.floor(data.totalUsers * 0.95);
-      const bannedUsers = data.totalUsers - activeUsers;
-      
-      setStats({
-        ...data,
-        activeUsers,
-        bannedUsers
-      });
+      setStats(response.data);
     } catch (error) {
       console.error("대시보드 통계 조회 실패:", error);
     } finally {
@@ -77,8 +72,8 @@ const AdminDashboard = () => {
   };
 
   // 차트 데이터 생성
-  const userStatusChartData = createUserStatusChartData(stats.totalUsers, stats.todayUsers);
-  const reportedUsersChartData = createReportedUsersChartData(stats.activeUsers, stats.bannedUsers);
+  const weeklyUserChartData = createWeeklyUserChartData(stats.weeklyUserStats);
+  const weeklyPostChartData = createWeeklyPostChartData(stats.weeklyPostStats);
 
   if (loading) {
     return (
@@ -122,16 +117,16 @@ const AdminDashboard = () => {
 
       <ChartsGrid>
         <ChartCard>
-          <ChartCardTitle>가입자 현황</ChartCardTitle>
+          <ChartCardTitle>최근 7일 가입자 현황</ChartCardTitle>
           <div style={{ height: '250px' }}>
-            <Bar data={userStatusChartData} options={barChartOptions} />
+            <Line data={weeklyUserChartData} options={barChartOptions} />
           </div>
         </ChartCard>
 
         <ChartCard>
-          <ChartCardTitle>정지 유저 현황</ChartCardTitle>
+          <ChartCardTitle>최근 7일 게시글 현황</ChartCardTitle>
           <div style={{ height: '250px' }}>
-            <Bar data={reportedUsersChartData} options={barChartOptions} />
+            <Line data={weeklyPostChartData} options={barChartOptions} />
           </div>
         </ChartCard>
       </ChartsGrid>

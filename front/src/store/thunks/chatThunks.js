@@ -1,5 +1,5 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
-import { addChatMember, setChatMembers } from "../slices/chatMembersSlice";
+import { addChatMember, setChatMembers, setOnline } from "../slices/chatMembersSlice";
 import { setMessages, prependMessages } from "../slices/messagesSlice";
 import axiosInstance from "../../api/axiosInstance";
 import { setChatroom } from "../slices/chatroomSlice";
@@ -157,4 +157,28 @@ export const deleteChatMember = createAsyncThunk("chat/deleteChatMember", async 
   } catch (error) {
     return thunkAPI.rejectWithValue(error);
   }
+});
+
+export const fetchChatMembers = createAsyncThunk("chat/fetchChatMembers", async (chatroomId, thunkAPI) => {
+  const { dispatch } = thunkAPI;
+
+  try {
+    const [memberRes] = await Promise.all([
+      axiosInstance.get(`/api/chatmember/${chatroomId}`, {
+        withCredentials: true,
+      }),
+    ]);
+    console.log("Fetched chat members:", memberRes.data);
+    // 채팅방 멤버 세팅
+    await dispatch(setChatMembers(memberRes.data));
+    // fulfilled payload (의미 있는 값 반환 가능)
+    return {
+      memberCount: memberRes.data.length,
+    };
+  } catch (err) {
+    console.error("Error fetching chat init data:", err);
+
+    // rejected 상태로 넘김
+    return thunkAPI.rejectWithValue(err.response?.data);
+  } // fulfilled 용도 (지금은 의미 없음)
 });
