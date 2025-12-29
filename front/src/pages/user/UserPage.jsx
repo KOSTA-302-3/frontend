@@ -4,11 +4,12 @@ import axiosInstance from "../../api/axiosInstance";
 import UserInfo from "../../components/user/UserInfo";
 import UserPostGrid from "../../components/user/UserPostGrid";
 import UserHeader from "../../components/user/UserHeader";
-import { Modal } from "antd";
+import { useSelector } from "react-redux";
 
 function UserPage() {
   const { id } = useParams(); // /user/:id
   const nav = useNavigate();
+  const loginUser = useSelector((state) => state.auth.user);
 
   const [user, setUser] = useState({
     userId: "",
@@ -17,15 +18,17 @@ function UserPage() {
     description: "",
     followingCount: "",
     followerCount: "",
-    customeDTO: {
+    customDTO: {
       badgeDTO: {},
       colorDTO: {},
     },
   });
 
   useEffect(() => {
+    if (!id) return;
+
     axiosInstance({
-        url: id ? `/api/user/${id}` : `/api/user/me`,
+        url: `/api/user/${id}`,
         method: "get",
     })
       .then((result) => {
@@ -41,13 +44,16 @@ function UserPage() {
           alert("유저 정보를 불러오지 못했습니다.");
         }
       });
-  }, []);
+  }, [id, loginUser]);
+
+  const targetUser = id ? user : loginUser;
+  if (!targetUser) return null;
 
   return (
     <>
-      <UserHeader user={user} />
-      <UserInfo user={user} />
-      <UserPostGrid userId={user.userId} />
+      <UserHeader user={targetUser} />
+      <UserInfo user={targetUser} />
+      <UserPostGrid userId={targetUser.userId} />
     </>
   );
 }

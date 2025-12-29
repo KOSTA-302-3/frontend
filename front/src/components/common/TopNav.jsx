@@ -15,7 +15,7 @@ import {
   fetchNewMessages,
   fetchUnreadCount,
 } from "../../store/thunks/notificationThunks";
-import { fetchMyInfo } from "../../store/thunks/authThunks";
+import { fetchMyInfo, fetchMyProfile } from "../../store/thunks/authThunks";
 import {
   increaseNewMessage,
   increaseUnreadCount,
@@ -44,6 +44,7 @@ export default function TopNav({
 
   useEffect(() => {
     dispatch(fetchMyInfo());
+    dispatch(fetchMyProfile());
   }, [dispatch]);
 
   useEffect(() => {

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import ProfileImage from "../common/ProfileImage";
 import AppButton from "../common/AppButton";
 import Badge from "../common/Badge";
@@ -10,20 +10,73 @@ import axiosInstance from "../../api/axiosInstance";
 
 function UserInfo({ user }) {
   const nav = useNavigate();
+  const [isFollowing, setIsFollowing] = useState(false);
+  const [followerCount, setFollowerCount] = useState(user.followerCount);
 
-  const follow = (followingId) => {
+  useEffect(() => {
+    if (user.isMe) return;
+    if (!user.userId) return;
+
+    axiosInstance({
+      url: `/api/follow/${user.userId}`,
+      method: "GET",
+    })
+      .then((res) => {
+        //console.log("result: ", res);
+        setIsFollowing(res.data);
+        setFollowerCount(user.followerCount);
+      })
+      .catch(() => {
+        alert("팔로우 조회 실패");
+      });
+  }, [user.userId]);
+
+  const follow = () => {
     axiosInstance({
       url: "/api/follow",
       method: "POST",
       data: {
-        followingId
+        followingId: user.userId,
       },
     })
       .then((res) => {
-        console.log("result: ", res);
+        //console.log("result: ", res);
+        setIsFollowing(true);
+        setFollowerCount((cnt) => cnt + 1);
       })
       .catch(() => {
-        alert("팔로우 실패!");
+        alert("팔로우 실패");
+      });
+  };
+
+  const unfollow = () => {
+    if (!confirm("팔로우를 취소하시겠습니까?")) return;
+
+    axiosInstance({
+      url: `/api/follow/${user.userId}`,
+      method: "DELETE",
+    })
+      .then((res) => {
+        //console.log("result: ", res);
+        setIsFollowing(false);
+        setFollowerCount((cnt) => cnt - 1);
+      })
+      .catch(() => {
+        alert("팔로우 취소 실패");
+      });
+  };
+
+  const makeChatroom = () => {
+    axiosInstance({
+      url: `/api/chatroom/${user.userId}`,
+      method: "POST",
+    })
+      .then((res) => {
+        //console.log("result: ", res);
+        nav(`/chat/${res.chatroomId}`);
+      })
+      .catch(() => {
+        alert("메시지를 보낼 수 없습니다.");
       });
   };
 
@@ -44,7 +97,7 @@ function UserInfo({ user }) {
             <UserStat label="게시물" value={0} />
             <UserStat
               label="팔로워"
-              value={user.followerCount}
+              value={followerCount || 0}
               onClick={() => nav(`/user/${user.userId}/follow?tab=followers`)}
             />
             <UserStat
@@ -71,8 +124,12 @@ function UserInfo({ user }) {
           </>
         ) : (
           <>
-            <ProfileButton btnType="point" onClick={() => follow(user.userId)}>팔로우</ProfileButton>
-            <ProfileButton btnType="default" onClick={() => alert("DM 연결")}>메시지 보내기</ProfileButton>
+            {isFollowing ? 
+              <ProfileButton btnType="point" onClick={unfollow}>팔로우 중</ProfileButton>
+              :
+              <ProfileButton btnType="point" onClick={follow}>팔로우</ProfileButton>
+            }
+            <ProfileButton btnType="default" onClick={makeChatroom}>메시지 보내기</ProfileButton>
           </>
         )}
       </div>

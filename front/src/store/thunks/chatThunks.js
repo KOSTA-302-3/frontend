@@ -5,6 +5,7 @@ import axiosInstance from "../../api/axiosInstance";
 import { setChatroom } from "../slices/chatroomSlice";
 import { connectChatSocket } from "../../lib/chatSocket";
 import { fetchMyInfo, getChatMemberRole } from "./authThunks";
+import { fetchNewMessages } from "./notificationThunks";
 
 /*
   채팅방 최초 진입 시 초기 데이터 로딩 thunk
@@ -52,7 +53,7 @@ export const loadOlderMessages = createAsyncThunk("chat/loadOlderMessages", asyn
   await new Promise((r) => setTimeout(r, 700));
 
   try {
-    const response = await axiosInstance.get(`/api/message/older/${chatroomId}?page=${page}`);
+    const response = await axiosInstance.get(`/api/message/${chatroomId}?page=${page}`);
     const messages = response.data.content; // 역순 정렬
     const olderMessages = [...messages].reverse();
     dispatch(prependMessages(olderMessages));
@@ -100,7 +101,7 @@ export const enterChatRoom = createAsyncThunk("chat/enterChatRoom", async ({ cha
 
     if (member && member.id != null) {
       dispatch(addChatMember(member));
-    } 
+    }
     return response.data;
   } catch (error) {
     return thunkAPI.rejectWithValue(error);
@@ -117,19 +118,28 @@ export const enterChatRoomAndConnect = createAsyncThunk(
     console.log("Entered chat room:", chatroomId);
 
     // WS 연결
-    connectChatSocket({
-      roomId: chatroomId,
-      dispatch,
-      onOpen: () => {
-        dispatch(fetchMyInfo());
-        dispatch(getChatMemberRole(chatroomId));
-        setTimeout(() => {
-          dispatch(fetchChatInit(chatroomId));
-        }, 500);
-        
-      },
+    await new Promise((resolve, reject) => {
+      connectChatSocket({
+        roomId: chatroomId,
+        dispatch,
+        onOpen: async () => {
+          try {
+            await dispatch(fetchMyInfo()).unwrap();
+
+            await dispatch(getChatMemberRole(chatroomId)).unwrap();
+
+            await dispatch(fetchChatInit(chatroomId)).unwrap();
+
+            await dispatch(fetchNewMessages()).unwrap();
+
+            resolve(true); // 🔥 여기서야 진짜 "모든 준비 끝"
+          } catch (err) {
+            reject(err);
+          }
+        },
+        onError: reject,
+      });
     });
-    return true;
   }
 );
 

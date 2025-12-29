@@ -12,8 +12,12 @@ export const selectAllMessages = createSelector(
 // users
 const selectUserIds = (state) => state.chatMembers.allIds;
 const selectUserById = (state) => state.chatMembers.byId;
-    
-export const selectAllUsers = createSelector(
-  [selectUserIds, selectUserById],
-  (ids, byId) => ids.map((id) => byId[id])
+
+export const selectAllUsers = createSelector([selectUserIds, selectUserById], (ids, byId) => ids.map((id) => byId[id]));
+
+const selectChatRoomIds = (state) => state.chatroom.allIds;
+const selectChatRoomById = (state) => state.chatroom.byId;
+
+export const selectAllChatRooms = createSelector([selectChatRoomIds, selectChatRoomById], (ids, byId) =>
+  ids.map((id) => byId[id])
 );
