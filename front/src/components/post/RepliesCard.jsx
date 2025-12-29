@@ -25,10 +25,9 @@ const RepliesCard = ({ profileImage, username, likes, caption }) => {
         </ProfileImageWrapper>
         <Username>{username}</Username>
       </Header>
-      <hr />
+
       <Content>
         <Caption>{caption}</Caption>
-        <LikesCount> {likes}개</LikesCount>
       </Content>
     </Card>
   );

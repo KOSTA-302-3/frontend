@@ -5,7 +5,7 @@ import { Button } from "antd";
 import RepliesCard from "./RepliesCard";
 import axiosInstance from "../../api/axiosInstance";
 
-const RepliesView = ({ open, onClose, postId }) => {
+const RepliesView = ({ open, onClose, postId, profileImage }) => {
   const [replies, setReplies] = useState([]);
   const [pageNo, setPageNo] = useState(1);
   const [replyValue, setReplyValue] = useState("");
@@ -111,7 +111,16 @@ const RepliesView = ({ open, onClose, postId }) => {
   return (
     <ModalWrapper open={open} onOk={onClose} onCancel={onClose} footer={null}>
       <InputReplies value={replyValue} onChange={handleChange} />
-      <Button onClick={onClick} style={{ marginBottom: "10px" }}>
+      <Button
+        onClick={onClick}
+        style={{
+          marginBottom: "10px",
+          marginLeft: "5px",
+          background: "black",
+          color: " #e6c0c7",
+          border: "1px solid  #e6c0c7",
+        }}
+      >
         전송
       </Button>
 
@@ -128,7 +137,7 @@ const RepliesView = ({ open, onClose, postId }) => {
         {replies.map((item, key) => (
           <RepliesCard
             key={`${item.replyId || key}`}
-            profileImage={"aa"}
+            profileImage={profileImage}
             username={item.createUserName}
             caption={item.replyContent}
             likes={item.replyLike}

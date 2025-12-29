@@ -6,8 +6,9 @@ import LikeButton from "../common/LikeButton";
 import CommentButton from "../common/CommentButton";
 import ShareButton from "../common/ShareButton";
 import RepliesView from "./RepliesView";
-import { Carousel } from "antd";
+import { Carousel, Modal } from "antd";
 import axiosInstance from "../../api/axiosInstance";
+import person_basic from "../../assets/person_basic.png";
 
 import {
   Card,
@@ -22,6 +23,9 @@ import {
 } from "./PostCard.styles";
 import PostDropDownMenu from "./PostDropDownMenu";
 import ReportButton from "../common/ReportButton";
+import FeedBackButton from "../common/FeedBackButton";
+import FeedBackRate from "./FeedBackRate";
+import { useNavigate } from "react-router-dom";
 
 const PostCard = ({
   username,
@@ -34,16 +38,21 @@ const PostCard = ({
   postId,
   userCheck,
   visible,
+  createUserId,
 }) => {
   const [modalOpen, setModalOpen] = useState(false);
+  const [isFeedBackModalOpen, setIsFeedBackModalOpen] = useState(false);
+  const [feedBackOpen, setFeedBackOpen] = useState(false);
   const [loading, setLoading] = useState(true);
   const [ckLike, setCkLike] = useState(false);
   const [likeNo, setLikeNo] = useState(likes);
   const checkVisible = visible ? true : visible;
-
+  // const profileImages = profileImage ? profileImage : person_basic;
+  const profileImages = person_basic;
+  const nav = useNavigate();
   const carouselStyle = {
     marginBottom: "20px",
-    backgroundColor: "#f0f2f5",
+
     borderRadius: "8px",
     overflow: "hidden",
   };
@@ -98,9 +107,9 @@ const PostCard = ({
 
   return (
     <Card>
-      <Header>
+      <Header onClick={() => nav("/user/" + createUserId)}>
         <ProfileImageWrapper>
-          <ProfileImage src={profileImage} />
+          <ProfileImage src={profileImages} />
         </ProfileImageWrapper>
         <Username>
           {username}
@@ -150,6 +159,7 @@ const PostCard = ({
         <ShareButton onClick={onShare} />
 
         <ReportButton />
+        <FeedBackButton onClick={() => setIsFeedBackModalOpen(true)} />
       </Actions>
 
       <Content>
@@ -162,8 +172,21 @@ const PostCard = ({
           open={modalOpen}
           onClose={() => setModalOpen(false)}
           postId={postId}
+          profileImage={profileImages}
         />
       )}
+
+      <Modal
+        title="피드백 레벨 설정"
+        open={isFeedBackModalOpen}
+        onCancel={() => {
+          setIsFeedBackModalOpen(false);
+        }}
+        footer={null}
+        style={{ opacity: "95%" }}
+      >
+        <FeedBackRate postId={postId} />
+      </Modal>
     </Card>
   );
 };

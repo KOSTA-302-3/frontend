@@ -10,6 +10,7 @@ function UserPage() {
   const { id } = useParams(); // /user/:id
   const nav = useNavigate();
   const loginUser = useSelector((state) => state.auth.user);
+  const [postCount, setPostCount] = useState(0);
 
   const [user, setUser] = useState({
     userId: "",
@@ -52,8 +53,8 @@ function UserPage() {
   return (
     <>
       <UserHeader user={targetUser} />
-      <UserInfo user={targetUser} />
-      <UserPostGrid userId={targetUser.userId} />
+      <UserInfo user={targetUser} postCount={postCount} />
+      <UserPostGrid userId={targetUser.userId} onPostCountChange={setPostCount} />
     </>
   );
 }
