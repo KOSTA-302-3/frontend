@@ -51,7 +51,7 @@ function UserPostGrid({ user, onPostCountChange, isBlocked, isFollowing }) {
     )
   }
 
-  if (!isFollowing && user.isPrivate) {
+  if (!isFollowing && user.isPrivate && !user.isMe) {
     return (
       <div className="post-grid">
         <div className="no-posts">비공개 유저입니다.</div>
