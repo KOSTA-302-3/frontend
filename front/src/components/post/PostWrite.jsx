@@ -96,7 +96,7 @@ const PostWrite = () => {
 
   const carouselStyle = {
     marginBottom: "20px",
-    backgroundColor: "#f0f2f5",
+
     borderRadius: "8px",
     overflow: "hidden",
   };
@@ -135,7 +135,10 @@ const PostWrite = () => {
 
   return (
     <div style={{ maxWidth: "600px", margin: "20px auto", padding: "0 20px" }}>
-      <h2> {method === 2 ? "게시글 수정" : "새 게시글 작성"}</h2>
+      <h2 style={{ color: "white" }}>
+        {" "}
+        {method === 2 ? "게시글 수정" : "새 게시글 작성"}
+      </h2>
 
       {imageUrls.length > 0 && (
         <Carousel draggable arrows style={carouselStyle}>
@@ -152,12 +155,11 @@ const PostWrite = () => {
                   }}
                 />
                 <Button
+                  shape="circle"
                   style={{
                     marginBottom: "90%",
                     marginLeft: "90%",
                     position: "absolute",
-                    borderRadius: "30px",
-                    border: "0px",
                     background: "#FFFFFF",
                   }}
                   onClick={onDelButton}
@@ -174,19 +176,21 @@ const PostWrite = () => {
         rows={6}
         value={content}
         onChange={(e) => setContent(e.target.value)}
-        placeholder="어떤 이야기를 나누고 싶으신가요? (태그할 게시물은 앞에 #을 붙여주세요)"
+        placeholder="어떤 이야기를 나누고 싶으신가요?
+        (태그할 게시물은 앞에 #을 붙여주세요)"
         style={{ resize: "none" }}
       />
 
       <div
         style={{
+          marginTop: "20px",
           marginBottom: "20px",
           display: "flex",
           alignItems: "center",
           gap: "10px",
         }}
       >
-        <span style={{ fontWeight: "bold" }}>공개여부</span>
+        <span style={{ fontWeight: "bold", color: "white" }}>공개여부</span>
         <Switch
           checked={isPublic}
           onChange={(checked) => setIsPublic(checked)}

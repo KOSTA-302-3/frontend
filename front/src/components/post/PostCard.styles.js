@@ -19,6 +19,7 @@ export const Header = styled.div`
 export const ProfileImageWrapper = styled.div`
   width: 5vh;
   height: 5vh;
+  border: "5px solid";
 `;
 
 export const Username = styled.div`
@@ -31,7 +32,6 @@ export const Username = styled.div`
 export const ImageWrapper = styled.div`
   width: 100%;
   aspect-ratio: 1;
-  border: none;
 `;
 
 export const Actions = styled.div`

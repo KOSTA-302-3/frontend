@@ -31,8 +31,8 @@ const ImageUpload = () => {
 
   const resizeFile = (file) =>
     new Promise((resolve) => {
-      const maxWidth = 1280; // 최대 너비
-      const maxHeight = 1280; // 최대 높이
+      const maxWidth = 3000; // 최대 너비
+      const maxHeight = 3000; // 최대 높이
       const compressQuality = 0.8; // 압축률 (0.1 ~ 1.0)
 
       const reader = new FileReader();
@@ -135,7 +135,7 @@ const ImageUpload = () => {
 
   const carouselStyle = {
     marginBottom: "20px",
-    backgroundColor: "#f0f2f5",
+
     borderRadius: "8px",
     overflow: "hidden",
   };
@@ -190,15 +190,15 @@ const ImageUpload = () => {
           beforeUpload={() => false}
           showUploadList={false}
           disabled={fileList.length >= 5}
-          style={{ color: "blue" }}
+          style={{ color: "blue", border: "2px solid white" }}
         >
           <p className="ant-upload-drag-icon">
             <InboxOutlined />
           </p>
-          <p className="ant-upload-text" style={{ color: "blue" }}>
+          <p className="ant-upload-text" style={{ color: "white" }}>
             클릭하거나 이미지를 드래그하여 추가하세요
           </p>
-          <p className="ant-upload-hint" style={{ color: "blue" }}>
+          <p className="ant-upload-hint" style={{ color: "white" }}>
             최대 5장까지 업로드 가능합니다.
           </p>
         </Dragger>
