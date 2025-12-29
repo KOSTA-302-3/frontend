@@ -3,17 +3,11 @@ import { Wrapper, BackIcon, Title, IconGroup, HeaderIcon } from "./TopNav.styles
 import { Badge } from "antd";
 const wsNotificationIp = import.meta.env.VITE_WS_NOTIFICATION_IP || "";
 import UserDropDown from "../../components/common/UserDropDwonMenu";
-import { useDispatch, useSelector } from "react-redux";
+import { connect, useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
-import {
-  fetchNewMessages,
-  fetchUnreadCount,
-} from "../../store/thunks/notificationThunks";
+import { fetchNewMessages, fetchUnreadCount } from "../../store/thunks/notificationThunks";
 import { fetchMyInfo, fetchMyProfile } from "../../store/thunks/authThunks";
-import {
-  increaseNewMessage,
-  increaseUnreadCount,
-} from "../../store/slices/notificationSlice";
+import { increaseNewMessage, increaseUnreadCount } from "../../store/slices/notificationSlice";
 import { useNavigate } from "react-router-dom";
 import { updateChatroom } from "../../store/slices/chatroomSlice";
 
@@ -37,31 +31,41 @@ export default function TopNav({ title, onBack, onNotification, onMessage, onTit
   }, [dispatch]);
 
   useEffect(() => {
-    if (userId == null) return;
-    const socket = new WebSocket(`${protocol}${wsNotificationIp}`);
-    socket.onopen = () => {
-      console.log("Notification WS connected");
-    };
-    socket.onmessage = (event) => {
-      console.log("Notification WS message received");
-      const msg = event.data;
-      console.log("Notification WS message content:", msg);
-      if (msg === "Notification") {
-        dispatch(increaseUnreadCount());
-      } else {
-        dispatch(increaseNewMessage());
-        dispatch(updateChatroom({ id: msg.chatroomId, hasUnread: true }));
-      }
-    };
+    const connectNotificationSocket = () => {
+      if (userId == null) return;
+      const socket = new WebSocket(`${protocol}${wsNotificationIp}`);
+      socket.onopen = () => {
+        console.log("Notification WS connected");
+      };
+      socket.onmessage = (event) => {
+        console.log("Notification WS message received");
+        const msg = event.data;
+        console.log("Notification WS message content:", msg);
+        if (msg === "Notification") {
+          dispatch(increaseUnreadCount());
+        } else {
+          dispatch(increaseNewMessage());
+          dispatch(updateChatroom({ id: msg.chatroomId, hasUnread: true }));
+        }
+      };
 
-    socket.onerror = (e) => {
-      console.error("WebSocket error", e);
+      socket.onerror = (e) => {
+        console.error("WebSocket error", e);
+        socket.close();
+      };
+      socket.onclose = () => {
+        console.log("Notification WS disconnected");
+        setTimeout(() => {
+          connectNotificationSocket();
+        }, 5000);
+      };
+      return () => {
+        socket.close();
+      };
     };
-    socket.onclose = () => {
-      console.log("Notification WS disconnected");
-    };
+    const cleanup = connectNotificationSocket();
     return () => {
-      socket.close();
+      if (cleanup) cleanup();
     };
   }, [dispatch, userId]);
 
