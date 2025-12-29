@@ -37,10 +37,21 @@ export const barChartOptions = {
   scales: {
     y: {
       beginAtZero: true,
+      ticks: {
+        stepSize: 1,
+        font: {
+          size: 13,
+          weight: '600',
+          family: "'Noto Sans KR', sans-serif"
+        },
+        color: '#6b7280',
+      },
       grid: {
         color: 'rgba(0, 0, 0, 0.05)',
         lineWidth: 1,
-      },
+      }
+    },
+    x: {
       ticks: {
         font: {
           size: 13,
@@ -48,43 +59,84 @@ export const barChartOptions = {
           family: "'Noto Sans KR', sans-serif"
         },
         color: '#6b7280',
-        padding: 10,
-      }
-    },
-    x: {
+      },
       grid: {
         display: false,
-      },
-      ticks: {
-        font: {
-          size: 14,
-          weight: '600',
-          family: "'Noto Sans KR', sans-serif"
-        },
-        color: '#374151',
-        padding: 10,
       }
     }
   },
-  animation: {
-    duration: 2000,
-    easing: 'easeOutBounce',
-    delay: (context) => {
-      let delay = 0;
-      if (context.type === 'data' && context.mode === 'default') {
-        delay = context.dataIndex * 400 + 300;
-      }
-      return delay;
+  elements: {
+    line: {
+      tension: 0.4,
     },
-  },
-  interaction: {
-    intersect: false,
-    mode: 'index',
+    point: {
+      radius: 4,
+      hoverRadius: 6,
+      hitRadius: 10,
+    }
   }
 };
 
 /**
- * 가입자 현황 차트 데이터 생성
+ * 최근 7일 가입자 차트 데이터 생성
+ */
+export const createWeeklyUserChartData = (weeklyStats) => {
+  if (!weeklyStats || weeklyStats.length === 0) {
+    return {
+      labels: [],
+      datasets: []
+    };
+  }
+
+  return {
+    labels: weeklyStats.map(stat => stat.date),
+    datasets: [
+      {
+        label: '가입자 수',
+        data: weeklyStats.map(stat => stat.count),
+        fill: true,
+        backgroundColor: 'rgba(59, 130, 246, 0.2)',
+        borderColor: 'rgba(59, 130, 246, 1)',
+        borderWidth: 3,
+        pointBackgroundColor: 'rgba(59, 130, 246, 1)',
+        pointBorderColor: '#fff',
+        pointBorderWidth: 2,
+      },
+    ],
+  };
+};
+
+/**
+ * 최근 7일 게시글 차트 데이터 생성
+ */
+export const createWeeklyPostChartData = (weeklyStats) => {
+  if (!weeklyStats || weeklyStats.length === 0) {
+    return {
+      labels: [],
+      datasets: []
+    };
+  }
+
+  return {
+    labels: weeklyStats.map(stat => stat.date),
+    datasets: [
+      {
+        label: '게시글 수',
+        data: weeklyStats.map(stat => stat.count),
+        fill: true,
+        backgroundColor: 'rgba(16, 185, 129, 0.2)',
+        borderColor: 'rgba(16, 185, 129, 1)',
+        borderWidth: 3,
+        pointBackgroundColor: 'rgba(16, 185, 129, 1)',
+        pointBorderColor: '#fff',
+        pointBorderWidth: 2,
+      },
+    ],
+  };
+};
+
+/**
+ * 가입자 현황 차트 데이터 생성 (사용 안 함 - 삭제 예정)
  * @param {number} totalUsers - 총 가입자 수
  * @param {number} todayUsers - 오늘 가입자 수
  */
