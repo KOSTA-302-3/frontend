@@ -4,7 +4,7 @@ import "./UserPostGrid.css";
 import { useNavigate } from "react-router-dom";
 import PostDetailView from "../post/PostDetailView";
 
-function UserPostGrid({ userId }) {
+function UserPostGrid({ userId, onPostCountChange }) {
   const [posts, setPosts] = useState([]);
   const [modalOpen, setModalOpen] = useState(false);
   const [postId, setPostId] = useState(0);
@@ -22,11 +22,12 @@ function UserPostGrid({ userId }) {
       },
     })
       .then((result) => {
-        //console.log("posts", result.data.content);
+        //console.log("posts", result.data);
         setPosts(result.data.content);
+        onPostCountChange?.(result.data.totalElements);
       })
       .catch((err) => {
-        console.log(err);
+        //console.log(err);
 
         if (err.response?.status === 401 || err.response?.status === 403) {
             alert("로그인 후 이용해주세요.");
