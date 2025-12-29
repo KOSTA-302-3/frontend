@@ -87,7 +87,7 @@ function SettingsPage() {
         <div className="section-title">활동</div>
 
         <SettingItem
-          title="차단된 계정"
+          title="차단 목록"
           onClick={() => nav("/settings/blocks")}
         />
         {/* <SettingItem

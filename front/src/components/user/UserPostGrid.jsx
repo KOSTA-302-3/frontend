@@ -4,7 +4,7 @@ import "./UserPostGrid.css";
 import { useNavigate } from "react-router-dom";
 import PostDetailView from "../post/PostDetailView";
 
-function UserPostGrid({ userId, onPostCountChange }) {
+function UserPostGrid({ userId, onPostCountChange, isBlocked }) {
   const [posts, setPosts] = useState([]);
   const [modalOpen, setModalOpen] = useState(false);
   const [postId, setPostId] = useState(0);
@@ -42,6 +42,14 @@ function UserPostGrid({ userId, onPostCountChange }) {
     setModalOpen(true);
     setPostId(e.target.alt);
   };
+
+  if (isBlocked) {
+    return (
+      <div className="post-grid">
+        <div className="no-posts">차단한 유저입니다.</div>
+      </div>
+    )
+  }
 
   return (
     <div className="post-grid">

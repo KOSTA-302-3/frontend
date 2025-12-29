@@ -8,7 +8,6 @@ import { loadChatRooms } from "../../store/thunks/chatThunks.js";
 import axiosInstance from "../../api/axiosInstance.js";
 import { useNavigate } from "react-router-dom";
 import { selectAllChatRooms } from "../../store/slices/selector.js";
-import { updateChatroom } from "../../store/slices/chatroomSlice.js";
 const { PageWrap, HeaderArea, ContentArea } = S;
 
 export default function Chat() {
