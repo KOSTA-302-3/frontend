@@ -6,6 +6,7 @@ const { ItemWrap, Avatar, Content, TopRow, Title, Time, Message, UnreadDot, Righ
 function formatTime(ts) {
   if (!ts) return "";
   const d = new Date(ts);
+  d.setHours(d.getHours() + 9);
   return d.toLocaleTimeString([], { month: "2-digit", day: "2-digit", hour: "2-digit", minute: "2-digit" });
 }
 

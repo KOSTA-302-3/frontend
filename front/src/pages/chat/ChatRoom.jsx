@@ -1,4 +1,4 @@
-import React, { use, useCallback, useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import MessageList from "../../components/chat/MessageList";
 import ChatInput from "../../components/chat/ChatInput";
@@ -27,6 +27,7 @@ export default function ChatRoom() {
   const dispatch = useDispatch();
   const nav = useNavigate();
   const role = useSelector((state) => state.auth.role);
+  const [page, setPage] = useState(1);
 
   let isAdmin = false;
   if (role === "ADMIN") {
@@ -41,9 +42,9 @@ export default function ChatRoom() {
   useEffect(() => {
     const fetchData = async () => {
       dispatch(enterChatRoomAndConnect({ chatroomId }));
-      setTimeout(() => {
-        dispatch(fetchNewMessages());
-      }, 500);
+      // setTimeout(() => {
+      //   dispatch(fetchNewMessages());
+      // }, 500);
     };
     fetchData();
     return () => {
@@ -105,8 +106,9 @@ export default function ChatRoom() {
   );
 
   const handleLoadMore = useCallback(() => {
-    dispatch(loadOlderMessages());
-  }, [dispatch]);
+    dispatch(loadOlderMessages({ chatroomId, page }));
+    setPage((p) => p + 1);
+  }, [dispatch, chatroomId, page]);
 
   const onDelete = () => {
     dispatch(deleteChatRoom(chatroomId));

@@ -26,7 +26,10 @@ const chatroomSlice = createSlice({
       console.log("deleteChatroom action.payload:", action.payload);
     },
     updateChatroom(state, action) {
-      console.log("updateChatroom action.payload:", action.payload);
+      const { id, hasUnread } = action.payload;
+      if (state.byId[id]) {
+        state.byId[id].hasUnread = hasUnread;
+      }
     },
   },
 });

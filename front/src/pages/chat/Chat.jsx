@@ -7,16 +7,15 @@ import { useDispatch, useSelector } from "react-redux";
 import { loadChatRooms } from "../../store/thunks/chatThunks.js";
 import axiosInstance from "../../api/axiosInstance.js";
 import { useNavigate } from "react-router-dom";
+import { selectAllChatRooms } from "../../store/slices/selector.js";
+import { updateChatroom } from "../../store/slices/chatroomSlice.js";
 const { PageWrap, HeaderArea, ContentArea } = S;
 
 export default function Chat() {
   const nav = useNavigate();
   const [view, setView] = useState("me"); // 'me' | 'all'
-  const initialChatRooms = useSelector(
-    (state) => state.chatroom.allIds.map((id) => state.chatroom.byId[id]),
-    (prev, next) => JSON.stringify(prev) === JSON.stringify(next)
-  );
-  const rooms = initialChatRooms;
+  const initialChatRooms = useSelector(selectAllChatRooms);
+
   const [showCreate, setShowCreate] = useState(false);
 
   const dispatch = useDispatch();
@@ -24,6 +23,9 @@ export default function Chat() {
   useEffect(() => {
     dispatch(loadChatRooms({ page: 0, type: view === "me" ? "me" : "all", word: "" }));
   }, [dispatch, view]);
+  useEffect(() => {
+    dispatch(updateChatroom());
+  }, [dispatch]);
 
   function handleCreateModalOpen() {
     setShowCreate(true);
@@ -50,7 +52,7 @@ export default function Chat() {
       </HeaderArea>
 
       <ContentArea>
-        <ChatRoomList rooms={rooms} />
+        <ChatRoomList rooms={initialChatRooms} />
       </ContentArea>
 
       {showCreate && <CreateChatModal onClose={handleCreateModalClose} onCreate={handleCreateRoom} />}
