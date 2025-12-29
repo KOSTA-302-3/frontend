@@ -7,8 +7,10 @@ import "./UserInfo.css";
 import ProfileButton from "./ProfileButton";
 import { useNavigate } from "react-router-dom";
 import axiosInstance from "../../api/axiosInstance";
+import { Dropdown } from "antd";
+import { EllipsisOutlined } from "@ant-design/icons";
 
-function UserInfo({ user, postCount }) {
+function UserInfo({ user, postCount, isBlocked, setIsBlocked }) {
   const nav = useNavigate();
   const [isFollowing, setIsFollowing] = useState(false);
   const [followerCount, setFollowerCount] = useState(user.followerCount);
@@ -66,6 +68,47 @@ function UserInfo({ user, postCount }) {
       });
   };
 
+  const block = () => {
+    if (!confirm("이 사용자를 차단하시겠습니까?")) return;
+
+    axiosInstance({
+      url: "/api/block",
+      method: "POST",
+      data: {
+        blockType: "USER",
+        targetId: user.userId,
+      },
+    })
+      .then(() => {
+        alert("유저를 차단했습니다.");
+        setIsBlocked(true);
+      })
+      .catch(() => {
+        alert("차단 실패");
+      });
+  }
+
+  const unblock = () => {
+    if (!confirm("차단 해제하시겠습니까?")) return;
+
+    axiosInstance({
+      url: `/api/block/USER/${user.userId}`,
+      method: "DELETE",
+    })
+      .then(() => {
+        alert("차단 해제했습니다.");
+        setIsBlocked(false);
+      })
+      .catch(() => {
+        alert("차단 해제 실패");
+      });
+  }
+
+  const reportUser = () => {
+    if (!confirm("이 사용자를 신고하시겠습니까?")) return;
+    
+  }
+
   const makeChatroom = () => {
     axiosInstance({
       url: `/api/chatroom/${user.userId}`,
@@ -80,6 +123,29 @@ function UserInfo({ user, postCount }) {
       });
   };
 
+  const moreMenu = {
+    items: [
+      isBlocked ? 
+      {
+        key: "unblock",
+        label: "차단해제",
+        onClick: unblock,
+      } : 
+      {
+        key: "block",
+        label: "차단하기",
+        onClick: block,
+        danger: true,
+      },
+      {
+        key: "report",
+        label: "신고하기",
+        onClick: reportUser,
+        danger: true,
+      },
+    ]
+  }
+
   return (
     <div className="profile">
       <div className="profile-row">
@@ -89,9 +155,17 @@ function UserInfo({ user, postCount }) {
         </div>
         {/* 프로필 정보 */}
         <div className="profile-right">
-          <h2>
-            {user.username}
-            <Badge imageUrl={user.customDTO?.badgeDTO?.imageUrl} />
+          <h2 className="username-row">
+            <span className="username">
+              {user.username}
+              <Badge imageUrl={user.customDTO?.badgeDTO?.imageUrl} />
+            </span>
+
+            {!user.isMe && (
+              <Dropdown menu={moreMenu} trigger={["click"]}>
+                <EllipsisOutlined className="more-btn" />
+              </Dropdown>
+            )}
           </h2>
           <div className="stats">
             <UserStat label="게시물" value={postCount} />

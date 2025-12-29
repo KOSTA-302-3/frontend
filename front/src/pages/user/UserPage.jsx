@@ -11,6 +11,7 @@ function UserPage() {
   const nav = useNavigate();
   const loginUser = useSelector((state) => state.auth.user);
   const [postCount, setPostCount] = useState(0);
+  const [isBlocked, setIsBlocked] = useState(false);
 
   const [user, setUser] = useState({
     userId: "",
@@ -34,9 +35,9 @@ function UserPage() {
     })
       .then((result) => {
         setUser(result.data);
-        //console.log("user: ", user);
+        console.log("user: ", user);
     })
-    .catch((err) => {
+      .catch((err) => {
         //console.log(err);
         if (err.response?.status === 401 || err.response?.status === 403) {
             alert("로그인 후 이용해주세요.");
@@ -44,6 +45,17 @@ function UserPage() {
         } else {
           alert("유저 정보를 불러오지 못했습니다.");
         }
+      });
+
+    axiosInstance({
+      url: `/api/block/USER/${id}`,
+      method: "GET",
+    })
+      .then((res) => {
+        setIsBlocked(res.data);
+      })
+      .catch(() => {
+        console.error("차단 상태 조회 실패");
       });
   }, [id, loginUser]);
 
@@ -53,8 +65,8 @@ function UserPage() {
   return (
     <>
       <UserHeader user={targetUser} />
-      <UserInfo user={targetUser} postCount={postCount} />
-      <UserPostGrid userId={targetUser.userId} onPostCountChange={setPostCount} />
+      <UserInfo user={targetUser} postCount={postCount} isBlocked={isBlocked} setIsBlocked={setIsBlocked} />
+      <UserPostGrid userId={targetUser.userId} onPostCountChange={setPostCount} isBlocked={isBlocked} />
     </>
   );
 }
