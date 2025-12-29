@@ -22,6 +22,10 @@ function FollowListPage() {
     { key: "followings", label: `${following.length} 팔로잉` },
   ];
 
+  const removePending = (userId) => {
+    setPendings(prev => prev.filter(user => user.userId !== userId));
+  }
+
   if (Number(id) === loginUser.userId) {
     tabs.push({
       key: "pendings",
@@ -40,7 +44,7 @@ function FollowListPage() {
       setFollowing(f2.data.content);
       setPendings(f3.data.content);
     });
-  }, [loginUser]);
+  }, [id, loginUser]);
 
   return (
     <div className="list-page">
@@ -52,8 +56,8 @@ function FollowListPage() {
 
       {tab === "followers" && <FollowList list={followers} />}
       {tab === "followings" && <FollowList list={following} />}
-      {id === loginUser?.userId
-        ? tab === "pendings" && <PendingList list={pendings} />
+      {Number(id) === loginUser?.userId
+        ? tab === "pendings" && <PendingList list={pendings} onRemove={removePending} />
         : null}
     </div>
   );

@@ -14,10 +14,12 @@ import ReportModal from "../common/ReportModal";
 function UserInfo({ user, postCount, isBlocked, setIsBlocked, isFollowing, setIsFollowing }) {
   const nav = useNavigate();
   const [followerCount, setFollowerCount] = useState(user.followerCount);
+  const [followingCount, setFollowingCount] = useState(user.followingCount);
   const [reportOpen, setReportOpen] = useState(false);
 
   useEffect(() => {
     setFollowerCount(user.followerCount);
+    setFollowingCount(user.followingCount);
   }, [user]);
 
   const follow = () => {
@@ -29,9 +31,13 @@ function UserInfo({ user, postCount, isBlocked, setIsBlocked, isFollowing, setIs
       },
     })
       .then((res) => {
-        console.log("result: ", res);
-        setIsFollowing(res.data);
-        setFollowerCount((cnt) => cnt + 1);
+        console.log("result: ", res.data);
+        if (res.data.pending === true) {
+          setIsFollowing(false);
+        } else {
+          setIsFollowing(true);
+          setFollowerCount((cnt) => cnt + 1);
+        }
       })
       .catch(() => {
         alert("이미 팔로우 요청을 보냈습니다.");
@@ -162,7 +168,7 @@ function UserInfo({ user, postCount, isBlocked, setIsBlocked, isFollowing, setIs
             />
             <UserStat
               label="팔로잉"
-              value={user.followingCount}
+              value={followingCount || 0}
               onClick={() => nav(`/user/${user.userId}/follow?tab=followings`)}
             />
           </div>

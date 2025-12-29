@@ -3,14 +3,18 @@ import "./ListContent.css";
 import axiosInstance from "../../api/axiosInstance";
 import Badge from "../common/Badge";
 
-function PendingList({ list }) {
+function PendingList({ list, onRemove }) {
   const nav = useNavigate();
+  
 
   const approve = (userId) => {
     axiosInstance({
       url: `/api/follow/${userId}`,
       method: "PUT",
     })
+      .then(() => {
+        onRemove(userId);
+      })
       .catch(() => {
         alert("승인 실패");
       });
@@ -21,6 +25,9 @@ function PendingList({ list }) {
       url: `/api/follow/refuse/${userId}`,
       method: "DELETE",
     })
+      .then(() => {
+        onRemove(userId);
+      })
       .catch(() => {
         alert("거절 실패");
       });
