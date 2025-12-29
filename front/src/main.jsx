@@ -23,6 +23,7 @@ import PostWrite from "./components/post/PostWrite.jsx";
 import DevTest from "./components/post/DevTest.jsx";
 import Chat from "./pages/chat/Chat.jsx";
 import SettingsPage from "./pages/user/SettingsPage.jsx";
+import BadgeSettings from "./pages/user/BadgeSettings.jsx";
 import ProfileEditPage from "./pages/user/ProfileEditPage.jsx";
 import BlockListPage from "./pages/user/BlockListPage.jsx";
 import FollowListPage from "./pages/user/FollowListPage.jsx";
@@ -50,6 +51,7 @@ const router = createBrowserRouter([
           { path: "user/:id/follow", element: <FollowListPage /> },
           { path: "settings", element: <SettingsPage /> },
           { path: "settings/profile", element: <ProfileEditPage /> },
+          { path: "settings/badges", element: <BadgeSettings /> },
           { path: "settings/blocks", element: <BlockListPage /> },
           { path: "shop", element: <BadgeShop /> },
           { path: "search", element: <SearchPage /> },
