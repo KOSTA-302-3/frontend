@@ -53,7 +53,7 @@ export const loadOlderMessages = createAsyncThunk("chat/loadOlderMessages", asyn
   await new Promise((r) => setTimeout(r, 700));
 
   try {
-    const response = await axiosInstance.get(`/api/message/older/${chatroomId}?page=${page}`);
+    const response = await axiosInstance.get(`/api/message/${chatroomId}?page=${page}`);
     const messages = response.data.content; // 역순 정렬
     const olderMessages = [...messages].reverse();
     dispatch(prependMessages(olderMessages));

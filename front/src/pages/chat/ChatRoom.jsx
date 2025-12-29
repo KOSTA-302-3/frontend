@@ -27,6 +27,7 @@ export default function ChatRoom() {
   const dispatch = useDispatch();
   const nav = useNavigate();
   const role = useSelector((state) => state.auth.role);
+  const [page, setPage] = useState(1);
 
   let isAdmin = false;
   if (role === "ADMIN") {
@@ -105,8 +106,9 @@ export default function ChatRoom() {
   );
 
   const handleLoadMore = useCallback(() => {
-    dispatch(loadOlderMessages());
-  }, [dispatch]);
+    dispatch(loadOlderMessages({ chatroomId, page }));
+    setPage((p) => p + 1);
+  }, [dispatch, chatroomId, page]);
 
   const onDelete = () => {
     dispatch(deleteChatRoom(chatroomId));
