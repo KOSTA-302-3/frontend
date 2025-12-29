@@ -1,6 +1,7 @@
 import { useNavigate } from 'react-router-dom';
 import './ListContent.css';
 import axiosInstance from '../../api/axiosInstance';
+import Badge from '../common/Badge';
 
 function BlockList({ users, setUsers, posts, tab }) {
   const nav = useNavigate();
@@ -33,7 +34,9 @@ function BlockList({ users, setUsers, posts, tab }) {
             <img src={user.profileImage} className="avatar"/>
 
             <div className="info" onClick={() => nav("/user/" + user.userId)}>
-              <div className="username">{user.username}</div>
+              <div className="username">{user.username} &nbsp;
+                <Badge imageUrl={user.customDTO?.badgeDTO?.imageUrl} />
+              </div>
             </div>
 
             <button onClick={() => unblock(user.userId)}>차단 해제</button>
