@@ -115,6 +115,17 @@ function UserInfo({ user, postCount, isBlocked, setIsBlocked, isFollowing, setIs
       });
   };
 
+  const copyProfileLink = async () => {
+    try {
+      const origin = window.location.origin;
+      const profileUrl = `${origin}/user/${user.userId}`;
+      await navigator.clipboard.writeText(profileUrl);
+      alert("프로필 링크가 복사되었습니다!");
+    } catch (err) {
+      alert("링크 복사에 실패했습니다.", err);
+    }
+  };
+
   const moreMenu = {
     items: [
       isBlocked ? 
@@ -183,7 +194,7 @@ function UserInfo({ user, postCount, isBlocked, setIsBlocked, isFollowing, setIs
             <ProfileButton btnType="default" onClick={() => nav("/settings/profile")}>
               프로필 편집
             </ProfileButton>
-            <ProfileButton btnType="default">프로필 공유</ProfileButton>
+            <ProfileButton btnType="default" onClick={copyProfileLink}>프로필 공유</ProfileButton>
           </>
         ) : (
           <>
