@@ -4,6 +4,7 @@ export const ProfileImageWrapper = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
+  margin-top: 5vw;
   gap: 2.0vw;
 `;
 

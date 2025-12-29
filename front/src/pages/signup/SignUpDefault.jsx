@@ -19,19 +19,27 @@ function SignUpDefault() {
   const nav = useNavigate();
   const { newUser, setNewUser } = useContext(SignUpContext);
 
-  // username 중복 확인 통과 여부를 위함
+  // username 중복 확인
   const [usernameChecked, setUsernameChecked] = useState(false);
   const [usernameHelp, setUsernameHelp] = useState("");
+
+  // email 중복 확인
+  const [emailChecked, setEmailChecked] = useState(false);
+  const [emailHelp, setEmailHelp] = useState("");
 
   const onFinish = (values) => {
     if (usernameChecked === false) {
       alert("아이디 중복 확인을 해주세요.");
       return;
     }
+    if (emailChecked === false) {
+      alert("이메일 중복 확인을 해주세요.");
+    }
     setNewUser({ ...newUser, ...values });
     nav("/signup/profile");
   };
 
+  /* 아이디 중복 체크 */
   const checkUsername = () => {
     if (newUser.username === "") {
       alert("아이디를 먼저 입력해주세요.");
@@ -57,6 +65,32 @@ function SignUpDefault() {
       });
   };
 
+  /* 이메일 중복 체크 */
+  const checkEmail = () => {
+    if (newUser.email === "") {
+      alert("이메일을 먼저 입력해주세요.");
+      return;
+    }
+
+    axiosInstance({
+      url: `/api/user/email/${newUser.email}`,
+      method: "get",
+    })
+      .then((res) => {
+        if (res.data === "OK") {
+          setEmailChecked(true);
+          setEmailHelp("사용 가능한 이메일입니다");
+        } else {
+          setEmailChecked(false);
+          setEmailHelp("이미 사용 중인 이메일입니다");
+        }
+      })
+      .catch(() => {
+        setEmailChecked(false);
+        setEmailHelp("이메일 중복 확인에 실패했습니다");
+      });
+  }
+
   return (
     <>
       <SubTitle>기본 정보를 입력해주세요</SubTitle>
@@ -73,16 +107,17 @@ function SignUpDefault() {
           }
         }}
       >
+        {/* 아이디 */}
         <Form.Item
           name="username"
           validateStatus={usernameHelp ? (usernameChecked ? "success" : "error") : undefined}
-          help={usernameHelp ? usernameHelp : undefined}
+          help={usernameHelp || undefined}
           rules={[
             { required: true, message: "아이디를 입력해주세요" },
             { min: 4, message: "아이디는 최소 4자 이상입니다" },
           ]}
         >
-          <Row gutter={8}>
+          <Row gutter={8} wrap={false}>
             <Col flex="auto">
               <StyledInput prefix={<UserOutlined />} placeholder="Username" />
             </Col>
@@ -94,6 +129,7 @@ function SignUpDefault() {
           </Row>
         </Form.Item>
 
+        {/* 비밀번호 */}
         <Form.Item
           name="password"
           rules={[
@@ -108,16 +144,32 @@ function SignUpDefault() {
           />
         </Form.Item>
 
+        {/* 이메일 */}
         <Form.Item
           name="email"
+          validateStatus={emailHelp ? (emailChecked ? "success" : "error") : undefined}
+          help={emailHelp || undefined}
           rules={[
             { required: true, message: "이메일을 입력해주세요" },
             { type: "email", message: "올바른 이메일 형식이 아닙니다" },
           ]}
         >
-          <StyledInput prefix={<MailOutlined />} placeholder="Email" />
+          <Row gutter={8} wrap={false}>
+            <Col flex="auto">
+              <StyledInput
+                prefix={<MailOutlined />}
+                placeholder="Email"
+              />
+            </Col>
+            <Col>
+              <StyledButton type="primary" onClick={checkEmail}>
+                중복 확인
+              </StyledButton>
+            </Col>
+          </Row>
         </Form.Item>
 
+        {/* 전화번호 */}
         <Form.Item
           name="phone"
           rules={[
