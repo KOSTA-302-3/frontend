@@ -3,7 +3,7 @@ import { Wrapper, BackIcon, Title, IconGroup, HeaderIcon } from "./TopNav.styles
 import { Badge } from "antd";
 const wsNotificationIp = import.meta.env.VITE_WS_NOTIFICATION_IP || "";
 import UserDropDown from "../../components/common/UserDropDwonMenu";
-import { connect, useDispatch, useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
 import { fetchNewMessages, fetchUnreadCount } from "../../store/thunks/notificationThunks";
 import { fetchMyInfo, fetchMyProfile } from "../../store/thunks/authThunks";
