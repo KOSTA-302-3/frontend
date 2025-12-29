@@ -8,7 +8,7 @@ import ProfileButton from "./ProfileButton";
 import { useNavigate } from "react-router-dom";
 import axiosInstance from "../../api/axiosInstance";
 
-function UserInfo({ user }) {
+function UserInfo({ user, postCount }) {
   const nav = useNavigate();
   const [isFollowing, setIsFollowing] = useState(false);
   const [followerCount, setFollowerCount] = useState(user.followerCount);
@@ -94,7 +94,7 @@ function UserInfo({ user }) {
             <Badge imageUrl={user.customDTO?.badgeDTO?.imageUrl} />
           </h2>
           <div className="stats">
-            <UserStat label="게시물" value={0} />
+            <UserStat label="게시물" value={postCount} />
             <UserStat
               label="팔로워"
               value={followerCount || 0}
