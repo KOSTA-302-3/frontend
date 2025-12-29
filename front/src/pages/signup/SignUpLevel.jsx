@@ -31,7 +31,7 @@ function SignUpLevel() {
 
       <Slider
         min={1}
-        max={20}
+        max={10}
         value={newUser.level}
         onChange={(v) => setNewUser({ ...newUser, level: v })}
       />

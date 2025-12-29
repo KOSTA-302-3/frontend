@@ -5,9 +5,15 @@ const wsNotificationIp = import.meta.env.VITE_WS_NOTIFICATION_IP || "";
 import UserDropDown from "../../components/common/UserDropDwonMenu";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
-import { fetchNewMessages, fetchUnreadCount } from "../../store/thunks/notificationThunks";
-import { fetchMyInfo } from "../../store/thunks/authThunks";
-import { increaseNewMessage, increaseUnreadCount } from "../../store/slices/notificationSlice";
+import {
+  fetchNewMessages,
+  fetchUnreadCount,
+} from "../../store/thunks/notificationThunks";
+import { fetchMyInfo, fetchMyProfile } from "../../store/thunks/authThunks";
+import {
+  increaseNewMessage,
+  increaseUnreadCount,
+} from "../../store/slices/notificationSlice";
 import { useNavigate } from "react-router-dom";
 import { updateChatroom } from "../../store/slices/chatroomSlice";
 
@@ -27,6 +33,7 @@ export default function TopNav({ title, onBack, onNotification, onMessage, onTit
 
   useEffect(() => {
     dispatch(fetchMyInfo());
+    dispatch(fetchMyProfile());
   }, [dispatch]);
 
   useEffect(() => {

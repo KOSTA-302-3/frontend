@@ -11,3 +11,8 @@ export const getChatMemberRole = createAsyncThunk("auth/getChatMemberRole", asyn
   console.log("getChatMemberRole", res.data);
   return res.data;
 });
+
+export const fetchMyProfile = createAsyncThunk("auth/fetchMyProfile", async () => {
+  const res = await axiosInstance.get("/api/user/me");
+  return res.data;
+});
