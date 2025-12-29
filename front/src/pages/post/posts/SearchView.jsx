@@ -6,6 +6,7 @@ import axiosInstance from "../../../api/axiosInstance";
 import PostDetailView from "../../../components/post/PostDetailView";
 import RepliesCard from "../../../components/post/RepliesCard";
 import { useNavigate } from "react-router-dom";
+import person_basic from "../../../assets/person_basic.png";
 const SearchView = () => {
   const [users, setUsers] = useState([]);
   const [posts, setPosts] = useState([]);
@@ -135,7 +136,7 @@ const SearchView = () => {
         users.map((item, key) => (
           <RepliesCard
             key={`${item.userId || key}`}
-            profileImage={item.profileImage}
+            profileImage={item.profileImage ? item.profileImage : person_basic}
             username={item.username}
             userId={item.userId}
             onClick={() => console.log(11111)}
