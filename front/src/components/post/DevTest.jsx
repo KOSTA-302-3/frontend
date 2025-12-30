@@ -13,8 +13,6 @@ const DevTest = () => {
 
   const aa = "해스태그 테스트 #12 #123 #123123 #33333";
 
-  console.log(extractHashTags(aa));
-
   return <div></div>;
 };
 

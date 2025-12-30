@@ -47,7 +47,6 @@ export default function CreateChatModal({ onClose, onCreate }) {
       formData.append("file", file);
       try {
         const res = await axiosInstance.post("/api/chatroom/file", formData);
-        console.log("File upload response:", res.data);
         setPreview(res.data);
       } catch (error) {
         console.error("File upload error:", error);

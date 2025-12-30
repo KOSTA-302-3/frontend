@@ -34,13 +34,9 @@ export default function TopNav({ title, onBack, onNotification, onMessage, onTit
     const connectNotificationSocket = () => {
       if (userId == null) return;
       const socket = new WebSocket(`${protocol}${wsNotificationIp}`);
-      socket.onopen = () => {
-        console.log("Notification WS connected");
-      };
+      socket.onopen = () => {};
       socket.onmessage = (event) => {
-        console.log("Notification WS message received");
         const msg = event.data;
-        console.log("Notification WS message content:", msg);
         if (msg === "Notification") {
           dispatch(increaseUnreadCount());
         } else {
@@ -54,7 +50,6 @@ export default function TopNav({ title, onBack, onNotification, onMessage, onTit
         socket.close();
       };
       socket.onclose = () => {
-        console.log("Notification WS disconnected");
         setTimeout(() => {
           connectNotificationSocket();
         }, 5000);

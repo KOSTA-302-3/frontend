@@ -10,7 +10,6 @@ const chatroomSlice = createSlice({
   initialState,
   reducers: {
     setChatroom(state, action) {
-      console.log("setChatroom action.payload:", action.payload);
       const arr = action.payload;
       state.byId = {};
       state.allIds = [];
@@ -19,12 +18,8 @@ const chatroomSlice = createSlice({
         state.allIds.push(room.id);
       });
     },
-    addChatroom(state, action) {
-      console.log("addChatroom action.payload:", action.payload);
-    },
-    deleteChatroom(state, action) {
-      console.log("deleteChatroom action.payload:", action.payload);
-    },
+    addChatroom(state, action) {},
+    deleteChatroom(state, action) {},
     updateChatroom(state, action) {
       const { id, hasUnread } = action.payload;
       if (state.byId[id]) {

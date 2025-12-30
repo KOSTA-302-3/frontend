@@ -20,14 +20,10 @@ function SearchGrid({ userId, onPostCountChange }) {
       },
     })
       .then((result) => {
-        //console.log("posts", result.data);
-        console.log(result.data.content);
         setPosts(result.data.content);
         onPostCountChange?.(result.data.totalElements);
       })
       .catch((err) => {
-        //console.log(err);
-
         if (err.response?.status === 401 || err.response?.status === 403) {
           alert("로그인 후 이용해주세요.");
           nav("/login");
@@ -49,22 +45,12 @@ function SearchGrid({ userId, onPostCountChange }) {
       ) : (
         posts.map((post) => (
           <div key={post.postId} className="post-item">
-            <img
-              src={post.imageSourcesList?.[0]}
-              alt={post.postId}
-              onClick={onClick}
-            />
+            <img src={post.imageSourcesList?.[0]} alt={post.postId} onClick={onClick} />
           </div>
         ))
       )}
 
-      {modalOpen && (
-        <PostDetailView
-          open={modalOpen}
-          onClose={() => setModalOpen(false)}
-          postId={postId}
-        />
-      )}
+      {modalOpen && <PostDetailView open={modalOpen} onClose={() => setModalOpen(false)} postId={postId} />}
     </div>
   );
 }

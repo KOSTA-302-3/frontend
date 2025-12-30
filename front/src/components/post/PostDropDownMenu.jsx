@@ -5,12 +5,7 @@ import { Dropdown, Space, message } from "antd";
 import axiosInstance from "../../api/axiosInstance";
 import { useNavigate } from "react-router-dom";
 
-const PostDropDownMenu = ({
-  postId,
-  uploadedImages,
-  content,
-  visibleCheck,
-}) => {
+const PostDropDownMenu = ({ postId, uploadedImages, content, visibleCheck }) => {
   const items = [
     {
       key: "1",
@@ -28,10 +23,8 @@ const PostDropDownMenu = ({
 
   const navigate = useNavigate();
   const onClick = async (e) => {
-    console.log(postId);
     switch (Number(e.key)) {
       case 1:
-        console.log(postId);
         if (confirm("수정하시겟습니까?")) {
           await navigate("/write", {
             state: {
@@ -67,8 +60,7 @@ const PostDropDownMenu = ({
 
             window.location.reload();
           } catch (e) {
-            message.error("삭제에 실패했습니다 다시 시도해주세요");
-            console.log(e);
+            console.error("에러 발생:", e);
           }
         }
         break;

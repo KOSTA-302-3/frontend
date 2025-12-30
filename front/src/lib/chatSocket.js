@@ -17,7 +17,6 @@ export function connectChatSocket({ roomId, dispatch, onOpen }) {
       resolve();
       return;
     }
-    console.log("Connecting to chat WS...");
     //ws, wss 구별하기
     const protocol = window.location.protocol === "https:" ? "wss" : "ws";
 
@@ -26,8 +25,6 @@ export function connectChatSocket({ roomId, dispatch, onOpen }) {
 
     // WebSocket 이벤트 핸들러 설정
     socket.onopen = async () => {
-      console.log("WS connected");
-
       try {
         if (onOpen) {
           await onOpen();
@@ -62,7 +59,6 @@ export function connectChatSocket({ roomId, dispatch, onOpen }) {
     };
 
     socket.onclose = () => {
-      console.log("WS disconnected");
       socket = null;
     };
     socket.onerror = (err) => {
