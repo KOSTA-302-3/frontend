@@ -105,13 +105,16 @@ const SearchView = () => {
         let newContent = [];
 
         if (isTag) {
-          const response = await axiosInstance.get("/api/posts/getPostsByHashTag", {
-            params: {
-              pageNo: page,
-              hashTags: query,
-            },
-            withCredentials: true,
-          });
+          const response = await axiosInstance.get(
+            "/api/posts/getPostsByHashTag",
+            {
+              params: {
+                pageNo: page,
+                hashTags: query,
+              },
+              withCredentials: true,
+            }
+          );
           newContent = response.data.content;
 
           if (newContent.length === 0) setHasMore(false);
@@ -122,9 +125,12 @@ const SearchView = () => {
             setPosts((prev) => [...prev, ...newContent]);
           }
         } else {
-          const response = await axiosInstance.get(`/api/user/${query}/${page - 1}`, {
-            withCredentials: true,
-          });
+          const response = await axiosInstance.get(
+            `/api/user/${query}/${page - 1}`,
+            {
+              withCredentials: true,
+            }
+          );
           newContent = response.data.content;
 
           if (newContent.length === 0) setHasMore(false);
@@ -177,7 +183,12 @@ const SearchView = () => {
     const clientHeight = window.innerHeight;
     const scrollHeight = document.documentElement.scrollHeight;
 
-    if (scrollTop + clientHeight >= scrollHeight - 100 && !isLoading && hasMore && currentSearch) {
+    if (
+      scrollTop + clientHeight >= scrollHeight - 100 &&
+      !isLoading &&
+      hasMore &&
+      currentSearch
+    ) {
       setPageNo((prev) => prev + 1);
     }
   };
@@ -210,7 +221,11 @@ const SearchView = () => {
               <PostGrid>
                 {posts.map((post) => (
                   <PostItem key={post.postId}>
-                    <img src={post.imageSourcesList?.[0]} alt={post.postId} onClick={onClick} />
+                    <img
+                      src={post.imageSourcesList?.[0]}
+                      alt={post.postId}
+                      onClick={onClick}
+                    />
                   </PostItem>
                 ))}
               </PostGrid>
@@ -224,17 +239,26 @@ const SearchView = () => {
               users.map((item, key) => (
                 <RepliesCard
                   key={`${item.userId || key}`}
-                  profileImage={item.profileImage ? item.profileImage : person_basic}
+                  profileImage={
+                    item.profileImage ? item.profileImage : person_basic
+                  }
                   username={item.username}
                   userId={item.userId}
-                  onClick={() => {}}
+                  badgeImageUrl={item.customDTO.badgeDTO.imageUrl}
+                  onClick={() => console.log("User Clicked")}
                 />
               ))
             )}
           </div>
         )}
 
-        {modalOpen && <PostDetailView open={modalOpen} onClose={() => setModalOpen(false)} postId={postId} />}
+        {modalOpen && (
+          <PostDetailView
+            open={modalOpen}
+            onClose={() => setModalOpen(false)}
+            postId={postId}
+          />
+        )}
       </Content>
     </Wrapper>
   );
