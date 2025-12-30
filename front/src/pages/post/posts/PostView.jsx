@@ -4,6 +4,7 @@ import axiosInstance from "../../../api/axiosInstance";
 import { Container } from "./PostView.style";
 import PostCard from "../../../components/post/PostCard";
 import { message } from "antd";
+import person_basic from "../../../assets/person_basic.png";
 
 const PostView = () => {
   const level = useSelector((state) => state.post.level);
@@ -100,9 +101,7 @@ const PostView = () => {
         <PostCard
           key={item.postId}
           username={item.createUserName}
-          profileImage={
-            item.userProfileImage || "https://placeholder.com/user.png"
-          }
+          profileImage={item.userProfileImage || person_basic}
           postImage={
             item.imageSourcesList || "https://placeholder.com/post.png"
           }
