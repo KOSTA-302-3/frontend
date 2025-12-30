@@ -12,7 +12,7 @@ function FollowList({ list }) {
         method: "POST",
       })
         .then((res) => {
-          nav(`/chat/${res.chatroomId}`);
+          nav(`/chat/${res.data}`);
         })
         .catch(() => {
           alert("메시지를 보낼 수 없습니다.");
