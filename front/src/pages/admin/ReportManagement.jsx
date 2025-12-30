@@ -1,20 +1,20 @@
 import { useState, useEffect } from "react";
 import AppButton from "../../components/common/AppButton";
 import axiosInstance from "../../api/axiosInstance";
-import { 
+import {
   Container,
   Header,
   Title,
   TypeSelect,
-  Table, 
-  TableHeader, 
-  TableRow, 
-  ActionButtons, 
+  Table,
+  TableHeader,
+  TableRow,
+  ActionButtons,
   ButtonWrapper,
   LoadingMessage,
   PaginationWrapper,
   PaginationButton,
-  PageInfo
+  PageInfo,
 } from "./ReportManagement.styles";
 
 const ReportManagement = () => {
@@ -29,7 +29,6 @@ const ReportManagement = () => {
     try {
       setLoading(true);
       const response = await axiosInstance.get(`/api/admin/reports/${type}/${page}`);
-      console.log("신고 목록 응답:", response);
       setReports(response.data.content || []);
       setTotalPages(response.data.totalPages || 0);
       setCurrentPage(page);
@@ -50,15 +49,15 @@ const ReportManagement = () => {
   const handleApprove = async (reportId) => {
     const days = prompt("정지 기간을 선택하세요:\n7 = 7일\n30 = 30일\n365 = 1년\n-1 = 영구", "7");
     if (days === null) return;
-    
+
     const daysNum = parseInt(days);
     if (![7, 30, 365, -1].includes(daysNum)) {
       alert("7, 30, 365, -1 중 하나를 입력하세요.");
       return;
     }
-    
-    if (!confirm(`이 신고를 승인하고 유저를 ${daysNum === -1 ? '영구' : daysNum + '일'} 정지시키겠습니까?`)) return;
-    
+
+    if (!confirm(`이 신고를 승인하고 유저를 ${daysNum === -1 ? "영구" : daysNum + "일"} 정지시키겠습니까?`)) return;
+
     try {
       await axiosInstance.post(`/api/admin/reports/${reportId}/approve?days=${daysNum}`);
       alert("신고가 승인되었고 유저가 정지되었습니다.");
@@ -71,7 +70,7 @@ const ReportManagement = () => {
 
   const handleReject = async (reportId) => {
     if (!confirm("이 신고를 거절하시겠습니까? (신고만 삭제됩니다)")) return;
-    
+
     try {
       await axiosInstance.delete(`/api/admin/reports/${reportId}`);
       alert("신고가 거절되었습니다.");
@@ -86,10 +85,7 @@ const ReportManagement = () => {
     <Container>
       <Header>
         <Title>신고 관리</Title>
-        <TypeSelect
-          value={reportType}
-          onChange={(e) => fetchReports(e.target.value, 0)}
-        >
+        <TypeSelect value={reportType} onChange={(e) => fetchReports(e.target.value, 0)}>
           <option value="USER">유저 신고</option>
           <option value="POST">게시물 신고</option>
           <option value="REPLY">댓글 신고</option>
@@ -109,12 +105,17 @@ const ReportManagement = () => {
               <div>신고일시</div>
               <div>관리</div>
             </TableHeader>
-            {reports.map(report => (
+            {reports.map((report) => (
               <TableRow key={report.reportId}>
                 <div>{report.username}</div>
                 <div>{report.targetUsername}</div>
-                <div style={{ color: report.banCount > 0 ? 'red' : 'inherit', fontWeight: report.banCount > 0 ? 'bold' : 'normal' }}>
-                  {report.banCount > 0 ? `${report.banCount}회` : '없음'}
+                <div
+                  style={{
+                    color: report.banCount > 0 ? "red" : "inherit",
+                    fontWeight: report.banCount > 0 ? "bold" : "normal",
+                  }}
+                >
+                  {report.banCount > 0 ? `${report.banCount}회` : "없음"}
                 </div>
                 <div>{report.content || "사유 없음"}</div>
                 <div>{new Date(report.createdAt).toLocaleDateString()}</div>
@@ -132,17 +133,14 @@ const ReportManagement = () => {
 
           {totalPages > 1 && (
             <PaginationWrapper>
-              <PaginationButton
-                onClick={() => fetchReports(reportType, currentPage - 1)} 
-                disabled={currentPage === 0}
-              >
+              <PaginationButton onClick={() => fetchReports(reportType, currentPage - 1)} disabled={currentPage === 0}>
                 이전
               </PaginationButton>
               <PageInfo>
                 {currentPage + 1} / {totalPages}
               </PageInfo>
               <PaginationButton
-                onClick={() => fetchReports(reportType, currentPage + 1)} 
+                onClick={() => fetchReports(reportType, currentPage + 1)}
                 disabled={currentPage >= totalPages - 1}
               >
                 다음

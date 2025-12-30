@@ -17,20 +17,16 @@ const LoginForm = () => {
     const formData = new FormData();
     formData.append("username", username);
     formData.append("password", password);
-    console.log("전송 데이터:", username, password);
     axiosInstance
       .post("/api/login", formData, {
         withCredentials: true,
       })
       .then((response) => {
-        console.log("로그인 성공:", response);
-        if (response.data.role === "ADMIN")
-          navigate("/admin");
-        else
-          navigate("/");
+        if (response.data.role === "ADMIN") navigate("/admin");
+        else navigate("/");
       })
       .catch(() => {
-        alert("오류입니다!");
+        alert("일치하는 회원 정보가 없습니다.");
       });
   };
 
@@ -58,7 +54,7 @@ const LoginForm = () => {
           />
         </Form.Item>
 
-        <Form.Item>
+        {/* <Form.Item>
           <Flex justify="space-between" align="center">
             <Form.Item name="remember" valuePropName="checked" noStyle>
               <Checkbox>아이디 기억하기</Checkbox>
@@ -67,7 +63,7 @@ const LoginForm = () => {
               <label>비밀번호 찾기</label>
             </a>
           </Flex>
-        </Form.Item>
+        </Form.Item> */}
 
         <Form.Item>
           <StyledButton block type="primary" onClick={clickEvent}>

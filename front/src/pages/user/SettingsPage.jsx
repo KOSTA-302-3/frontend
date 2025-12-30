@@ -17,7 +17,6 @@ function SettingsPage() {
       method: "PUT",
     })
       .then((res) => {
-        //console.log("result: ", res);
         dispatch(updatePrivacy(res.data.isPrivate));
       })
       .catch(() => {
@@ -33,7 +32,6 @@ function SettingsPage() {
       method: "DELETE",
     })
       .then((res) => {
-        //console.log("result: ", res);
         nav("/login");
       })
       .catch(() => {
@@ -43,26 +41,22 @@ function SettingsPage() {
 
   const logout = () => {
     axiosInstance({
-        url: "/api/logout",
-        method: "post",
-    })
-    .finally(() => {
+      url: "/api/logout",
+      method: "post",
+    }).finally(() => {
       nav("/login");
-    })
-  }
+    });
+  };
 
   return (
     <div className="settings-page">
       {/* <h2 className="settings-title">설정</h2> */}
-      
+
       {/* 계정 */}
       <div className="settings-section">
         <div className="section-title">계정</div>
 
-        <SettingItem
-          title="프로필 수정"
-          onClick={() => nav("/settings/profile")}
-        />
+        <SettingItem title="프로필 수정" onClick={() => nav("/settings/profile")} />
 
         <SettingToggle
           title="비공개 계정"
@@ -76,20 +70,14 @@ function SettingsPage() {
       <div className="settings-section">
         <div className="section-title">커스터마이징</div>
 
-        <SettingItem
-          title="뱃지 관리"
-          onClick={() => nav("/settings/badges")}
-        />
+        <SettingItem title="뱃지 관리" onClick={() => nav("/settings/badges")} />
       </div>
 
       {/* 활동 */}
       <div className="settings-section">
         <div className="section-title">활동</div>
 
-        <SettingItem
-          title="차단 목록"
-          onClick={() => nav("/settings/blocks")}
-        />
+        <SettingItem title="차단 목록" onClick={() => nav("/settings/blocks")} />
         {/* <SettingItem
           title="내 댓글"
           onClick={() => nav("/settings/comments")}
@@ -98,10 +86,7 @@ function SettingsPage() {
           title="좋아요한 게시물"
           onClick={() => nav("/settings/likes")}
         /> */}
-        <SettingItem
-          title="로그아웃"
-          onClick={logout}
-        />
+        <SettingItem title="로그아웃" onClick={logout} />
       </div>
 
       {/* 위험(탈퇴) */}

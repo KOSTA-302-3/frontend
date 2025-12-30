@@ -47,7 +47,6 @@ export default function CreateChatModal({ onClose, onCreate }) {
       formData.append("file", file);
       try {
         const res = await axiosInstance.post("/api/chatroom/file", formData);
-        console.log("File upload response:", res.data);
         setPreview(res.data);
       } catch (error) {
         console.error("File upload error:", error);
@@ -125,8 +124,7 @@ export default function CreateChatModal({ onClose, onCreate }) {
                 </RadioLabel>
               </RadioGroup>
             </Row>
-
-            <Row>
+            {/* <Row>
               <Label>비밀번호 설정</Label>
               <CheckboxLabel>
                 <input
@@ -136,7 +134,7 @@ export default function CreateChatModal({ onClose, onCreate }) {
                 />
                 비밀번호 사용
               </CheckboxLabel>
-            </Row>
+            </Row> */}
           </RowInline>
 
           {requirePassword && (

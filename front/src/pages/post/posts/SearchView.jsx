@@ -132,7 +132,6 @@ const SearchView = () => {
             }
           );
           newContent = response.data.content;
-          console.log(newContent);
 
           if (newContent.length === 0) setHasMore(false);
 

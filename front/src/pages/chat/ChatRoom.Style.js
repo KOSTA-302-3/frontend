@@ -1,9 +1,9 @@
 import styled, { css } from "styled-components";
 
 export const Wrapper = styled.div`
-  position: absolute;
-  top: 12vh; /* header 높이와 동일하게 */
-  bottom: 10vh; /* bottom nav 높이와 동일하게 */
+  position: relative; /* 변경: absolute -> relative */
+  /* 화면 내에서 기존과 동일한 높이를 유지하도록 계산된 높이 지정 */
+  height: calc(100dvh - 12dvh - 10dvh);
   left: 0;
   right: 0;
   display: grid;

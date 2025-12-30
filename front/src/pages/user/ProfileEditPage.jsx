@@ -1,7 +1,13 @@
 import "./ProfileEditPage.css";
 import { useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { ChangeImageText, HiddenFileInput, ProfileCircle, ProfileImage, ProfileImageWrapper } from "./ProfileEdit.styles";
+import {
+  ChangeImageText,
+  HiddenFileInput,
+  ProfileCircle,
+  ProfileImage,
+  ProfileImageWrapper,
+} from "./ProfileEdit.styles";
 import ProfileEditModal from "./ProfileEditModal";
 import axiosInstance from "../../api/axiosInstance";
 import { updateUser } from "../../store/slices/authSlice";
@@ -40,38 +46,55 @@ function ProfileEditPage() {
     })
       .then((res) => {
         const imageUrl = res.data;
-        //console.log("url: ", imageUrl);
-        dispatch(updateUser({ profileImage: imageUrl}));
+        //dispatch(updateUser({ profileImage: imageUrl}));
+        changeImage(imageUrl);
       })
       .catch(() => {
         alert("프로필 이미지 업로드에 실패했습니다.");
       });
   };
 
+  const changeImage = (imageUrl) => {
+    const payload = {
+      username: loginUser.username,
+      profileImage: imageUrl,
+      description: loginUser.description,
+      level: loginUser.level,
+    };
+
+    axiosInstance({
+      url: "/api/user",
+      method: "PUT",
+      data: payload,
+    })
+      .then((res) => {
+        dispatch(updateUser(res.data));
+      })
+      .catch(() => {
+        alert("프로필 이미지 수정 실패");
+      });
+  };
+
   return (
     <div className="profile-edit-page">
-
       {/* 프로필 이미지 */}
       <ProfileImageWrapper>
         <ProfileCircle>
           {loginUser.profileImage && <ProfileImage src={loginUser.profileImage} alt="profile-image" />}
         </ProfileCircle>
-        <HiddenFileInput
-          type="file"
-          accept="image/*"
-          ref={fileInputRef}
-          onChange={uploadImage}
-        />
+        <HiddenFileInput type="file" accept="image/*" ref={fileInputRef} onChange={uploadImage} />
 
-        <ChangeImageText onClick={() => fileInputRef.current?.click()}>
-          프로필 이미지 변경
-        </ChangeImageText>
+        <ChangeImageText onClick={() => fileInputRef.current?.click()}>프로필 이미지 변경</ChangeImageText>
       </ProfileImageWrapper>
 
       {/* 정보 목록 */}
       <div className="profile-edit-list">
         <EditRow label="아이디" value={loginUser.username} onClick={() => openModal("username")} />
-        <EditRow label="소개" value={loginUser.description || "아직 소개가 없습니다"} onClick={() => openModal("description")} />
+        <EditRow
+          label="소개"
+          value={loginUser.description || "아직 소개가 없습니다"}
+          onClick={() => openModal("description")}
+        />
         <EditRow label="레벨" value={loginUser.level} onClick={() => openModal("level")} />
       </div>
 
