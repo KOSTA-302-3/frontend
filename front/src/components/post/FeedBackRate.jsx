@@ -3,7 +3,7 @@ import { Button, Col, InputNumber, Row, Slider, Space, message } from "antd";
 import { Rate } from "./FeedBackRate.style";
 import axiosInstance from "../../api/axiosInstance";
 
-const IntegerStep = ({ postId }) => {
+const IntegerStep = ({ postId, onClose }) => {
   const [inputValue, setInputValue] = useState(1);
 
   const onChange = (newValue) => {
@@ -19,12 +19,16 @@ const IntegerStep = ({ postId }) => {
           userId: 0,
           postId: postId,
           level: inputValue,
-          createAt: "2025-12-29T01:32:30.603Z",
+          createAt: new Date().toISOString(),
         },
         { withCredentials: true }
       );
 
       message.success("피드백이 성공적으로 처리되었습니다!");
+
+      if (onClose) {
+        onClose();
+      }
     } catch (e) {
       console.error(e);
       message.error("피드백 처리에 실패했습니다.");
@@ -49,9 +53,11 @@ const IntegerStep = ({ postId }) => {
     </Row>
   );
 };
-const FeedBackRate = ({ postId }) => (
+
+const FeedBackRate = ({ postId, onClose }) => (
   <Space style={{ width: "100%" }} vertical>
-    <IntegerStep postId={postId} />
+    <IntegerStep postId={postId} onClose={onClose} />
   </Space>
 );
+
 export default FeedBackRate;
