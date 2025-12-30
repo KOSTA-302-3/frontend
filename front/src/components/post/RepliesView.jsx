@@ -140,6 +140,7 @@ const RepliesView = ({ open, onClose, postId, profileImage }) => {
             caption={item.replyContent}
             likes={item.replyLike}
             userId={item.createUserId}
+            badgeImageUrl={item.badgeImageSrc}
           />
         ))}
         {isLoading && <div style={{ textAlign: "center" }}>Loading...</div>}
