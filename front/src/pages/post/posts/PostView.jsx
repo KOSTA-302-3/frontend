@@ -15,10 +15,7 @@ const PostView = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [hasMore, setHasMore] = useState(true);
 
-  const selectUrl = [
-    "/api/posts/getAllOnFilter",
-    "/api/posts/getFollowOnFilter",
-  ];
+  const selectUrl = ["/api/posts/getAllOnFilter", "/api/posts/getFollowOnFilter"];
 
   const fetchPosts = useCallback(
     async (isReset = false) => {
@@ -38,11 +35,6 @@ const PostView = () => {
           },
           withCredentials: true,
         });
-
-        console.log(
-          `페이지: ${currentPage}, 레벨: ${level}, 데이터수신:`,
-          response.data
-        );
 
         const newContent = response.data.content;
 
@@ -81,11 +73,7 @@ const PostView = () => {
     const clientHeight = window.innerHeight;
     const scrollHeight = document.documentElement.scrollHeight;
 
-    if (
-      scrollTop + clientHeight >= scrollHeight - 100 &&
-      !isLoading &&
-      hasMore
-    ) {
+    if (scrollTop + clientHeight >= scrollHeight - 100 && !isLoading && hasMore) {
       setPageNo((prev) => prev + 1);
     }
   };
@@ -102,17 +90,16 @@ const PostView = () => {
           key={item.postId}
           username={item.createUserName}
           profileImage={item.userProfileImage || person_basic}
-          postImage={
-            item.imageSourcesList || "https://placeholder.com/post.png"
-          }
+          postImage={item.imageSourcesList || "https://placeholder.com/post.png"}
           caption={item.content}
           likes={item.likeCount}
           isLiked={false}
-          onComment={() => console.log("댓글 클릭")}
-          onShare={() => console.log("공유 클릭")}
+          onComment={() => {}}
+          onShare={() => {}}
           postId={item.postId}
           userCheck={item.userCheck}
           createUserId={item.createUserId}
+          badgeImageUrl={item.badgeImageSrc}
         />
       ))}
     </Container>

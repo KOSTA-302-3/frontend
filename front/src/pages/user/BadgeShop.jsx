@@ -25,6 +25,7 @@ import {
 
 const BadgeShop = () => {
   const [badges, setBadges] = useState([]);
+  const [myBadges, setMyBadges] = useState([]);
   const [userPoint, setUserPoint] = useState(0);
   const [loading, setLoading] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
@@ -55,9 +56,22 @@ const BadgeShop = () => {
     }
   };
 
+  // 내가 보유한 뱃지 목록 불러오기
+  const fetchMyBadges = async () => {
+    try {
+      const response = await axiosInstance.get("/api/custom/my-badges/0");
+      const myBadgeIds = response.data.content?.map(item => item.badgeId) || [];
+      setMyBadges(myBadgeIds);
+    } catch (error) {
+      console.error("보유 뱃지 조회 실패:", error);
+      setMyBadges([]);
+    }
+  };
+
   useEffect(() => {
     fetchUserInfo();
     fetchBadges();
+    fetchMyBadges();
   }, []);
 
   // 검색 필터링
@@ -72,6 +86,12 @@ const BadgeShop = () => {
 
   // 뱃지 구매
   const handleBuyBadge = async (badge) => {
+    // 중복 구매 체크
+    if (myBadges.includes(badge.badgeId)) {
+      message.warning("이미 보유한 뱃지입니다!");
+      return;
+    }
+
     if (userPoint < badge.price) {
       message.warning("포인트가 부족합니다!");
       return;
@@ -95,6 +115,7 @@ const BadgeShop = () => {
           });
           message.success(`${badge.name} 뱃지를 구매했습니다!`);
           await fetchBadges(); // 뱃지 목록 새로고침
+          await fetchMyBadges(); // 보유 뱃지 목록 새로고침
           // 포인트 갱신
           await fetchUserInfo();
         } catch (error) {
@@ -139,13 +160,16 @@ const BadgeShop = () => {
       ) : (
         <BadgeGrid>
           {filteredBadges.map((badge) => {
+            const alreadyOwned = myBadges.includes(badge.badgeId);
             const canAfford = userPoint >= badge.price;
+            const canBuy = !alreadyOwned && canAfford;
+            
             return (
               <BadgeCard key={badge.badgeId}>
                 <BadgeImageWrapper>
                   <BadgeImage 
                     src={badge.imageUrl || "https://placehold.co/150x150?text=No+Image"} 
-                    alt={badge.name || '뱁지'}
+                    alt={badge.name || '뱃지'}
                     onError={(e) => {
                       e.target.src = "https://placehold.co/150x150?text=No+Image";
                     }}
@@ -159,16 +183,16 @@ const BadgeShop = () => {
                   </BadgePrice>
                 </BadgeInfo>
                 <AppButton
-                  disabled={!canAfford}
+                  disabled={!canBuy}
                   onClick={() => handleBuyBadge(badge)}
                   style={{
-                    background: canAfford ? '#e91e63' : 'rgba(255, 255, 255, 0.1)',
-                    borderColor: canAfford ? '#e91e63' : 'rgba(255, 255, 255, 0.2)',
-                    color: canAfford ? 'white' : 'rgba(255, 255, 255, 0.4)',
-                    cursor: canAfford ? 'pointer' : 'not-allowed',
+                    background: canBuy ? '#e91e63' : 'rgba(255, 255, 255, 0.1)',
+                    borderColor: canBuy ? '#e91e63' : 'rgba(255, 255, 255, 0.2)',
+                    color: canBuy ? 'white' : 'rgba(255, 255, 255, 0.4)',
+                    cursor: canBuy ? 'pointer' : 'not-allowed',
                   }}
                 >
-                  {canAfford ? '구매하기' : '포인트 부족'}
+                  {alreadyOwned ? '보유 중' : canAfford ? '구매하기' : '포인트 부족'}
                 </AppButton>
               </BadgeCard>
             );

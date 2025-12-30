@@ -31,7 +31,6 @@ function UserInfo({ user, postCount, isBlocked, setIsBlocked, isFollowing, setIs
       },
     })
       .then((res) => {
-        console.log("result: ", res.data);
         if (res.data.pending === true) {
           setIsFollowing(false);
         } else {
@@ -52,7 +51,6 @@ function UserInfo({ user, postCount, isBlocked, setIsBlocked, isFollowing, setIs
       method: "DELETE",
     })
       .then((res) => {
-        //console.log("result: ", res);
         setIsFollowing(false);
         setFollowerCount((cnt) => cnt - 1);
       })
@@ -79,7 +77,7 @@ function UserInfo({ user, postCount, isBlocked, setIsBlocked, isFollowing, setIs
       .catch(() => {
         alert("차단 실패");
       });
-  }
+  };
 
   const unblock = () => {
     if (!confirm("차단 해제하시겠습니까?")) return;
@@ -95,11 +93,11 @@ function UserInfo({ user, postCount, isBlocked, setIsBlocked, isFollowing, setIs
       .catch(() => {
         alert("차단 해제 실패");
       });
-  }
+  };
 
   const reportUser = () => {
     setReportOpen(true);
-  }
+  };
 
   const makeChatroom = () => {
     axiosInstance({
@@ -107,7 +105,6 @@ function UserInfo({ user, postCount, isBlocked, setIsBlocked, isFollowing, setIs
       method: "POST",
     })
       .then((res) => {
-        //console.log("result: ", res);
         nav(`/chat/${res.data}`);
       })
       .catch(() => {
@@ -128,26 +125,26 @@ function UserInfo({ user, postCount, isBlocked, setIsBlocked, isFollowing, setIs
 
   const moreMenu = {
     items: [
-      isBlocked ? 
-      {
-        key: "unblock",
-        label: "차단해제",
-        onClick: unblock,
-      } : 
-      {
-        key: "block",
-        label: "차단하기",
-        onClick: block,
-        danger: true,
-      },
+      isBlocked
+        ? {
+            key: "unblock",
+            label: "차단해제",
+            onClick: unblock,
+          }
+        : {
+            key: "block",
+            label: "차단하기",
+            onClick: block,
+            danger: true,
+          },
       {
         key: "report",
         label: "신고하기",
         onClick: reportUser,
         danger: true,
       },
-    ]
-  }
+    ],
+  };
 
   return (
     <div className="profile">
@@ -194,21 +191,35 @@ function UserInfo({ user, postCount, isBlocked, setIsBlocked, isFollowing, setIs
             <ProfileButton btnType="default" onClick={() => nav("/settings/profile")}>
               프로필 편집
             </ProfileButton>
-            <ProfileButton btnType="default" onClick={copyProfileLink}>프로필 공유</ProfileButton>
+            <ProfileButton btnType="default" onClick={copyProfileLink}>
+              프로필 공유
+            </ProfileButton>
           </>
         ) : (
           <>
-            {isFollowing ? 
-              <ProfileButton btnType="default" onClick={unfollow}>팔로우 중</ProfileButton>
-              :
-              <ProfileButton btnType="point" onClick={follow}>팔로우</ProfileButton>
-            }
-            <ProfileButton btnType="default" onClick={makeChatroom}>메시지 보내기</ProfileButton>
+            {isFollowing ? (
+              <ProfileButton btnType="default" onClick={unfollow}>
+                팔로우 중
+              </ProfileButton>
+            ) : (
+              <ProfileButton btnType="point" onClick={follow}>
+                팔로우
+              </ProfileButton>
+            )}
+            <ProfileButton btnType="default" onClick={makeChatroom}>
+              메시지 보내기
+            </ProfileButton>
           </>
         )}
       </div>
-      
-      <ReportModal open={reportOpen} onClose={() => setReportOpen(false)} reportType="USER" targetId={user.userId} onSuccess={() => alert("신고 완료")} />
+
+      <ReportModal
+        open={reportOpen}
+        onClose={() => setReportOpen(false)}
+        reportType="USER"
+        targetId={user.userId}
+        onSuccess={() => alert("신고 완료")}
+      />
     </div>
   );
 }

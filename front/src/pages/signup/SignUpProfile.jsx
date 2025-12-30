@@ -2,10 +2,7 @@ import React, { useContext, useRef, useState } from "react";
 import { SignUpContext } from "./SignUpPage";
 import { useNavigate } from "react-router-dom";
 import { ButtonRow, SubTitle, Title } from "./SignUp.styles";
-import {
-  StyledButton,
-  StyledInput,
-} from "../../components/common/LoginForm.style";
+import { StyledButton, StyledInput } from "../../components/common/LoginForm.style";
 import {
   ChangeImageText,
   HiddenFileInput,
@@ -37,7 +34,6 @@ function SignUpProfile() {
     })
       .then((res) => {
         const imageUrl = res.data;
-        //console.log("url: ", imageUrl);
 
         setNewUser({
           ...newUser,
@@ -58,29 +54,18 @@ function SignUpProfile() {
 
       <ProfileImageWrapper>
         <ProfileCircle>
-          {newUser.profileImage && (
-            <ProfileImage src={newUser.profileImage} alt="profile-preview" />
-          )}
+          {newUser.profileImage && <ProfileImage src={newUser.profileImage} alt="profile-preview" />}
         </ProfileCircle>
 
-        <HiddenFileInput
-          type="file"
-          accept="image/*"
-          ref={fileInputRef}
-          onChange={uploadImage}
-        />
+        <HiddenFileInput type="file" accept="image/*" ref={fileInputRef} onChange={uploadImage} />
 
-        <ChangeImageText onClick={() => fileInputRef.current?.click()}>
-          프로필 이미지 변경
-        </ChangeImageText>
+        <ChangeImageText onClick={() => fileInputRef.current?.click()}>프로필 이미지 변경</ChangeImageText>
       </ProfileImageWrapper>
 
       <StyledInput
         placeholder="한 줄 소개"
         value={newUser.description}
-        onChange={(e) =>
-          setNewUser({ ...newUser, description: e.target.value })
-        }
+        onChange={(e) => setNewUser({ ...newUser, description: e.target.value })}
       />
 
       <ButtonRow>

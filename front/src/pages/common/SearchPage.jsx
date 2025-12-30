@@ -4,6 +4,8 @@ import { ArrowLeftOutlined } from "@ant-design/icons";
 import SearchBar from "../../components/common/SearchBar";
 import { useNavigate } from "react-router-dom";
 import axiosInstance from "../../api/axiosInstance";
+import { useSelector } from "react-redux";
+import PostDetailView from "../../components/post/PostDetailView";
 
 const Wrapper = styled.div`
   width: 100%;
@@ -71,6 +73,10 @@ export default function SearchPage() {
   const [pageNo, setPageNo] = useState(1);
   const [isLoading, setIsLoading] = useState(false);
   const [hasMore, setHasMore] = useState(true);
+  const level = useSelector((state) => state.post.level);
+
+  const [modalOpen, setModalOpen] = useState(false);
+  const [selectedPostId, setSelectedPostId] = useState(0);
 
   const fetchPosts = useCallback(
     async (isReset = false) => {
@@ -83,7 +89,7 @@ export default function SearchPage() {
         const response = await axiosInstance.get("/api/posts/getAllOnFilter", {
           params: {
             pageNo: currentPage,
-            postLevel: 1,
+            postLevel: level,
           },
           withCredentials: true,
         });
@@ -105,7 +111,7 @@ export default function SearchPage() {
         setIsLoading(false);
       }
     },
-    [pageNo, isLoading]
+    [pageNo, isLoading, level]
   );
 
   useEffect(() => {
@@ -125,11 +131,7 @@ export default function SearchPage() {
     const clientHeight = window.innerHeight;
     const scrollHeight = document.documentElement.scrollHeight;
 
-    if (
-      scrollTop + clientHeight >= scrollHeight - 100 &&
-      !isLoading &&
-      hasMore
-    ) {
+    if (scrollTop + clientHeight >= scrollHeight - 100 && !isLoading && hasMore) {
       setPageNo((prev) => prev + 1);
     }
   };
@@ -141,6 +143,11 @@ export default function SearchPage() {
 
   const onBack = () => {
     nav(-1);
+  };
+
+  const handlePostClick = (postId) => {
+    setSelectedPostId(postId);
+    setModalOpen(true);
   };
 
   return (
@@ -156,7 +163,7 @@ export default function SearchPage() {
         {posts.map((item) => (
           <GridItem
             key={item.postId}
-            onClick={() => console.log("Post Clicked", item.postId)}
+            onClick={() => handlePostClick(item.postId)}
           >
             <img
               src={item.imageSourcesList || "https://placeholder.com/post.png"}
@@ -165,6 +172,14 @@ export default function SearchPage() {
           </GridItem>
         ))}
       </Content>
+
+      {modalOpen && (
+        <PostDetailView
+          open={modalOpen}
+          onClose={() => setModalOpen(false)}
+          postId={selectedPostId}
+        />
+      )}
     </Wrapper>
   );
 }

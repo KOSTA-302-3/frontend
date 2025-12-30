@@ -18,9 +18,6 @@ const PostWrite = () => {
   const postId = location.state.postId;
   const method = location.state?.method || 0;
 
-  console.log(visibleCheck);
-
-  console.log(postId);
   useEffect(() => {
     if (imageUrls.length === 0) {
       message.error("이미지 정보가 없습니다. 사진을 먼저 선택해주세요.");
@@ -117,13 +114,10 @@ const PostWrite = () => {
       message.warning("삭제할 사진을 불러오는 중입니다.");
       return;
     }
-    console.log("인덱스 : " + delImg);
     if (imageUrls.length <= 1) {
-      console.log(imageUrls);
       message.error("사진은 최소 1장있어야 합니다.");
       return;
     }
-    console.log(delImg);
     const newUrls = imageUrls.filter((_, index) => index !== Number(delImg));
     setImageUrls(newUrls);
     message.success("삭제 되었습니다");
@@ -135,10 +129,7 @@ const PostWrite = () => {
 
   return (
     <div style={{ maxWidth: "600px", margin: "20px auto", padding: "0 20px" }}>
-      <h2 style={{ color: "white" }}>
-        {" "}
-        {method === 2 ? "게시글 수정" : "새 게시글 작성"}
-      </h2>
+      <h2 style={{ color: "white" }}> {method === 2 ? "게시글 수정" : "새 게시글 작성"}</h2>
 
       {imageUrls.length > 0 && (
         <Carousel draggable arrows style={carouselStyle}>
