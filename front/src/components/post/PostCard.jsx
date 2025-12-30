@@ -181,8 +181,8 @@ const PostCard = ({
       <ReportModal
         open={reportModalOpen}
         onClose={() => setReportModalOpen(false)}
-        reportType="POST"
-        targetId={postId}
+        reportType="USER"
+        targetId={createUserId}
         onSuccess={() => {
           setReportModalOpen(false);
           alert("신고가 접수되었습니다.");
