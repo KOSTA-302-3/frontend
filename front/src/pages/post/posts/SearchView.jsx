@@ -244,7 +244,6 @@ const SearchView = () => {
                   }
                   username={item.username}
                   userId={item.userId}
-                  badgeImageUrl={item.customDTO.badgeDTO.imageUrl}
                   onClick={() => console.log("User Clicked")}
                 />
               ))
