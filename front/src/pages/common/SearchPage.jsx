@@ -4,6 +4,7 @@ import { ArrowLeftOutlined } from "@ant-design/icons";
 import SearchBar from "../../components/common/SearchBar";
 import { useNavigate } from "react-router-dom";
 import axiosInstance from "../../api/axiosInstance";
+import { useSelector } from "react-redux";
 
 const Wrapper = styled.div`
   width: 100%;
@@ -71,7 +72,7 @@ export default function SearchPage() {
   const [pageNo, setPageNo] = useState(1);
   const [isLoading, setIsLoading] = useState(false);
   const [hasMore, setHasMore] = useState(true);
-
+  const level = useSelector((state) => state.post.level);
   const fetchPosts = useCallback(
     async (isReset = false) => {
       if (isLoading) return;
@@ -83,7 +84,7 @@ export default function SearchPage() {
         const response = await axiosInstance.get("/api/posts/getAllOnFilter", {
           params: {
             pageNo: currentPage,
-            postLevel: 1,
+            postLevel: level,
           },
           withCredentials: true,
         });
