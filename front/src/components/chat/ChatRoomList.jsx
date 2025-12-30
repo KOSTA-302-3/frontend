@@ -4,7 +4,6 @@ import * as S from "./ChatRoomList.Style.js";
 const { ListWrap, ListInner, Loading } = S;
 
 export default function ChatRoomList({ rooms = [] }) {
-  console.log("ChatRoomList 렌더링:", rooms, rooms.length);
   const PAGE_SIZE = 5;
   const [displayCount, setDisplayCount] = React.useState(() => Math.min(PAGE_SIZE, rooms.length));
   const [isLoading, setIsLoading] = React.useState(false);

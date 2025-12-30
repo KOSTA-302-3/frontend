@@ -19,7 +19,7 @@ export default function MainLayout() {
       <Outlet />
       <BottomNav
         onHome={() => nav("/")}
-        onSearch={() => console.log("검색")}
+        onSearch={() => {}}
         onAdd={() => nav("posts")}
         onProfile={() => nav("/mypage")}
         onSetting={() => nav("/settings")}

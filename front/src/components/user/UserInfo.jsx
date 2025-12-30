@@ -14,10 +14,12 @@ import ReportModal from "../common/ReportModal";
 function UserInfo({ user, postCount, isBlocked, setIsBlocked, isFollowing, setIsFollowing }) {
   const nav = useNavigate();
   const [followerCount, setFollowerCount] = useState(user.followerCount);
+  const [followingCount, setFollowingCount] = useState(user.followingCount);
   const [reportOpen, setReportOpen] = useState(false);
 
   useEffect(() => {
     setFollowerCount(user.followerCount);
+    setFollowingCount(user.followingCount);
   }, [user]);
 
   const follow = () => {
@@ -29,9 +31,12 @@ function UserInfo({ user, postCount, isBlocked, setIsBlocked, isFollowing, setIs
       },
     })
       .then((res) => {
-        console.log("result: ", res);
-        setIsFollowing(res.data);
-        setFollowerCount((cnt) => cnt + 1);
+        if (res.data.pending === true) {
+          setIsFollowing(false);
+        } else {
+          setIsFollowing(true);
+          setFollowerCount((cnt) => cnt + 1);
+        }
       })
       .catch(() => {
         alert("이미 팔로우 요청을 보냈습니다.");
@@ -46,7 +51,6 @@ function UserInfo({ user, postCount, isBlocked, setIsBlocked, isFollowing, setIs
       method: "DELETE",
     })
       .then((res) => {
-        //console.log("result: ", res);
         setIsFollowing(false);
         setFollowerCount((cnt) => cnt - 1);
       })
@@ -73,7 +77,7 @@ function UserInfo({ user, postCount, isBlocked, setIsBlocked, isFollowing, setIs
       .catch(() => {
         alert("차단 실패");
       });
-  }
+  };
 
   const unblock = () => {
     if (!confirm("차단 해제하시겠습니까?")) return;
@@ -89,11 +93,11 @@ function UserInfo({ user, postCount, isBlocked, setIsBlocked, isFollowing, setIs
       .catch(() => {
         alert("차단 해제 실패");
       });
-  }
+  };
 
   const reportUser = () => {
     setReportOpen(true);
-  }
+  };
 
   const makeChatroom = () => {
     axiosInstance({
@@ -101,7 +105,6 @@ function UserInfo({ user, postCount, isBlocked, setIsBlocked, isFollowing, setIs
       method: "POST",
     })
       .then((res) => {
-        //console.log("result: ", res);
         nav(`/chat/${res.data}`);
       })
       .catch(() => {
@@ -109,28 +112,39 @@ function UserInfo({ user, postCount, isBlocked, setIsBlocked, isFollowing, setIs
       });
   };
 
+  const copyProfileLink = async () => {
+    try {
+      const origin = window.location.origin;
+      const profileUrl = `${origin}/user/${user.userId}`;
+      await navigator.clipboard.writeText(profileUrl);
+      alert("프로필 링크가 복사되었습니다!");
+    } catch (err) {
+      alert("링크 복사에 실패했습니다.", err);
+    }
+  };
+
   const moreMenu = {
     items: [
-      isBlocked ? 
-      {
-        key: "unblock",
-        label: "차단해제",
-        onClick: unblock,
-      } : 
-      {
-        key: "block",
-        label: "차단하기",
-        onClick: block,
-        danger: true,
-      },
+      isBlocked
+        ? {
+            key: "unblock",
+            label: "차단해제",
+            onClick: unblock,
+          }
+        : {
+            key: "block",
+            label: "차단하기",
+            onClick: block,
+            danger: true,
+          },
       {
         key: "report",
         label: "신고하기",
         onClick: reportUser,
         danger: true,
       },
-    ]
-  }
+    ],
+  };
 
   return (
     <div className="profile">
@@ -162,7 +176,7 @@ function UserInfo({ user, postCount, isBlocked, setIsBlocked, isFollowing, setIs
             />
             <UserStat
               label="팔로잉"
-              value={user.followingCount}
+              value={followingCount || 0}
               onClick={() => nav(`/user/${user.userId}/follow?tab=followings`)}
             />
           </div>
@@ -177,21 +191,35 @@ function UserInfo({ user, postCount, isBlocked, setIsBlocked, isFollowing, setIs
             <ProfileButton btnType="default" onClick={() => nav("/settings/profile")}>
               프로필 편집
             </ProfileButton>
-            <ProfileButton btnType="default">프로필 공유</ProfileButton>
+            <ProfileButton btnType="default" onClick={copyProfileLink}>
+              프로필 공유
+            </ProfileButton>
           </>
         ) : (
           <>
-            {isFollowing ? 
-              <ProfileButton btnType="default" onClick={unfollow}>팔로우 중</ProfileButton>
-              :
-              <ProfileButton btnType="point" onClick={follow}>팔로우</ProfileButton>
-            }
-            <ProfileButton btnType="default" onClick={makeChatroom}>메시지 보내기</ProfileButton>
+            {isFollowing ? (
+              <ProfileButton btnType="default" onClick={unfollow}>
+                팔로우 중
+              </ProfileButton>
+            ) : (
+              <ProfileButton btnType="point" onClick={follow}>
+                팔로우
+              </ProfileButton>
+            )}
+            <ProfileButton btnType="default" onClick={makeChatroom}>
+              메시지 보내기
+            </ProfileButton>
           </>
         )}
       </div>
-      
-      <ReportModal open={reportOpen} onClose={() => setReportOpen(false)} reportType="USER" targetId={user.userId} onSuccess={() => alert("신고 완료")} />
+
+      <ReportModal
+        open={reportOpen}
+        onClose={() => setReportOpen(false)}
+        reportType="USER"
+        targetId={user.userId}
+        onSuccess={() => alert("신고 완료")}
+      />
     </div>
   );
 }

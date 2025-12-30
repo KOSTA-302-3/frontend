@@ -96,7 +96,6 @@ export const enterChatRoom = createAsyncThunk("chat/enterChatRoom", async ({ cha
     const response = await axiosInstance.post(`/api/chatmember`, {
       chatroomId: chatroomId,
     });
-    console.log("Entered chat room, member info:", response.data);
     const member = response.data;
 
     if (member && member.id != null) {
@@ -115,7 +114,6 @@ export const enterChatRoomAndConnect = createAsyncThunk(
 
     // 입장
     await dispatch(enterChatRoom({ chatroomId })).unwrap();
-    console.log("Entered chat room:", chatroomId);
 
     // WS 연결
     await new Promise((resolve, reject) => {
@@ -168,7 +166,6 @@ export const fetchChatMembers = createAsyncThunk("chat/fetchChatMembers", async 
         withCredentials: true,
       }),
     ]);
-    console.log("Fetched chat members:", memberRes.data);
     // 채팅방 멤버 세팅
     await dispatch(setChatMembers(memberRes.data));
     // fulfilled payload (의미 있는 값 반환 가능)

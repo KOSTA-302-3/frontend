@@ -131,11 +131,7 @@ export default function SearchPage() {
     const clientHeight = window.innerHeight;
     const scrollHeight = document.documentElement.scrollHeight;
 
-    if (
-      scrollTop + clientHeight >= scrollHeight - 100 &&
-      !isLoading &&
-      hasMore
-    ) {
+    if (scrollTop + clientHeight >= scrollHeight - 100 && !isLoading && hasMore) {
       setPageNo((prev) => prev + 1);
     }
   };
