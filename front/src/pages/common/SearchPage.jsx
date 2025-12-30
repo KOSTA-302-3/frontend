@@ -126,11 +126,7 @@ export default function SearchPage() {
     const clientHeight = window.innerHeight;
     const scrollHeight = document.documentElement.scrollHeight;
 
-    if (
-      scrollTop + clientHeight >= scrollHeight - 100 &&
-      !isLoading &&
-      hasMore
-    ) {
+    if (scrollTop + clientHeight >= scrollHeight - 100 && !isLoading && hasMore) {
       setPageNo((prev) => prev + 1);
     }
   };
@@ -155,14 +151,8 @@ export default function SearchPage() {
 
       <Content>
         {posts.map((item) => (
-          <GridItem
-            key={item.postId}
-            onClick={() => console.log("Post Clicked", item.postId)}
-          >
-            <img
-              src={item.imageSourcesList || "https://placeholder.com/post.png"}
-              alt="post thumbnail"
-            />
+          <GridItem key={item.postId} onClick={() => {}}>
+            <img src={item.imageSourcesList || "https://placeholder.com/post.png"} alt="post thumbnail" />
           </GridItem>
         ))}
       </Content>

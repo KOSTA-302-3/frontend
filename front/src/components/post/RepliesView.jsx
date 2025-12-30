@@ -30,7 +30,6 @@ const RepliesView = ({ open, onClose, postId, profileImage }) => {
           withCredentials: true,
         });
 
-        console.log(`페이지: ${currentPage}, 데이터 수신:`, response.data);
         const newContent = response.data.content;
 
         if (newContent.length === 0) {
@@ -91,7 +90,6 @@ const RepliesView = ({ open, onClose, postId, profileImage }) => {
           withCredentials: true,
         }
       );
-      console.log(response.data);
       setReplies((prev) => [...prev, response.data]);
       setReplyValue("");
 

@@ -31,18 +31,16 @@ function UserPage() {
     if (!id) return;
 
     axiosInstance({
-        url: `/api/user/${id}`,
-        method: "get",
+      url: `/api/user/${id}`,
+      method: "get",
     })
       .then((result) => {
         setUser(result.data);
-        //console.log("user: ", user);
-    })
+      })
       .catch((err) => {
-        //console.log(err);
         if (err.response?.status === 401 || err.response?.status === 403) {
-            alert("로그인 후 이용해주세요.");
-            nav("/login");
+          alert("로그인 후 이용해주세요.");
+          nav("/login");
         } else {
           alert("유저 정보를 불러오지 못했습니다.");
         }
@@ -58,13 +56,12 @@ function UserPage() {
       .catch(() => {
         console.error("차단 상태 조회 실패");
       });
-    
+
     axiosInstance({
       url: `/api/follow/${id}`,
       method: "GET",
     })
       .then((res) => {
-        //console.log("result: ", res);
         setIsFollowing(res.data);
       })
       .catch(() => {
@@ -78,11 +75,20 @@ function UserPage() {
   return (
     <>
       <UserHeader user={targetUser} />
-      <UserInfo user={targetUser} postCount={postCount} 
-        isBlocked={isBlocked} setIsBlocked={setIsBlocked}
-        isFollowing={isFollowing} setIsFollowing={setIsFollowing} />
-      <UserPostGrid user={targetUser} onPostCountChange={setPostCount} 
-        isBlocked={isBlocked} isFollowing={isFollowing} />
+      <UserInfo
+        user={targetUser}
+        postCount={postCount}
+        isBlocked={isBlocked}
+        setIsBlocked={setIsBlocked}
+        isFollowing={isFollowing}
+        setIsFollowing={setIsFollowing}
+      />
+      <UserPostGrid
+        user={targetUser}
+        onPostCountChange={setPostCount}
+        isBlocked={isBlocked}
+        isFollowing={isFollowing}
+      />
     </>
   );
 }
