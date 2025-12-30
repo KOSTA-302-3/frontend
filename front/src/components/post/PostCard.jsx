@@ -198,7 +198,10 @@ const PostCard = ({
         footer={null}
         style={{ opacity: "95%" }}
       >
-        <FeedBackRate postId={postId} />
+        <FeedBackRate
+          postId={postId}
+          onClose={() => setIsFeedBackModalOpen(false)}
+        />
       </Modal>
     </Card>
   );
