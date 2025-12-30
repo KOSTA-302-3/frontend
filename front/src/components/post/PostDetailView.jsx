@@ -50,6 +50,7 @@ const PostDetailView = ({ open, onClose, postId }) => {
           postId={post.postId}
           userCheck={post.userCheck}
           visible={post.contentVisible}
+          badgeImageUrl={post.badgeImageSrc}
         />
       ) : (
         <div style={{ padding: "20px", textAlign: "center" }}>

@@ -5,6 +5,7 @@ import SearchBar from "../../components/common/SearchBar";
 import { useNavigate } from "react-router-dom";
 import axiosInstance from "../../api/axiosInstance";
 import { useSelector } from "react-redux";
+import PostDetailView from "../../components/post/PostDetailView";
 
 const Wrapper = styled.div`
   width: 100%;
@@ -73,6 +74,10 @@ export default function SearchPage() {
   const [isLoading, setIsLoading] = useState(false);
   const [hasMore, setHasMore] = useState(true);
   const level = useSelector((state) => state.post.level);
+
+  const [modalOpen, setModalOpen] = useState(false);
+  const [selectedPostId, setSelectedPostId] = useState(0);
+
   const fetchPosts = useCallback(
     async (isReset = false) => {
       if (isLoading) return;
@@ -106,7 +111,7 @@ export default function SearchPage() {
         setIsLoading(false);
       }
     },
-    [pageNo, isLoading]
+    [pageNo, isLoading, level]
   );
 
   useEffect(() => {
@@ -144,6 +149,11 @@ export default function SearchPage() {
     nav(-1);
   };
 
+  const handlePostClick = (postId) => {
+    setSelectedPostId(postId);
+    setModalOpen(true);
+  };
+
   return (
     <Wrapper>
       <Header>
@@ -157,7 +167,7 @@ export default function SearchPage() {
         {posts.map((item) => (
           <GridItem
             key={item.postId}
-            onClick={() => console.log("Post Clicked", item.postId)}
+            onClick={() => handlePostClick(item.postId)}
           >
             <img
               src={item.imageSourcesList || "https://placeholder.com/post.png"}
@@ -166,6 +176,14 @@ export default function SearchPage() {
           </GridItem>
         ))}
       </Content>
+
+      {modalOpen && (
+        <PostDetailView
+          open={modalOpen}
+          onClose={() => setModalOpen(false)}
+          postId={selectedPostId}
+        />
+      )}
     </Wrapper>
   );
 }
