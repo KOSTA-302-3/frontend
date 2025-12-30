@@ -13,7 +13,7 @@ export const Header = styled.div`
   align-items: center;
   padding: 1vh 1vw;
   gap: 1vw;
-  background: black;
+  background: #130016;
   border-top: transparent;
 `;
 
@@ -33,7 +33,7 @@ export const Username = styled.div`
 export const Content = styled.div`
   padding: 0 1vw 1vh;
   color: #e6c0c7;
-  background: black;
+  background: #130016;
 `;
 
 export const LikesCount = styled.div`
