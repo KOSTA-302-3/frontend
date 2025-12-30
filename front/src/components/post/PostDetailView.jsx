@@ -44,6 +44,7 @@ const PostDetailView = ({ open, onClose, postId }) => {
           postId={post.postId}
           userCheck={post.userCheck}
           visible={post.contentVisible}
+          badgeImageUrl={post.badgeImageSrc}
         />
       ) : (
         <div style={{ padding: "20px", textAlign: "center" }}>데이터를 불러오는 중입니다...</div>

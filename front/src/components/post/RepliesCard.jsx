@@ -23,6 +23,7 @@ const RepliesCard = ({
   caption,
   key,
   userId,
+  badgeImageUrl,
 }) => {
   return (
     <Card>
@@ -30,7 +31,11 @@ const RepliesCard = ({
         <ProfileImageWrapper>
           <ProfileImage src={profileImage} />
         </ProfileImageWrapper>
-        <Username>{username}</Username>
+        <Username>
+          {username}
+
+          <Badge imageUrl={badgeImageUrl} />
+        </Username>
       </Header>
 
       <Content>

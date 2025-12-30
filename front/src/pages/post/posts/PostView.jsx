@@ -99,6 +99,7 @@ const PostView = () => {
           postId={item.postId}
           userCheck={item.userCheck}
           createUserId={item.createUserId}
+          badgeImageUrl={item.badgeImageSrc}
         />
       ))}
     </Container>
